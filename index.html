@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--o:#FF4500;--bg:#0a0a0a;--g:#666;--w:#fff;--border:#1a1a1a}
+:root{--o:#FF4500;--bg:#0a0a0a;--g:#666;--w:#fff;--b:#1a1a1a}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--w);font-family:'Barlow',sans-serif;overflow-x:hidden}
 
 /* ── NAV ── */
-nav{position:fixed;top:0;left:0;right:0;z-index:900;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
-.logo{font-size:20px;font-weight:900;color:var(--o);letter-spacing:2px;cursor:pointer;text-decoration:none}
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--b)}
+.logo{font-size:20px;font-weight:900;color:var(--o);letter-spacing:2px;text-decoration:none}
 .nav-links{display:flex;align-items:center;gap:28px;list-style:none}
 .nav-links a{color:#999;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;transition:.2s;cursor:pointer}
-.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links a:hover{color:#fff}
 .nav-links .cta{border:1px solid var(--o);color:var(--o);padding:7px 16px;transition:.2s}
 .nav-links .cta:hover{background:var(--o);color:#000}
 .burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
@@ -26,130 +26,112 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;height:60px;display:flex;ali
 .burger.x span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
 .mob-menu{display:none;position:fixed;inset:0;top:60px;background:rgba(10,10,10,.98);z-index:800;flex-direction:column;align-items:center;justify-content:center;gap:36px}
 .mob-menu.open{display:flex}
-.mob-menu a{color:#ccc;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
+.mob-menu a{color:#ccc;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;text-decoration:none}
 
-/* ── PÁGINAS ── */
-.page{display:none;padding-top:60px;min-height:100vh}
-.page.active{display:block}
-
-/* ── HOME ── */
-#home{display:flex;flex-direction:column}
-.hero{min-height:calc(100vh - 60px);display:flex;align-items:center;padding:0 40px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:55%;opacity:.05;pointer-events:none}
-.hero-bg svg{width:100%}
-.hero-content{max-width:660px;z-index:1}
+/* ── UTILS ── */
 .tag{display:flex;align-items:center;gap:10px;color:var(--o);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
 .tag::before{content:'';width:28px;height:2px;background:var(--o)}
-h1{font-size:clamp(48px,7vw,96px);font-weight:900;line-height:.95;letter-spacing:-2px;margin-bottom:20px}
-h1 em{color:var(--o);font-style:normal}
-.hero-sub{color:#999;font-size:17px;line-height:1.65;max-width:440px;margin-bottom:36px}
-.btns{display:flex;gap:12px;flex-wrap:wrap}
+.sec-title{font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1;letter-spacing:-1px}
+.sec-title em{color:var(--o);font-style:normal}
 .btn-o{background:var(--o);color:#000;padding:13px 26px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:.15s}
 .btn-o:hover{background:#ff6020}
 .btn-g{background:transparent;color:#fff;padding:13px 26px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border:1px solid #333;cursor:pointer;text-decoration:none;display:inline-block;transition:.15s}
 .btn-g:hover{border-color:#fff}
+
+/* ── HERO ── */
+#hero{min-height:100vh;display:flex;align-items:center;padding:80px 40px 60px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;right:-40px;top:50%;transform:translateY(-50%);width:52%;opacity:.05;pointer-events:none}
+.hero-bg svg{width:100%}
+.hero-content{max-width:660px;z-index:1}
+h1{font-size:clamp(48px,7vw,96px);font-weight:900;line-height:.95;letter-spacing:-2px;margin-bottom:22px}
+h1 em{color:var(--o);font-style:normal}
+.hero-sub{color:#999;font-size:17px;line-height:1.65;max-width:440px;margin-bottom:36px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
 .hero-aside{position:absolute;right:40px;bottom:60px;text-align:right}
 .hero-aside .n{font-size:40px;font-weight:900}
 .hero-aside .l{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-top:2px}
-.hero-loc{position:absolute;right:-30px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:4px;color:#222;white-space:nowrap}
+.hero-loc{position:absolute;right:-28px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:4px;color:#222;white-space:nowrap}
 
-/* stats strip */
-.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border)}
-.s-item{padding:48px 40px;text-align:center;border-right:1px solid var(--border)}
+/* ── STATS ── */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--b);border-bottom:1px solid var(--b)}
+.s-item{padding:48px 40px;text-align:center;border-right:1px solid var(--b)}
 .s-item:last-child{border-right:none}
 .s-num{font-size:clamp(40px,5vw,72px);font-weight:900}
 .s-num b{color:var(--o)}
 .s-lab{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-top:6px}
 
-/* marcas strip */
-.marcas-strip{padding:48px 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+/* ── MARCAS ── */
+.marcas-strip{padding:48px 40px;border-bottom:1px solid var(--b)}
 .marcas-lab{font-size:10px;letter-spacing:3px;color:var(--g);text-transform:uppercase;text-align:center;margin-bottom:32px}
 .marcas-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:40px}
 .m-logo{font-size:16px;font-weight:900;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;transition:.2s}
 .m-logo:hover{color:#555}
 
-/* home bottom: preview cards */
-.home-preview{padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
-.preview-card{background:var(--bg);padding:48px 40px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
-.preview-card:hover{background:#0f0f0f}
-.preview-card::after{content:'→';position:absolute;right:32px;bottom:32px;font-size:24px;color:var(--o);transition:.2s}
-.preview-card:hover::after{right:24px}
-.pc-tag{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--o);text-transform:uppercase;margin-bottom:12px}
-.pc-title{font-size:clamp(28px,3vw,44px);font-weight:900;line-height:1.05;margin-bottom:12px}
-.pc-desc{color:var(--g);font-size:14px;line-height:1.7;max-width:360px}
-
 /* ── NOSOTROS ── */
-#nosotros .nos-hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
-#nosotros h2{font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1;margin-bottom:32px}
-#nosotros h2 em{color:var(--o);font-style:normal}
-.nos-body{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:60px 40px;border-bottom:1px solid var(--border);align-items:start}
+#nosotros{padding:100px 40px 0}
+.nos-body{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-top:48px;align-items:start}
 .nos-text p{color:#aaa;font-size:16px;line-height:1.8;margin-bottom:18px}
 .nos-text p strong{color:#fff}
-.valores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
+.valores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--b)}
 .valor{background:var(--bg);padding:22px 20px}
 .v-n{color:var(--o);font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
 .v-t{font-size:15px;font-weight:800;margin-bottom:6px}
 .v-d{color:var(--g);font-size:12px;line-height:1.6}
 
-/* equipo */
-.equipo-sec{padding:60px 40px 80px}
+/* ── EQUIPO ── */
+#equipo{padding:60px 40px 100px}
 .sec-label{font-size:10px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:28px}
-.equipo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
-/* card normal */
-.eq-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;background:#111}
-.eq-card img{width:100%;height:100%;object-fit:cover;transition:.4s;filter:grayscale(15%)}
-.eq-card:hover img{transform:scale(1.04);filter:grayscale(0%)}
-/* overlay con frase */
-.eq-overlay{position:absolute;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;justify-content:flex-end;padding:20px;opacity:0;transition:.3s}
+.equipo-grid{display:grid;grid-template-columns:repeat(5,1fr)}
+.eq-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:default;background:#111}
+.eq-card img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.eq-card:hover img{transform:scale(1.04)}
+.eq-overlay{position:absolute;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;justify-content:flex-end;padding:20px;opacity:0;transition:.3s;pointer-events:none}
 .eq-card:hover .eq-overlay{opacity:1}
-.eq-frase{font-size:13px;font-style:italic;color:#ccc;line-height:1.5;margin-bottom:12px;border-left:2px solid var(--o);padding-left:10px}
+.eq-frase{font-size:12px;font-style:italic;color:#ccc;line-height:1.5;margin-bottom:10px;border-left:2px solid var(--o);padding-left:10px}
 .eq-nombre{font-size:14px;font-weight:800}
 .eq-puesto{font-size:10px;color:var(--o);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
-/* featured (Daniela) */
-.eq-featured{background:#0f0f0f;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;position:relative;overflow:hidden}
-.eq-featured::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#111,#0a0a0a)}
-.eq-featured .frase-f{font-size:14px;font-style:italic;color:#aaa;line-height:1.6;margin-bottom:16px;border-left:2px solid var(--o);padding-left:12px;position:relative;z-index:1}
-.eq-featured .nom-f{font-size:20px;font-weight:900;position:relative;z-index:1}
-.eq-featured .cargo-f{font-size:10px;color:var(--o);letter-spacing:2px;text-transform:uppercase;margin-top:4px;position:relative;z-index:1}
-/* color placeholder */
-.eq-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.eq-placeholder span{font-size:48px;font-weight:900;color:rgba(0,0,0,.3)}
+.eq-featured{background:#0f0f0f;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
+.eq-featured .frase-f{font-size:14px;font-style:italic;color:#888;line-height:1.6;margin-bottom:14px;border-left:2px solid var(--o);padding-left:12px}
+.eq-featured .nom-f{font-size:18px;font-weight:900}
+.eq-featured .cargo-f{font-size:10px;color:var(--o);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+.eq-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.eq-ph span{font-size:44px;font-weight:900;color:rgba(255,255,255,.08)}
 
 /* ── ROSTER ── */
-#roster{display:flex;flex-direction:column}
-.roster-top{padding:60px 40px 0}
-.roster-body{display:flex;flex:1;min-height:calc(100vh - 200px)}
+#roster{padding:100px 0 0}
+.roster-header{padding:0 40px 40px}
+.roster-layout{display:flex;align-items:flex-start}
 
 /* sidebar */
-.r-sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--border);padding:24px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
-.r-sidebar::-webkit-scrollbar{width:0}
-.r-sb-section{margin-bottom:28px;padding:0 20px}
-.r-sb-label{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:12px;display:block}
-.r-sb-btn{display:block;width:100%;text-align:left;background:none;border:none;color:#555;font-size:13px;font-weight:600;padding:6px 0;cursor:pointer;transition:.15s;font-family:'Barlow',sans-serif;letter-spacing:.5px}
-.r-sb-btn:hover{color:#ccc}
-.r-sb-btn.active{color:var(--o)}
-.r-sb-btn.active-w{color:#fff}
+.r-side{width:190px;flex-shrink:0;border-right:1px solid var(--b);padding:24px 0;position:sticky;top:60px;max-height:calc(100vh - 60px);overflow-y:auto}
+.r-side::-webkit-scrollbar{width:0}
+.r-sg{padding:0 20px 24px}
+.r-sl{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:10px;display:block}
+.r-sb{display:block;width:100%;text-align:left;background:none;border:none;color:#555;font-size:13px;font-weight:600;padding:5px 0;cursor:pointer;transition:.15s;font-family:'Barlow',sans-serif}
+.r-sb:hover{color:#ccc}
+.r-sb.on{color:var(--o)}
+.r-sb.onw{color:#fff}
 
-/* main roster */
-.r-main{flex:1;padding:0 32px 60px;overflow:hidden}
-.r-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px;padding-top:24px}
+/* main grid */
+.r-main{flex:1;padding:0 32px 80px;min-width:0}
+.r-tabs{display:flex;border-bottom:1px solid var(--b);margin-bottom:24px}
 .r-tab{padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:#444;border-bottom:2px solid transparent;transition:.2s;display:flex;align-items:center;gap:8px}
-.r-tab.active{color:#fff;border-bottom-color:var(--o)}
-.r-count-badge{background:var(--o);color:#000;font-size:10px;font-weight:900;padding:2px 6px}
-.r-info{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-bottom:20px}
-.r-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0}
+.r-tab.on{color:#fff;border-bottom-color:var(--o)}
+.r-badge{background:var(--o);color:#000;font-size:10px;font-weight:900;padding:2px 6px}
+.r-count{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-bottom:20px}
+.r-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr))}
 .t-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;background:#111}
 .t-card img{width:100%;height:100%;object-fit:cover;transition:.4s}
 .t-card:hover img{transform:scale(1.06)}
 .t-dot{position:absolute;top:10px;left:10px;width:7px;height:7px;border-radius:50%;background:var(--o)}
 .t-info{position:absolute;bottom:0;left:0;right:0;padding:14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.95))}
-.t-nom{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.t-nom{font-size:12px;font-weight:800;text-transform:uppercase}
 .t-cat{font-size:10px;color:#999;margin-top:3px;line-height:1.4}
 .t-hover{position:absolute;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s}
 .t-card:hover .t-hover{opacity:1}
 .t-btn{background:transparent;border:1px solid #fff;color:#fff;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Barlow',sans-serif}
-.t-placeholder{width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center}
-.t-placeholder span{font-size:36px;font-weight:900;color:#222}
+.t-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#111}
+.t-ph span{font-size:36px;font-weight:900;color:#222}
 
 /* ── MODAL ── */
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:none;overflow-y:auto}
@@ -157,77 +139,78 @@ h1 em{color:var(--o);font-style:normal}
 .modal-wrap{max-width:880px;margin:48px auto;background:#0d0d0d;position:relative}
 .m-close{position:absolute;top:18px;right:20px;background:none;border:none;color:#555;font-size:11px;font-weight:700;letter-spacing:3px;cursor:pointer;text-transform:uppercase;z-index:10;transition:.2s}
 .m-close:hover{color:#fff}
-.m-layout{display:grid;grid-template-columns:360px 1fr}
-.m-img{background:#111;position:relative}
-.m-img img,.m-img .t-placeholder{width:100%;min-height:480px;object-fit:cover}
-.m-body{padding:44px 36px;overflow-y:auto;max-height:90vh}
+.m-layout{display:grid;grid-template-columns:340px 1fr}
+.m-img{background:#111}
+.m-img img,.m-img .t-ph{width:100%;min-height:480px;object-fit:cover}
+.m-body{padding:40px 32px;overflow-y:auto;max-height:88vh}
 .m-crew{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--o);text-transform:uppercase;margin-bottom:6px}
-.m-name{font-size:44px;font-weight:900;line-height:1;margin-bottom:4px}
+.m-name{font-size:40px;font-weight:900;line-height:1;margin-bottom:4px}
 .m-loc{color:var(--g);font-size:14px;margin-bottom:20px}
-.m-bio{border-left:2px solid var(--o);padding-left:16px;color:#bbb;font-size:14px;line-height:1.8;margin-bottom:28px}
-.m-stitle{font-size:9px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:12px}
-.redes-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
-.red-row{border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#fff;transition:.2s}
+.m-bio{border-left:2px solid var(--o);padding-left:16px;color:#bbb;font-size:14px;line-height:1.8;margin-bottom:24px}
+.m-st{font-size:9px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:10px}
+.redes-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.red-row{border:1px solid var(--b);padding:12px 14px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#fff;transition:.2s}
 .red-row:hover{border-color:#333}
 .rn{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
 .rh{font-size:11px;color:var(--g);margin-top:2px}
 .rs{font-size:18px;font-weight:900}
 .rer{font-size:11px;color:var(--o);font-weight:700}
-.tags-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
 .tag-item{border:1px solid #222;padding:5px 10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#666}
-.trabajos-wrap{display:flex;flex-direction:column;gap:6px;margin-bottom:28px}
-.trab-row{border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:.2s}
+.trabajos-wrap{display:flex;flex-direction:column;gap:6px;margin-bottom:24px}
+.trab-row{border:1px solid var(--b);padding:12px 14px;display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:.2s}
 .trab-row:hover{border-color:#333;background:#111}
-.trab-tipo{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid;padding:3px 7px;white-space:nowrap}
-.trab-tipo.org{color:#888;border-color:#333}
-.trab-tipo.mrc{color:var(--o);border-color:var(--o)}
-.trab-tit{font-size:12px;color:#ccc;flex:1}
-.btn-cot{display:block;background:var(--o);color:#000;text-align:center;padding:15px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border:none;width:100%;margin-bottom:10px;transition:.15s;text-decoration:none}
+.trab-t{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid;padding:3px 7px;white-space:nowrap}
+.trab-t.org{color:#888;border-color:#333}
+.trab-t.mrc{color:var(--o);border-color:var(--o)}
+.trab-d{font-size:12px;color:#ccc;flex:1}
+.btn-cot{display:block;background:var(--o);color:#000;text-align:center;padding:14px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border:none;width:100%;margin-top:16px;margin-bottom:8px;transition:.15s;text-decoration:none}
 .btn-cot:hover{background:#ff6020}
-.btn-vol{display:block;text-align:center;padding:13px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:1px solid #222;color:#666;cursor:pointer;transition:.15s;text-decoration:none}
+.btn-vol{display:block;text-align:center;padding:12px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:1px solid #222;color:#555;cursor:pointer;transition:.15s;text-decoration:none}
 .btn-vol:hover{color:#fff;border-color:#444}
 
 /* ── SERVICIOS ── */
-#servicios .svc-hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
-.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);margin:0 40px}
-.svc-card{padding:36px 32px;border:1px solid var(--border);background:var(--o);cursor:pointer;transition:.1s;position:relative}
-.svc-icon{font-size:24px;color:#000;margin-bottom:16px;line-height:1}
-.svc-title{font-size:20px;font-weight:900;color:#000;line-height:1.2;margin-bottom:12px}
+#servicios{padding:100px 40px}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--b);margin-top:48px}
+.svc-card{padding:36px 32px;border:1px solid var(--b);background:var(--o);cursor:pointer;transition:.1s;position:relative}
+.svc-icon{font-size:22px;color:#000;margin-bottom:14px;line-height:1.2}
+.svc-title{font-size:20px;font-weight:900;color:#000;line-height:1.2;margin-bottom:10px}
 .svc-desc{font-size:13px;line-height:1.7;color:rgba(0,0,0,.65)}
-.svc-more{margin-top:20px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.5);display:inline-block}
-.svc-card.sel{outline:3px solid #fff}
-.proyectos-panel{margin:0 40px;border:1px solid var(--border);border-top:none;background:#080808;display:none;padding:36px}
-.proyectos-panel.open{display:block}
+.svc-more{margin-top:18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.45);display:inline-block}
+.svc-card.sel{outline:3px solid #fff;outline-offset:-3px}
+.proj-panel{border:1px solid var(--b);border-top:none;background:#080808;display:none;padding:36px}
+.proj-panel.open{display:block}
 .proj-label{font-size:10px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:20px}
 .proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.proj-card{aspect-ratio:4/3;background:#1a1a1a;position:relative;overflow:hidden;cursor:pointer}
+.proj-card{aspect-ratio:4/3;background:#161616;position:relative;overflow:hidden;cursor:pointer}
 .proj-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.6);transition:.3s}
 .proj-card:hover img{filter:brightness(.85);transform:scale(1.04)}
-.proj-info{position:absolute;bottom:0;left:0;right:0;padding:14px}
+.proj-info{position:absolute;bottom:0;left:0;right:0;padding:14px;background:linear-gradient(transparent,rgba(0,0,0,.9))}
 .proj-nom{font-size:13px;font-weight:800}
 .proj-d{font-size:11px;color:#aaa;margin-top:3px;line-height:1.4}
-.proj-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#161616}
-.proj-placeholder span{font-size:12px;font-weight:700;color:#333;text-transform:uppercase;text-align:center;padding:12px}
-.svc-bottom{padding:60px 40px 80px}
+.proj-ph{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.proj-ph span{font-size:12px;font-weight:700;color:#2a2a2a;text-transform:uppercase;text-align:center;padding:12px}
 
 /* ── ÚNETE ── */
-#unete .une-hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
-.une-cards{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 40px;border:1px solid var(--border)}
-.une-card{padding:44px 40px;border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:.2s}
+#unete{padding:100px 40px 0}
+.une-cards{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--b);margin-top:48px}
+.une-card{padding:44px 40px;border:1px solid var(--b);cursor:pointer;position:relative;overflow:hidden;transition:.2s}
 .une-card:hover{background:#0d0d0d}
 .une-card.sel{border-color:var(--o)}
-.une-n{position:absolute;right:28px;top:20px;font-size:72px;font-weight:900;color:var(--border);line-height:1}
+.une-n{position:absolute;right:28px;top:20px;font-size:72px;font-weight:900;color:var(--b);line-height:1}
 .une-tipo{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--o);text-transform:uppercase;margin-bottom:12px}
-.une-title{font-size:clamp(24px,2.5vw,36px);font-weight:900;line-height:1.1;margin-bottom:16px}
-.une-desc{color:#aaa;font-size:14px;line-height:1.7;margin-bottom:24px}
-.une-list{list-style:none;margin-bottom:28px}
-.une-list li{padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;color:#ccc;display:flex;align-items:center;gap:8px}
+.une-title{font-size:clamp(22px,2.5vw,34px);font-weight:900;line-height:1.1;margin-bottom:14px}
+.une-desc{color:#aaa;font-size:14px;line-height:1.7;margin-bottom:20px}
+.une-list{list-style:none;margin-bottom:24px}
+.une-list li{padding:9px 0;border-bottom:1px solid var(--b);font-size:13px;color:#ccc;display:flex;align-items:center;gap:8px}
 .une-list li::before{content:'•';color:var(--o)}
 .une-cta{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--o)}
-.une-form{margin:0 40px;border:1px solid var(--border);border-top:none;background:#080808;display:none;padding:48px 40px}
+
+/* formulario únete */
+.une-form{border:1px solid var(--b);border-top:none;background:#080808;display:none;padding:48px 40px}
 .une-form.open{display:block}
 .f-title{font-size:clamp(28px,3vw,48px);font-weight:900;color:#333;margin-bottom:6px}
-.f-sub{color:#444;font-size:14px;margin-bottom:32px}
+.f-sub{color:#444;font-size:14px;margin-bottom:28px}
 .f-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .fg{display:flex;flex-direction:column;gap:7px}
 .fg.full{grid-column:span 2}
@@ -238,25 +221,23 @@ h1 em{color:var(--o);font-style:normal}
 .ft{resize:vertical;min-height:120px}
 .btn-send{background:var(--o);color:#000;border:none;padding:14px 36px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:.15s}
 .btn-send:hover{background:#ff6020}
-.une-bottom{padding:40px}
 
 /* ── HABLEMOS ── */
-#hablemos .hab-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:calc(100vh - 60px)}
-.hab-left{padding:80px 60px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center}
-.hab-title{font-size:clamp(56px,8vw,112px);font-weight:900;line-height:.95;margin-bottom:48px}
+#hablemos{padding:100px 40px;border-top:1px solid var(--b)}
+.hab-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
+.hab-title{font-size:clamp(56px,8vw,100px);font-weight:900;line-height:.95;margin-bottom:40px}
 .hab-title em{color:var(--o);font-style:normal}
-.hab-dato{margin-bottom:20px}
+.hab-dato{margin-bottom:18px}
 .hab-dl{font-size:9px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:3px}
-.hab-dv{font-size:16px;color:#fff}
-.hab-redes{display:flex;gap:10px;margin-top:32px;flex-wrap:wrap}
-.btn-red{border:1px solid #222;color:#666;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:.2s}
+.hab-dv{font-size:16px}
+.hab-redes{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.btn-red{border:1px solid #222;color:#555;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:.2s}
 .btn-red:hover{border-color:#fff;color:#fff}
-.hab-right{padding:80px 60px;display:flex;flex-direction:column;justify-content:center}
-.hab-form-t{font-size:22px;font-weight:900;margin-bottom:4px}
-.hab-form-s{color:#aaa;font-size:14px;margin-bottom:28px}
+.hab-form-t{font-size:20px;font-weight:900;margin-bottom:4px}
+.hab-form-s{color:#aaa;font-size:14px;margin-bottom:24px}
 
-/* footer */
-footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+/* ── FOOTER ── */
+footer{border-top:1px solid var(--b);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-top:100px}
 .f-logo{font-size:18px;font-weight:900;color:var(--o);letter-spacing:2px}
 .f-copy{font-size:11px;color:#333}
 .f-nav{display:flex;gap:20px;list-style:none}
@@ -268,53 +249,49 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   nav{padding:0 20px}
   .nav-links{display:none}
   .burger{display:flex}
-  .hero{padding:0 20px}
-  h1{font-size:clamp(36px,9vw,64px)}
+  #hero{padding:80px 20px 60px}
   .hero-aside,.hero-loc{display:none}
   .stats-strip{grid-template-columns:1fr}
-  .s-item{border-right:none;border-bottom:1px solid var(--border);padding:32px 20px}
+  .s-item{border-right:none;border-bottom:1px solid var(--b);padding:32px 20px}
   .marcas-strip{padding:32px 20px}
-  .home-preview{grid-template-columns:1fr;padding:40px 20px}
-  .nos-body{grid-template-columns:1fr;gap:40px;padding:40px 20px}
+  #nosotros{padding:60px 20px 0}
+  .nos-body{grid-template-columns:1fr;gap:40px;margin-top:32px}
   .valores{grid-template-columns:1fr 1fr}
-  .equipo-sec{padding:40px 20px}
+  #equipo{padding:40px 20px 60px}
   .equipo-grid{grid-template-columns:repeat(3,1fr)}
-  #nosotros .nos-hero{padding:48px 20px 40px}
-  /* roster mobile */
-  .roster-body{flex-direction:column}
-  .r-sidebar{width:100%;height:auto;position:relative;border-right:none;border-bottom:1px solid var(--border);padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;top:0}
-  .r-sb-section{margin-bottom:0;padding:0}
-  .r-sb-label{display:none}
-  .r-sb-btn{display:inline-block;width:auto;border:1px solid #222;padding:6px 12px;font-size:11px}
-  .r-sb-btn.active{border-color:var(--o);color:var(--o)}
-  .r-sb-btn.active-w{border-color:#fff;color:#fff}
-  .r-main{padding:0 20px 48px}
+  #roster{padding:60px 0 0}
+  .roster-header{padding:0 20px 32px}
+  .roster-layout{flex-direction:column}
+  .r-side{width:100%;position:relative;top:0;max-height:none;border-right:none;border-bottom:1px solid var(--b);padding:16px 20px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .r-sg{padding:0}
+  .r-sl{display:none}
+  .r-sb{display:inline-block;width:auto;border:1px solid #222;padding:5px 11px;font-size:11px}
+  .r-sb.on{border-color:var(--o);color:var(--o)}
+  .r-sb.onw{border-color:#fff;color:#fff}
+  .r-main{padding:16px 20px 60px;width:100%}
   .r-grid{grid-template-columns:repeat(3,1fr)}
-  .roster-top{padding:40px 20px 0}
-  .svc-grid{margin:0 20px}
+  #servicios{padding:60px 20px}
   .svc-grid{grid-template-columns:1fr}
-  .proyectos-panel{margin:0 20px}
   .proj-grid{grid-template-columns:repeat(2,1fr)}
-  .svc-hero,.svc-bottom{padding:48px 20px}
-  .une-cards{margin:0 20px;grid-template-columns:1fr}
-  .une-form{margin:0 20px;padding:32px 20px}
-  #unete .une-hero{padding:48px 20px 40px}
-  .une-bottom{padding:24px 20px}
-  .hab-wrap{grid-template-columns:1fr}
-  .hab-left{padding:48px 24px 32px;border-right:none;border-bottom:1px solid var(--border)}
-  .hab-right{padding:40px 24px 60px}
-  .hab-title{font-size:clamp(48px,12vw,80px)}
-  footer{padding:20px}
+  #unete{padding:60px 20px 0}
+  .une-cards{grid-template-columns:1fr}
+  .une-form{padding:32px 20px}
+  #hablemos{padding:60px 20px}
+  .hab-grid{grid-template-columns:1fr;gap:48px}
+  footer{padding:20px;margin-top:60px}
   .m-layout{grid-template-columns:1fr}
-  .m-img img,.m-img .t-placeholder{min-height:280px}
+  .m-img img,.m-img .t-ph{min-height:280px}
 }
 @media(max-width:600px){
+  h1{font-size:clamp(36px,9vw,56px)}
   .r-grid{grid-template-columns:repeat(2,1fr)}
   .equipo-grid{grid-template-columns:repeat(2,1fr)}
   .valores{grid-template-columns:1fr}
   .btns{flex-direction:column}
   .f-grid{grid-template-columns:1fr}
   .fg.full{grid-column:span 1}
+  .svc-grid{grid-template-columns:1fr}
+  .proj-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -322,13 +299,13 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 
 <!-- NAV -->
 <nav>
-  <a class="logo" onclick="nav('home')">MOVDI</a>
+  <a class="logo" href="#hero">MOVDI</a>
   <ul class="nav-links">
-    <li><a onclick="nav('nosotros')" id="nl-nosotros">Nosotros</a></li>
-    <li><a onclick="nav('roster')" id="nl-roster">Roster</a></li>
-    <li><a onclick="nav('servicios')" id="nl-servicios">Servicios</a></li>
-    <li><a onclick="nav('unete')" id="nl-unete">Únete</a></li>
-    <li><a onclick="nav('hablemos')" class="cta" id="nl-hablemos">Hablemos</a></li>
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#roster">Roster</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#unete">Únete</a></li>
+    <li><a href="#hablemos" class="cta">Hablemos</a></li>
   </ul>
   <div class="burger" id="burger" onclick="toggleBurger()">
     <span></span><span></span><span></span>
@@ -336,79 +313,54 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
 </nav>
 
 <div class="mob-menu" id="mobMenu">
-  <a onclick="nav('nosotros');closeBurger()">Nosotros</a>
-  <a onclick="nav('roster');closeBurger()">Roster</a>
-  <a onclick="nav('servicios');closeBurger()">Servicios</a>
-  <a onclick="nav('unete');closeBurger()">Únete</a>
-  <a onclick="nav('hablemos');closeBurger()">Hablemos</a>
+  <a href="#nosotros" onclick="closeBurger()">Nosotros</a>
+  <a href="#roster" onclick="closeBurger()">Roster</a>
+  <a href="#servicios" onclick="closeBurger()">Servicios</a>
+  <a href="#unete" onclick="closeBurger()">Únete</a>
+  <a href="#hablemos" onclick="closeBurger()">Hablemos</a>
 </div>
 
-<!-- ══ HOME ══ -->
-<div class="page active" id="home">
-  <section class="hero">
-    <div class="hero-bg"><svg viewBox="0 0 600 600" fill="none"><circle cx="300" cy="300" r="280" stroke="#FF4500" stroke-width=".8"/><circle cx="300" cy="300" r="190" stroke="#FF4500" stroke-width=".8"/><circle cx="300" cy="300" r="100" stroke="#FF4500" stroke-width=".8"/><line x1="20" y1="300" x2="580" y2="300" stroke="#FF4500" stroke-width=".8"/><line x1="300" y1="20" x2="300" y2="580" stroke="#FF4500" stroke-width=".8"/><line x1="90" y1="90" x2="510" y2="510" stroke="#FF4500" stroke-width=".8"/><line x1="510" y1="90" x2="90" y2="510" stroke="#FF4500" stroke-width=".8"/></svg></div>
-    <div class="hero-content">
-      <div class="tag">Agencia de Marketing Digital</div>
-      <h1>No seguimos<br>tendencias.<br><em>Las convertimos</em><br>en valor.</h1>
-      <p class="hero-sub">Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.</p>
-      <div class="btns">
-        <a class="btn-o" onclick="nav('roster')">Ver Talentos</a>
-        <a class="btn-g" onclick="nav('hablemos')">Hablemos</a>
-      </div>
-    </div>
-    <div class="hero-aside">
-      <div class="n">+50</div><div class="l">Talentos<br>Exclusivos</div>
-      <div class="n" style="margin-top:20px">MX</div><div class="l">(LATAM)</div>
-    </div>
-    <div class="hero-loc">Ciudad de México · Digital Agency</div>
-  </section>
-
-  <div class="stats-strip">
-    <div class="s-item"><div class="s-num"><b>+</b>10</div><div class="s-lab">Años de Experiencia</div></div>
-    <div class="s-item"><div class="s-num"><b>+</b>200</div><div class="s-lab">Proyectos Ejecutados</div></div>
-    <div class="s-item"><div class="s-num"><b>+</b>5K</div><div class="s-lab">Creadores en el Crew</div></div>
-  </div>
-
-  <div class="marcas-strip">
-    <div class="marcas-lab">Marcas que han confiado en nosotros</div>
-    <div class="marcas-row">
-      <span class="m-logo">HBO</span><span class="m-logo">Pepsi</span><span class="m-logo">Warner</span>
-      <span class="m-logo">Pinterest</span><span class="m-logo">PlayStation</span><span class="m-logo">Sephora</span>
-      <span class="m-logo">Sony Music</span><span class="m-logo">McDonald's</span><span class="m-logo">Converse</span>
-      <span class="m-logo">Paramount</span><span class="m-logo">Nestlé</span>
+<!-- ── HERO ── -->
+<section id="hero">
+  <div class="hero-bg"><svg viewBox="0 0 600 600" fill="none"><circle cx="300" cy="300" r="280" stroke="#FF4500" stroke-width=".8"/><circle cx="300" cy="300" r="190" stroke="#FF4500" stroke-width=".8"/><circle cx="300" cy="300" r="100" stroke="#FF4500" stroke-width=".8"/><line x1="20" y1="300" x2="580" y2="300" stroke="#FF4500" stroke-width=".8"/><line x1="300" y1="20" x2="300" y2="580" stroke="#FF4500" stroke-width=".8"/><line x1="90" y1="90" x2="510" y2="510" stroke="#FF4500" stroke-width=".8"/><line x1="510" y1="90" x2="90" y2="510" stroke="#FF4500" stroke-width=".8"/></svg></div>
+  <div class="hero-content">
+    <div class="tag">Agencia de Marketing Digital</div>
+    <h1>No seguimos<br>tendencias.<br><em>Las convertimos</em><br>en valor.</h1>
+    <p class="hero-sub">Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.</p>
+    <div class="btns">
+      <a class="btn-o" href="#roster">Ver Talentos</a>
+      <a class="btn-g" href="#hablemos">Hablemos</a>
     </div>
   </div>
-
-  <div class="home-preview">
-    <div class="preview-card" onclick="nav('nosotros')">
-      <div class="pc-tag">Nosotros</div>
-      <div class="pc-title">Más que una agencia.<br>Un movimiento digital.</div>
-      <div class="pc-desc">Nacimos en 2020 para vivir las tendencias que definen esta generación.</div>
-    </div>
-    <div class="preview-card" onclick="nav('servicios')">
-      <div class="pc-tag">Servicios</div>
-      <div class="pc-title">Servicios que<br>generan movimiento.</div>
-      <div class="pc-desc">Influencer Marketing, Gaming, Social Media, Branding y más.</div>
-    </div>
+  <div class="hero-aside">
+    <div class="n">+50</div><div class="l">Talentos<br>Exclusivos</div>
+    <div class="n" style="margin-top:20px">MX</div><div class="l">(LATAM)</div>
   </div>
-  <footer>
-    <div class="f-logo">MOVDI</div>
-    <div class="f-copy">© 2026 MOVDI. Todos los derechos reservados.</div>
-    <ul class="f-nav">
-      <li><a onclick="nav('nosotros')">Nosotros</a></li>
-      <li><a onclick="nav('roster')">Roster</a></li>
-      <li><a onclick="nav('servicios')">Servicios</a></li>
-      <li><a onclick="nav('unete')">Únete</a></li>
-    </ul>
-  </footer>
+  <div class="hero-loc">Ciudad de México · Digital Agency</div>
+</section>
+
+<!-- ── STATS ── -->
+<div class="stats-strip">
+  <div class="s-item"><div class="s-num"><b>+</b>10</div><div class="s-lab">Años de Experiencia</div></div>
+  <div class="s-item"><div class="s-num"><b>+</b>200</div><div class="s-lab">Proyectos Ejecutados</div></div>
+  <div class="s-item"><div class="s-num"><b>+</b>5K</div><div class="s-lab">Creadores en el Crew</div></div>
 </div>
 
-<!-- ══ NOSOTROS ══ -->
-<div class="page" id="nosotros">
-  <div class="nos-hero">
-    <div class="tag">Nosotros</div>
-    <h2>Más que una agencia.<br><em>Un movimiento</em> digital.</h2>
+<!-- ── MARCAS ── -->
+<div class="marcas-strip">
+  <div class="marcas-lab">Marcas que han confiado en nosotros</div>
+  <div class="marcas-row">
+    <span class="m-logo">HBO</span><span class="m-logo">Pepsi</span><span class="m-logo">Warner</span>
+    <span class="m-logo">Pinterest</span><span class="m-logo">PlayStation</span><span class="m-logo">Sephora</span>
+    <span class="m-logo">Sony Music</span><span class="m-logo">McDonald's</span><span class="m-logo">Converse</span>
+    <span class="m-logo">Paramount</span><span class="m-logo">Nestlé</span>
   </div>
+</div>
+
+<!-- ── NOSOTROS ── -->
+<section id="nosotros">
+  <div class="tag">Nosotros</div>
+  <h2 class="sec-title">Más que una agencia.<br><em>Un movimiento</em> digital.</h2>
   <div class="nos-body">
     <div class="nos-text">
       <p>Nacimos en 2020 con una visión clara: <strong>no solo crear estrategias digitales, sino vivir las tendencias que definen esta generación.</strong></p>
@@ -424,75 +376,65 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <div class="valor"><div class="v-n">06</div><div class="v-t">Estrategia</div><div class="v-d">Datos y métricas en cada decisión creativa.</div></div>
     </div>
   </div>
+</section>
 
-  <!-- EQUIPO -->
-  <div class="equipo-sec">
-    <div class="sec-label">El Equipo</div>
-    <div class="equipo-grid" id="equipoGrid"></div>
-  </div>
-  <footer>
-    <div class="f-logo">MOVDI</div>
-    <div class="f-copy">© 2026 MOVDI.</div>
-    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li><li><a onclick="nav('roster')">Roster</a></li></ul>
-  </footer>
-</div>
+<!-- ── EQUIPO ── -->
+<section id="equipo">
+  <div class="sec-label">El Equipo</div>
+  <div class="equipo-grid" id="equipoGrid"></div>
+</section>
 
-<!-- ══ ROSTER ══ -->
-<div class="page" id="roster">
-  <div class="roster-top">
+<!-- ── ROSTER ── -->
+<section id="roster">
+  <div class="roster-header">
     <div class="tag">Roster</div>
-    <h2 style="font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1;margin-bottom:0">Nuestros <em style="color:var(--o);font-style:normal">talentos.</em></h2>
+    <h2 class="sec-title">Nuestros <em>talentos.</em></h2>
   </div>
-  <div class="roster-body">
-    <!-- Sidebar -->
-    <div class="r-sidebar">
-      <div class="r-sb-section">
-        <span class="r-sb-label">Plataforma</span>
-        <button class="r-sb-btn active-w" onclick="sbFilter('plat','todas',this)">Todas</button>
-        <button class="r-sb-btn" onclick="sbFilter('plat','tiktok',this)">TikTok</button>
-        <button class="r-sb-btn" onclick="sbFilter('plat','instagram',this)">Instagram</button>
-        <button class="r-sb-btn" onclick="sbFilter('plat','youtube',this)">YouTube</button>
-        <button class="r-sb-btn" onclick="sbFilter('plat','twitch',this)">Twitch</button>
+  <div class="roster-layout">
+    <!-- sidebar filtros -->
+    <div class="r-side">
+      <div class="r-sg">
+        <span class="r-sl">Plataforma</span>
+        <button class="r-sb onw" onclick="sbF('plat','todas',this)">Todas</button>
+        <button class="r-sb" onclick="sbF('plat','tiktok',this)">TikTok</button>
+        <button class="r-sb" onclick="sbF('plat','instagram',this)">Instagram</button>
+        <button class="r-sb" onclick="sbF('plat','youtube',this)">YouTube</button>
+        <button class="r-sb" onclick="sbF('plat','twitch',this)">Twitch</button>
       </div>
-      <div class="r-sb-section">
-        <span class="r-sb-label">Categoría</span>
-        <button class="r-sb-btn active" onclick="sbFilter('cat','todas',this)">Todas</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Lifestyle',this)">Lifestyle</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Moda',this)">Moda</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Belleza',this)">Belleza</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Gaming',this)">Gaming</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Tecnología',this)">Tech</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Viajes',this)">Viajes</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Fitness',this)">Fitness</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Entretenimiento',this)">Entret.</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Geek',this)">Geek</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Cosplay',this)">Cosplay</button>
-        <button class="r-sb-btn" onclick="sbFilter('cat','Foodies',this)">Foodies</button>
+      <div class="r-sg">
+        <span class="r-sl">Categoría</span>
+        <button class="r-sb on" onclick="sbF('cat','todas',this)">Todas</button>
+        <button class="r-sb" onclick="sbF('cat','Lifestyle',this)">Lifestyle</button>
+        <button class="r-sb" onclick="sbF('cat','Moda',this)">Moda</button>
+        <button class="r-sb" onclick="sbF('cat','Belleza',this)">Belleza</button>
+        <button class="r-sb" onclick="sbF('cat','Gaming',this)">Gaming</button>
+        <button class="r-sb" onclick="sbF('cat','Tecnología',this)">Tech</button>
+        <button class="r-sb" onclick="sbF('cat','Viajes',this)">Viajes</button>
+        <button class="r-sb" onclick="sbF('cat','Fitness',this)">Fitness</button>
+        <button class="r-sb" onclick="sbF('cat','Entretenimiento',this)">Entret.</button>
+        <button class="r-sb" onclick="sbF('cat','Geek',this)">Geek</button>
+        <button class="r-sb" onclick="sbF('cat','Cosplay',this)">Cosplay</button>
+        <button class="r-sb" onclick="sbF('cat','Foodies',this)">Foodies</button>
       </div>
-      <div class="r-sb-section">
-        <span class="r-sb-label">Alcance</span>
-        <button class="r-sb-btn active" onclick="sbFilter('alc','todas',this)">Todos</button>
-        <button class="r-sb-btn" onclick="sbFilter('alc','mega',this)">Mega +1M</button>
-        <button class="r-sb-btn" onclick="sbFilter('alc','macro',this)">Macro</button>
-        <button class="r-sb-btn" onclick="sbFilter('alc','micro',this)">Micro</button>
+      <div class="r-sg">
+        <span class="r-sl">Alcance</span>
+        <button class="r-sb on" onclick="sbF('alc','todas',this)">Todos</button>
+        <button class="r-sb" onclick="sbF('alc','mega',this)">Mega +1M</button>
+        <button class="r-sb" onclick="sbF('alc','macro',this)">Macro</button>
+        <button class="r-sb" onclick="sbF('alc','micro',this)">Micro</button>
       </div>
     </div>
-    <!-- Main -->
+    <!-- grid talentos -->
     <div class="r-main">
       <div class="r-tabs">
-        <div class="r-tab active" onclick="setCrew('movdi',this)">Crew MOVDI <span class="r-count-badge">45</span></div>
-        <div class="r-tab" onclick="setCrew('ugc',this)">Crew UGC <span class="r-count-badge">7</span></div>
+        <div class="r-tab on" onclick="setCrew('movdi',this)">Crew MOVDI <span class="r-badge">45</span></div>
+        <div class="r-tab" onclick="setCrew('ugc',this)">Crew UGC <span class="r-badge">7</span></div>
       </div>
-      <div class="r-info" id="rInfo">44 Talentos</div>
+      <div class="r-count" id="rCount">44 Talentos</div>
       <div class="r-grid" id="rGrid"></div>
     </div>
   </div>
-  <footer style="margin-top:0">
-    <div class="f-logo">MOVDI</div>
-    <div class="f-copy">© 2026 MOVDI.</div>
-    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li></ul>
-  </footer>
-</div>
+</section>
 
 <!-- MODAL -->
 <div class="modal-bg" id="modalBg">
@@ -502,33 +444,21 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
   </div>
 </div>
 
-<!-- ══ SERVICIOS ══ -->
-<div class="page" id="servicios">
-  <div class="svc-hero">
-    <div class="tag">Lo que hacemos</div>
-    <h2 style="font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1">Servicios que<br>generan movimiento.</h2>
-  </div>
+<!-- ── SERVICIOS ── -->
+<section id="servicios">
+  <div class="tag">Lo que hacemos</div>
+  <h2 class="sec-title">Servicios que<br>generan movimiento.</h2>
   <div class="svc-grid" id="svcGrid"></div>
-  <div class="proyectos-panel" id="projPanel">
+  <div class="proj-panel" id="projPanel">
     <div class="proj-label" id="projLabel">Proyectos</div>
     <div class="proj-grid" id="projGrid"></div>
   </div>
-  <div class="svc-bottom">
-    <p style="color:var(--g);font-size:14px;max-width:500px;line-height:1.7">¿Tienes un proyecto en mente? <a onclick="nav('hablemos')" style="color:var(--o);cursor:pointer;font-weight:700">Hablemos →</a></p>
-  </div>
-  <footer>
-    <div class="f-logo">MOVDI</div>
-    <div class="f-copy">© 2026 MOVDI.</div>
-    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li></ul>
-  </footer>
-</div>
+</section>
 
-<!-- ══ ÚNETE ══ -->
-<div class="page" id="unete">
-  <div class="une-hero">
-    <div class="tag">Únete</div>
-    <h2 style="font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1">Forma parte<br>del <em style="color:var(--o);font-style:normal">crew.</em></h2>
-  </div>
+<!-- ── ÚNETE ── -->
+<section id="unete">
+  <div class="tag">Únete</div>
+  <h2 class="sec-title">Forma parte<br>del <em>crew.</em></h2>
   <div class="une-cards">
     <div class="une-card" id="uneCreador" onclick="abrirForm('creador')">
       <div class="une-n">01</div>
@@ -578,18 +508,12 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       <button type="submit" class="btn-send">Enviar</button>
     </form>
   </div>
-  <div class="une-bottom"></div>
-  <footer>
-    <div class="f-logo">MOVDI</div>
-    <div class="f-copy">© 2026 MOVDI.</div>
-    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li></ul>
-  </footer>
-</div>
+</section>
 
-<!-- ══ HABLEMOS ══ -->
-<div class="page" id="hablemos">
-  <div class="hab-wrap">
-    <div class="hab-left">
+<!-- ── HABLEMOS ── -->
+<section id="hablemos">
+  <div class="hab-grid">
+    <div>
       <div class="tag">Contacto</div>
       <div class="hab-title">Hable<em>mos.</em></div>
       <div class="hab-dato"><div class="hab-dl">Correo</div><div class="hab-dv">hola@movdi.mx</div></div>
@@ -601,7 +525,7 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
         <a href="#" class="btn-red">WhatsApp</a>
       </div>
     </div>
-    <div class="hab-right">
+    <div>
       <div class="hab-form-t">¿Tienes un proyecto en mente?</div>
       <div class="hab-form-s">Cuéntanos qué necesitas y nos ponemos en contacto en menos de 24 horas.</div>
       <form action="https://formspree.io/f/xkoybwgl" method="POST">
@@ -628,17 +552,23 @@ footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-i
       </form>
     </div>
   </div>
-  <footer>
-    <div class="f-logo">MOVDI</div>
-    <div class="f-copy">© 2026 MOVDI. Todos los derechos reservados.</div>
-    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li><li><a onclick="nav('roster')">Roster</a></li></ul>
-  </footer>
-</div>
+</section>
+
+<footer>
+  <div class="f-logo">MOVDI</div>
+  <div class="f-copy">© 2026 MOVDI. Todos los derechos reservados.</div>
+  <ul class="f-nav">
+    <li><a href="#nosotros">Nosotros</a></li>
+    <li><a href="#roster">Roster</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#unete">Únete</a></li>
+  </ul>
+</footer>
 
 <script>
 // ─── DATOS ────────────────────────────────────────────────────────────────────
 const equipo=[
-  {nombre:'Daniela Ramírez',puesto:'CEO & Co-Founder',frase:'Hacemos que las marcas se sientan tan reales como las personas detrás de ellas',foto:'',color:'#111',featured:true},
+  {nombre:'Daniela Ramírez',puesto:'CEO & Co-Founder',frase:'Hacemos que las marcas se sientan tan reales como las personas detrás de ellas.',foto:'',color:'#111',featured:true},
   {nombre:'Emmanuel Romero',puesto:'Founder',frase:'Construimos ideas que convierten talento, cultura y contenido en impacto real.',foto:'',color:'#1a6b3c'},
   {nombre:'Montserrat Gómez',puesto:'Head Talent Management',frase:'Todos nuestros sueños pueden convertirse en realidad si tenemos el coraje de perseguirlos.',foto:'',color:'#d4547a'},
   {nombre:'Fernanda Hurtado',puesto:'Head Influencer Mkt & PR',frase:'Entre intención y resultado… ahí es donde nosotros brillamos.',foto:'',color:'#e8a020'},
@@ -714,27 +644,20 @@ const talentos=[
 ];
 
 const servicios=[
-  {id:'influencer',icon:'▪▪<br>▪',titulo:'Influencer Marketing / UGC',desc:'Generamos tendencias y diseñamos estrategias no convencionales para lograr conversiones, posicionamiento y visibilidad.',proyectos:[{nom:'Pepsi Black',desc:'Activación con influencers lifestyle y músicos.',img:'',url:''},{nom:'Nestlé Chocotrio',desc:'Estrategia UGC para evento inmersivo.',img:'',url:''},{nom:'Calvin Klein × Bad Bunny',desc:'Estrategia de influencer marketing.',img:'',url:''},{nom:'Ring Amazon',desc:'Estrategia UGC en TikTok centrada en storytelling.',img:'',url:''}]},
-  {id:'gaming',icon:'▲',titulo:'We Speak Gaming',desc:'No llegamos al gaming porque está de moda. Llevamos años trabajando dentro del ecosistema gaming, geek y tech.',proyectos:[]},
+  {id:'influencer',icon:'▪▪<br>▪',titulo:'Influencer Marketing / UGC',desc:'Generamos tendencias y diseñamos estrategias no convencionales para lograr conversiones, posicionamiento y visibilidad.',proyectos:[
+    {nom:'Pepsi Black',desc:'Activación con influencers lifestyle y músicos.',img:'',url:''},
+    {nom:'Nestlé Chocotrio',desc:'Estrategia UGC para evento inmersivo.',img:'',url:''},
+    {nom:'Calvin Klein × Bad Bunny',desc:'Estrategia de influencer marketing.',img:'',url:''},
+    {nom:'Ring Amazon',desc:'Estrategia UGC en TikTok centrada en storytelling.',img:'',url:''},
+  ]},
+  {id:'gaming',icon:'▲',titulo:'We Speak Gaming',desc:'No llegamos al gaming porque está de moda. Llevamos años trabajando dentro del ecosistema gaming, geek y tech, conectando marcas con comunidades reales.',proyectos:[]},
   {id:'social',icon:'●●<br>●●',titulo:'Social Media & Consultoría Estratégica',desc:'Damos voz a tu marca en las plataformas adecuadas. Creamos comunidades activas y contenido que fomenta interacción.',proyectos:[]},
-  {id:'web',icon:'●<br>▲',titulo:'Web Design',desc:'Creamos sitios web visualmente atractivos y funcionales, centrados en ofrecer una experiencia única.',proyectos:[]},
-  {id:'data',icon:'∧',titulo:'Data Driven',desc:'Utilizamos datos para optimizar cada estrategia, asegurando decisiones basadas en métricas clave.',proyectos:[]},
-  {id:'branding',icon:'▲',titulo:'Branding',desc:'Identidades únicas con coherencia y autenticidad que conectan con tu audiencia y destacan con personalidad.',proyectos:[]},
+  {id:'web',icon:'●<br>▲',titulo:'Web Design',desc:'Creamos sitios web visualmente atractivos y funcionales, centrados en ofrecer una experiencia de usuario única.',proyectos:[]},
+  {id:'data',icon:'∧',titulo:'Data Driven',desc:'Utilizamos datos para optimizar cada estrategia, asegurando decisiones basadas en métricas clave que impulsan resultados medibles.',proyectos:[]},
+  {id:'branding',icon:'▲',titulo:'Branding',desc:'Identidades únicas con coherencia y autenticidad que conectan con tu audiencia y hacen que tu negocio destaque.',proyectos:[]},
 ];
 
-// ─── NAV ─────────────────────────────────────────────────────────────────────
-let paginaActual='home';
-function nav(p){
-  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-  document.getElementById(p).classList.add('active');
-  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
-  const nl=document.getElementById('nl-'+p);
-  if(nl) nl.classList.add('active');
-  paginaActual=p;
-  window.scrollTo(0,0);
-  history.pushState({p},'',(p==='home'?'/':'/'+p));
-}
-
+// ─── BURGER ───────────────────────────────────────────────────────────────────
 function toggleBurger(){
   document.getElementById('burger').classList.toggle('x');
   document.getElementById('mobMenu').classList.toggle('open');
@@ -746,35 +669,47 @@ function closeBurger(){
 
 // ─── EQUIPO ───────────────────────────────────────────────────────────────────
 function renderEquipo(){
-  const g=document.getElementById('equipoGrid');
-  g.innerHTML=equipo.map(e=>{
+  document.getElementById('equipoGrid').innerHTML=equipo.map(e=>{
     if(e.featured) return `<div class="eq-featured"><p class="frase-f">"${e.frase}"</p><div class="nom-f">${e.nombre}</div><div class="cargo-f">${e.puesto}</div></div>`;
-    const img=e.foto?`<img src="${e.foto}" alt="${e.nombre}">`:`<div class="eq-placeholder" style="background:${e.color}"><span>${e.nombre[0]}</span></div>`;
-    return `<div class="eq-card">${img}<div class="eq-overlay"><div class="eq-frase">"${e.frase}"</div><div class="eq-nombre">${e.nombre}</div><div class="eq-puesto">${e.puesto}</div></div></div>`;
+    const inner=e.foto
+      ?`<img src="${e.foto}" alt="${e.nombre}">`
+      :`<div class="eq-ph" style="background:${e.color}"><span>${e.nombre[0]}</span></div>`;
+    return `<div class="eq-card">${inner}<div class="eq-overlay"><div class="eq-frase">"${e.frase}"</div><div class="eq-nombre">${e.nombre}</div><div class="eq-puesto">${e.puesto}</div></div></div>`;
   }).join('');
 }
 
 // ─── ROSTER ──────────────────────────────────────────────────────────────────
-let crewAct='movdi',catAct='todas';
+let crewAct='movdi', catAct='todas';
+
 function setCrew(c,el){
   crewAct=c;
-  document.querySelectorAll('.r-tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
+  document.querySelectorAll('.r-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
   renderRoster();
 }
-function sbFilter(tipo,val,el){
-  if(tipo==='cat'){catAct=val; document.querySelectorAll('.r-sb-section:nth-child(2) .r-sb-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
-  if(tipo==='plat'){document.querySelectorAll('.r-sb-section:nth-child(1) .r-sb-btn').forEach(b=>b.classList.remove('active-w')); el.classList.add('active-w');}
-  if(tipo==='alc'){document.querySelectorAll('.r-sb-section:nth-child(3) .r-sb-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
+function sbF(tipo,val,el){
+  if(tipo==='cat'){
+    catAct=val;
+    document.querySelectorAll('.r-sg:nth-child(2) .r-sb').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+  }
+  if(tipo==='plat'){
+    document.querySelectorAll('.r-sg:nth-child(1) .r-sb').forEach(b=>b.classList.remove('onw'));
+    el.classList.add('onw');
+  }
+  if(tipo==='alc'){
+    document.querySelectorAll('.r-sg:nth-child(3) .r-sb').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+  }
   renderRoster();
 }
 function renderRoster(){
   let lista=talentos.filter(t=>t.crew===crewAct);
   if(catAct!=='todas') lista=lista.filter(t=>t.cats.some(c=>c.toLowerCase()===catAct.toLowerCase()));
-  document.getElementById('rInfo').textContent=`${lista.length} Talentos`;
+  document.getElementById('rCount').textContent=`${lista.length} Talentos`;
   document.getElementById('rGrid').innerHTML=lista.map(t=>`
     <div class="t-card" onclick="openTalent('${t.slug}')">
-      ${t.foto?`<img src="${t.foto}" alt="${t.nombre}" loading="lazy">`:`<div class="t-placeholder" style="background:#111"><span>${t.nombre[0]}</span></div>`}
+      ${t.foto?`<img src="${t.foto}" alt="${t.nombre}" loading="lazy">`:`<div class="t-ph"><span>${t.nombre[0]}</span></div>`}
       <div class="t-dot"></div>
       <div class="t-info"><div class="t-nom">${t.nombre}</div><div class="t-cat">${t.cats.join(' · ')}</div></div>
       <div class="t-hover"><button class="t-btn">Ver Perfil</button></div>
@@ -785,36 +720,50 @@ function renderRoster(){
 function openTalent(slug){
   const t=talentos.find(x=>x.slug===slug);
   if(!t) return;
-  const redes=t.redes.map(r=>`<a class="red-row" href="${r.url||'#'}" target="_blank"><div><div class="rn">${r.plat}</div><div class="rh">${r.handle} ↗</div></div><div style="display:flex;align-items:center;gap:12px"><span class="rs">${r.seg}</span><span class="rer">ER ${r.er}</span></div></a>`).join('');
-  const marcas=t.marcas.length?`<div class="m-stitle" style="margin-top:20px">Marcas</div><div class="tags-wrap">${t.marcas.map(m=>`<span class="tag-item">${m}</span>`).join('')}</div>`:'';
-  const trabajos=t.trabajos.length?`<div class="m-stitle" style="margin-top:4px">Conoce su trabajo</div><div class="trabajos-wrap">${t.trabajos.map(tr=>`<a class="trab-row" href="${tr.url||'#'}" target="_blank"><span class="trab-tipo ${tr.tipo}">${tr.tipo==='org'?'ORGÁNICO':'MARCA'}</span><span class="trab-tit">${tr.titulo}</span><span>↗</span></a>`).join('')}</div>`:'';
+  const redes=t.redes.map(r=>`
+    <a class="red-row" href="${r.url||'#'}" target="_blank">
+      <div><div class="rn">${r.plat}</div><div class="rh">${r.handle} ↗</div></div>
+      <div style="display:flex;align-items:center;gap:12px"><span class="rs">${r.seg}</span><span class="rer">ER ${r.er}</span></div>
+    </a>`).join('');
+  const marcas=t.marcas.length?`<div class="m-st" style="margin-top:4px">Marcas</div><div class="tags-wrap">${t.marcas.map(m=>`<span class="tag-item">${m}</span>`).join('')}</div>`:'';
+  const trabajos=t.trabajos.length?`<div class="m-st" style="margin-top:4px">Conoce su trabajo</div><div class="trabajos-wrap">${t.trabajos.map(tr=>`<a class="trab-row" href="${tr.url||'#'}" target="_blank"><span class="trab-t ${tr.tipo}">${tr.tipo==='org'?'ORGÁNICO':'MARCA'}</span><span class="trab-d">${tr.titulo}</span><span>↗</span></a>`).join('')}</div>`:'';
   document.getElementById('mLayout').innerHTML=`
-    <div class="m-img">${t.foto?`<img src="${t.foto}" alt="${t.nombre}">`:`<div class="t-placeholder" style="background:#111;min-height:480px"><span style="font-size:80px;font-weight:900;color:#222">${t.nombre[0]}</span></div>`}</div>
+    <div class="m-img">${t.foto?`<img src="${t.foto}" alt="${t.nombre}">`:`<div class="t-ph" style="min-height:480px"><span style="font-size:80px;color:#222">${t.nombre[0]}</span></div>`}</div>
     <div class="m-body">
       <div class="m-crew">Crew ${t.crew.toUpperCase()}</div>
       <div class="m-name">${t.nombre.toUpperCase()}</div>
       <div class="m-loc">${t.pais}</div>
       ${t.bio?`<div class="m-bio">${t.bio}</div>`:''}
-      ${t.redes.length?`<div class="m-stitle">Redes & Audiencia</div><div class="redes-wrap">${redes}</div>`:''}
+      ${t.redes.length?`<div class="m-st">Redes & Audiencia</div><div class="redes-wrap">${redes}</div>`:''}
       ${marcas}${trabajos}
-      <a onclick="nav('hablemos');closeModal()" class="btn-cot" style="cursor:pointer;margin-top:16px">Solicitar Cotización</a>
-      <a onclick="closeModal()" class="btn-vol" style="cursor:pointer">← Volver al Roster</a>
+      <a href="#hablemos" class="btn-cot" onclick="closeModal()">Solicitar Cotización</a>
+      <a href="#roster" class="btn-vol" onclick="closeModal()">← Volver al Roster</a>
     </div>`;
   document.getElementById('modalBg').classList.add('open');
   document.body.style.overflow='hidden';
-  history.pushState({slug},'',`/${slug}`);
+  history.pushState({slug},'',`/${t.slug}`);
 }
 function closeModal(){
   document.getElementById('modalBg').classList.remove('open');
   document.body.style.overflow='';
-  history.pushState({p:paginaActual},'','/'+(paginaActual==='home'?'':paginaActual));
+  history.pushState({},'','/');
 }
+window.addEventListener('popstate',e=>{
+  if(e.state?.slug) openTalent(e.state.slug);
+  else closeModal();
+});
+
+// URL directa /alba etc
+(function(){
+  const slug=location.pathname.replace('/','');
+  if(slug){const t=talentos.find(x=>x.slug===slug);if(t) setTimeout(()=>openTalent(t.slug),100);}
+})();
 
 // ─── SERVICIOS ────────────────────────────────────────────────────────────────
 let svcAct=null;
 function renderServicios(){
   document.getElementById('svcGrid').innerHTML=servicios.map(s=>`
-    <div class="svc-card${svcAct===s.id?' sel':''}" onclick="toggleSvc('${s.id}',this)">
+    <div class="svc-card${svcAct===s.id?' sel':''}" onclick="toggleSvc('${s.id}')">
       <div class="svc-icon">${s.icon}</div>
       <div class="svc-title">${s.titulo}</div>
       <div class="svc-desc">${s.desc}</div>
@@ -825,16 +774,17 @@ function toggleSvc(id){
   const panel=document.getElementById('projPanel');
   const grid=document.getElementById('projGrid');
   const label=document.getElementById('projLabel');
-  const svc=servicios.find(s=>s.id===id);
   if(svcAct===id){svcAct=null;panel.classList.remove('open');renderServicios();return;}
   svcAct=id;
+  const svc=servicios.find(s=>s.id===id);
   label.textContent=`Proyectos · ${svc.titulo}`;
-  if(!svc.proyectos.length){grid.innerHTML='<p style="color:#444;font-size:13px;grid-column:span 4">Próximamente.</p>';}
-  else{grid.innerHTML=svc.proyectos.map(p=>`
-    <div class="proj-card" onclick="window.open('${p.url||'#'}','_blank')">
-      ${p.img?`<img src="${p.img}" alt="${p.nom}">`:`<div class="proj-placeholder"><span>${p.nom}</span></div>`}
-      <div class="proj-info"><div class="proj-nom">${p.nom}</div><div class="proj-d">${p.desc}</div></div>
-    </div>`).join('');}
+  grid.innerHTML=svc.proyectos.length
+    ?svc.proyectos.map(p=>`
+      <div class="proj-card" onclick="window.open('${p.url||'#'}','_blank')">
+        ${p.img?`<img src="${p.img}" alt="${p.nom}">`:`<div class="proj-ph"><span>${p.nom}</span></div>`}
+        <div class="proj-info"><div class="proj-nom">${p.nom}</div><div class="proj-d">${p.desc}</div></div>
+      </div>`).join('')
+    :`<p style="color:#333;font-size:13px;grid-column:span 4">Proyectos próximamente.</p>`;
   panel.classList.add('open');
   renderServicios();
   setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
@@ -848,29 +798,15 @@ function abrirForm(tipo){
   document.getElementById('uneSelect').value=tipo;
   document.getElementById('uneSubject').value=tipo==='creador'?'Nuevo talento MOVDI':'Aplicación de trabajo MOVDI';
   document.getElementById('uneFormSub').textContent=tipo==='creador'?'Cuéntanos sobre tu contenido y comunidad.':'Cuéntanos sobre tu perfil y experiencia.';
-  const form=document.getElementById('uneForm');
-  form.classList.add('open');
-  setTimeout(()=>form.scrollIntoView({behavior:'smooth'}),80);
+  const f=document.getElementById('uneForm');
+  f.classList.add('open');
+  setTimeout(()=>f.scrollIntoView({behavior:'smooth'}),80);
 }
-
-// ─── URL ROUTING ──────────────────────────────────────────────────────────────
-function checkURL(){
-  const path=location.pathname.replace('/','').split('/')[0];
-  const pages=['nosotros','roster','servicios','unete','hablemos'];
-  if(pages.includes(path)){nav(path);return;}
-  if(path){const t=talentos.find(x=>x.slug===path);if(t){nav('roster');setTimeout(()=>openTalent(t.slug),200);}}
-}
-window.addEventListener('popstate',e=>{
-  if(e.state?.slug) openTalent(e.state.slug);
-  else if(e.state?.p) nav(e.state.p);
-  else{closeModal();nav('home');}
-});
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
 renderEquipo();
 renderRoster();
 renderServicios();
-checkURL();
 </script>
 </body>
 </html>
