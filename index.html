@@ -4,287 +4,317 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MOVDI — Agencia de Marketing Digital</title>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--naranja:#FF4500;--negro:#0a0a0a;--gris:#888;--blanco:#fff}
+:root{--o:#FF4500;--bg:#0a0a0a;--g:#666;--w:#fff;--border:#1a1a1a}
 html{scroll-behavior:smooth}
-body{background:var(--negro);color:var(--blanco);font-family:'Barlow',sans-serif;overflow-x:hidden}
+body{background:var(--bg);color:var(--w);font-family:'Barlow',sans-serif;overflow-x:hidden}
 
-/* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:60px;background:rgba(10,10,10,0.95);backdrop-filter:blur(10px);border-bottom:1px solid #1a1a1a}
-.logo{font-size:22px;font-weight:900;color:var(--naranja);letter-spacing:2px;text-decoration:none}
-.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
-.nav-links a{color:#ccc;text-decoration:none;font-size:13px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;transition:.2s}
-.nav-links a:hover{color:#fff}
-.nav-links .btn-hablemos{border:1px solid var(--naranja);color:var(--naranja);padding:8px 16px;transition:.2s}
-.nav-links .btn-hablemos:hover{background:var(--naranja);color:#000}
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
-.hamburger span{width:24px;height:2px;background:#fff;transition:.3s;display:block}
-.hamburger.open span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
-.hamburger.open span:nth-child(2){opacity:0}
-.hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
-.mobile-menu{display:none;position:fixed;top:60px;left:0;right:0;bottom:0;background:rgba(10,10,10,0.98);z-index:999;flex-direction:column;align-items:center;justify-content:center;gap:32px}
-.mobile-menu.open{display:flex}
-.mobile-menu a{color:#ccc;text-decoration:none;font-size:18px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
-.mobile-menu .btn-hablemos{border:1px solid var(--naranja);color:var(--naranja);padding:12px 24px}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:900;height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background:rgba(10,10,10,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.logo{font-size:20px;font-weight:900;color:var(--o);letter-spacing:2px;cursor:pointer;text-decoration:none}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
+.nav-links a{color:#999;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;transition:.2s;cursor:pointer}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links .cta{border:1px solid var(--o);color:var(--o);padding:7px 16px;transition:.2s}
+.nav-links .cta:hover{background:var(--o);color:#000}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.burger span{width:22px;height:2px;background:#fff;transition:.3s;display:block}
+.burger.x span:nth-child(1){transform:rotate(45deg) translate(5px,5px)}
+.burger.x span:nth-child(2){opacity:0}
+.burger.x span:nth-child(3){transform:rotate(-45deg) translate(5px,-5px)}
+.mob-menu{display:none;position:fixed;inset:0;top:60px;background:rgba(10,10,10,.98);z-index:800;flex-direction:column;align-items:center;justify-content:center;gap:36px}
+.mob-menu.open{display:flex}
+.mob-menu a{color:#ccc;font-size:20px;font-weight:800;letter-spacing:2px;text-transform:uppercase;cursor:pointer;text-decoration:none}
 
-/* HERO */
-#hero{min-height:100vh;display:flex;align-items:center;padding:100px 40px 60px;position:relative;overflow:hidden}
-.hero-bg{position:absolute;right:0;top:50%;transform:translateY(-50%);width:50%;opacity:.06;pointer-events:none}
-.hero-bg svg{width:100%;height:auto}
-.hero-content{max-width:700px;z-index:1}
-.hero-tag{display:flex;align-items:center;gap:12px;color:var(--naranja);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px}
-.hero-tag::before{content:'';width:32px;height:2px;background:var(--naranja)}
-h1{font-size:clamp(52px,7vw,100px);font-weight:900;line-height:1;letter-spacing:-2px;margin-bottom:24px}
-h1 span{color:var(--naranja)}
-.hero-sub{color:#aaa;font-size:18px;line-height:1.6;max-width:480px;margin-bottom:40px}
-.hero-btns{display:flex;gap:16px;flex-wrap:wrap}
-.btn-primary{background:var(--naranja);color:#000;padding:14px 28px;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:.2s}
-.btn-primary:hover{background:#ff6020}
-.btn-secondary{background:transparent;color:#fff;padding:14px 28px;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border:1px solid #444;cursor:pointer;text-decoration:none;display:inline-block;transition:.2s}
-.btn-secondary:hover{border-color:#fff}
-.hero-stats{position:absolute;right:40px;bottom:80px;text-align:right}
-.hero-stats .stat{margin-bottom:16px}
-.hero-stats .num{font-size:36px;font-weight:900;color:#fff}
-.hero-stats .label{font-size:10px;letter-spacing:2px;color:var(--gris);text-transform:uppercase}
-.hero-location{position:absolute;right:-40px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:4px;color:#333;text-transform:uppercase;white-space:nowrap}
+/* ── PÁGINAS ── */
+.page{display:none;padding-top:60px;min-height:100vh}
+.page.active{display:block}
 
-/* STATS */
-#stats{border-top:1px solid #1a1a1a;border-bottom:1px solid #1a1a1a}
-.stats-grid{display:grid;grid-template-columns:repeat(3,1fr)}
-.stat-item{padding:60px 40px;text-align:center;border-right:1px solid #1a1a1a}
-.stat-item:last-child{border-right:none}
-.stat-num{font-size:clamp(48px,6vw,80px);font-weight:900;color:#fff}
-.stat-num span{color:var(--naranja)}
-.stat-label{font-size:11px;letter-spacing:3px;color:var(--gris);text-transform:uppercase;margin-top:8px}
+/* ── HOME ── */
+#home{display:flex;flex-direction:column}
+.hero{min-height:calc(100vh - 60px);display:flex;align-items:center;padding:0 40px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;right:-60px;top:50%;transform:translateY(-50%);width:55%;opacity:.05;pointer-events:none}
+.hero-bg svg{width:100%}
+.hero-content{max-width:660px;z-index:1}
+.tag{display:flex;align-items:center;gap:10px;color:var(--o);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px}
+.tag::before{content:'';width:28px;height:2px;background:var(--o)}
+h1{font-size:clamp(48px,7vw,96px);font-weight:900;line-height:.95;letter-spacing:-2px;margin-bottom:20px}
+h1 em{color:var(--o);font-style:normal}
+.hero-sub{color:#999;font-size:17px;line-height:1.65;max-width:440px;margin-bottom:36px}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-o{background:var(--o);color:#000;padding:13px 26px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:.15s}
+.btn-o:hover{background:#ff6020}
+.btn-g{background:transparent;color:#fff;padding:13px 26px;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;border:1px solid #333;cursor:pointer;text-decoration:none;display:inline-block;transition:.15s}
+.btn-g:hover{border-color:#fff}
+.hero-aside{position:absolute;right:40px;bottom:60px;text-align:right}
+.hero-aside .n{font-size:40px;font-weight:900}
+.hero-aside .l{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-top:2px}
+.hero-loc{position:absolute;right:-30px;top:50%;transform:translateY(-50%) rotate(90deg);font-size:10px;letter-spacing:4px;color:#222;white-space:nowrap}
 
-/* MARCAS */
-#marcas{padding:60px 40px;border-bottom:1px solid #1a1a1a}
-.marcas-label{font-size:11px;letter-spacing:3px;color:var(--gris);text-transform:uppercase;text-align:center;margin-bottom:40px}
-.marcas-scroll{display:flex;align-items:center;gap:48px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;justify-content:center;flex-wrap:wrap}
-.marcas-scroll::-webkit-scrollbar{display:none}
-.marca-item{font-size:18px;font-weight:900;color:#333;letter-spacing:2px;white-space:nowrap;transition:.2s;text-transform:uppercase}
-.marca-item:hover{color:#666}
+/* stats strip */
+.stats-strip{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border)}
+.s-item{padding:48px 40px;text-align:center;border-right:1px solid var(--border)}
+.s-item:last-child{border-right:none}
+.s-num{font-size:clamp(40px,5vw,72px);font-weight:900}
+.s-num b{color:var(--o)}
+.s-lab{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-top:6px}
 
-/* NOSOTROS */
-#nosotros{padding:100px 40px}
-.section-tag{display:flex;align-items:center;gap:12px;color:var(--naranja);font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:24px}
-.section-tag::before{content:'';width:32px;height:2px;background:var(--naranja)}
-h2{font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1.05;letter-spacing:-1px;margin-bottom:40px}
-h2 span{color:var(--naranja)}
-.nosotros-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
-.nosotros-text p{color:#aaa;font-size:16px;line-height:1.8;margin-bottom:20px}
-.nosotros-text p strong{color:#fff}
-.valores-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:#1a1a1a;border:1px solid #1a1a1a}
-.valor{background:var(--negro);padding:24px;border:1px solid #1a1a1a}
-.valor-num{color:var(--naranja);font-size:12px;font-weight:700;letter-spacing:2px;margin-bottom:8px}
-.valor-title{font-size:16px;font-weight:800;margin-bottom:8px}
-.valor-desc{color:var(--gris);font-size:13px;line-height:1.6}
+/* marcas strip */
+.marcas-strip{padding:48px 40px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.marcas-lab{font-size:10px;letter-spacing:3px;color:var(--g);text-transform:uppercase;text-align:center;margin-bottom:32px}
+.marcas-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:40px}
+.m-logo{font-size:16px;font-weight:900;color:#2a2a2a;letter-spacing:2px;text-transform:uppercase;transition:.2s}
+.m-logo:hover{color:#555}
 
-/* EQUIPO */
-#equipo{padding:60px 40px 100px}
-.equipo-label{font-size:11px;letter-spacing:3px;color:var(--gris);text-transform:uppercase;margin-bottom:32px}
+/* home bottom: preview cards */
+.home-preview{padding:80px 40px;display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.preview-card{background:var(--bg);padding:48px 40px;cursor:pointer;transition:.2s;position:relative;overflow:hidden}
+.preview-card:hover{background:#0f0f0f}
+.preview-card::after{content:'→';position:absolute;right:32px;bottom:32px;font-size:24px;color:var(--o);transition:.2s}
+.preview-card:hover::after{right:24px}
+.pc-tag{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--o);text-transform:uppercase;margin-bottom:12px}
+.pc-title{font-size:clamp(28px,3vw,44px);font-weight:900;line-height:1.05;margin-bottom:12px}
+.pc-desc{color:var(--g);font-size:14px;line-height:1.7;max-width:360px}
+
+/* ── NOSOTROS ── */
+#nosotros .nos-hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
+#nosotros h2{font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1;margin-bottom:32px}
+#nosotros h2 em{color:var(--o);font-style:normal}
+.nos-body{display:grid;grid-template-columns:1fr 1fr;gap:80px;padding:60px 40px;border-bottom:1px solid var(--border);align-items:start}
+.nos-text p{color:#aaa;font-size:16px;line-height:1.8;margin-bottom:18px}
+.nos-text p strong{color:#fff}
+.valores{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border)}
+.valor{background:var(--bg);padding:22px 20px}
+.v-n{color:var(--o);font-size:11px;font-weight:700;letter-spacing:2px;margin-bottom:6px}
+.v-t{font-size:15px;font-weight:800;margin-bottom:6px}
+.v-d{color:var(--g);font-size:12px;line-height:1.6}
+
+/* equipo */
+.equipo-sec{padding:60px 40px 80px}
+.sec-label{font-size:10px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:28px}
 .equipo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:0}
-.equipo-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;background:#1a1a1a}
-.equipo-card img{width:100%;height:100%;object-fit:cover;transition:.3s;filter:grayscale(20%)}
-.equipo-card:hover img{transform:scale(1.05)}
-.equipo-info{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,rgba(0,0,0,.9));opacity:0;transition:.3s}
-.equipo-card:hover .equipo-info{opacity:1}
-.equipo-nombre{font-size:14px;font-weight:800;color:#fff}
-.equipo-puesto{font-size:11px;color:var(--naranja);letter-spacing:1px;text-transform:uppercase}
-.equipo-featured{grid-column:span 1;position:relative;background:#111;display:flex;flex-direction:column;justify-content:flex-end;padding:24px}
-.equipo-featured .frase{font-size:15px;font-style:italic;color:#aaa;line-height:1.5;margin-bottom:16px}
-.equipo-featured .nombre{font-size:20px;font-weight:900}
-.equipo-featured .cargo{font-size:11px;color:var(--naranja);letter-spacing:2px;text-transform:uppercase;margin-top:4px}
+/* card normal */
+.eq-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;background:#111}
+.eq-card img{width:100%;height:100%;object-fit:cover;transition:.4s;filter:grayscale(15%)}
+.eq-card:hover img{transform:scale(1.04);filter:grayscale(0%)}
+/* overlay con frase */
+.eq-overlay{position:absolute;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;justify-content:flex-end;padding:20px;opacity:0;transition:.3s}
+.eq-card:hover .eq-overlay{opacity:1}
+.eq-frase{font-size:13px;font-style:italic;color:#ccc;line-height:1.5;margin-bottom:12px;border-left:2px solid var(--o);padding-left:10px}
+.eq-nombre{font-size:14px;font-weight:800}
+.eq-puesto{font-size:10px;color:var(--o);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+/* featured (Daniela) */
+.eq-featured{background:#0f0f0f;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;position:relative;overflow:hidden}
+.eq-featured::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#111,#0a0a0a)}
+.eq-featured .frase-f{font-size:14px;font-style:italic;color:#aaa;line-height:1.6;margin-bottom:16px;border-left:2px solid var(--o);padding-left:12px;position:relative;z-index:1}
+.eq-featured .nom-f{font-size:20px;font-weight:900;position:relative;z-index:1}
+.eq-featured .cargo-f{font-size:10px;color:var(--o);letter-spacing:2px;text-transform:uppercase;margin-top:4px;position:relative;z-index:1}
+/* color placeholder */
+.eq-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.eq-placeholder span{font-size:48px;font-weight:900;color:rgba(0,0,0,.3)}
 
-/* ROSTER */
-#roster{padding:100px 0}
-.roster-header{padding:0 40px 48px}
-.roster-tabs{display:flex;gap:0;border-bottom:1px solid #1a1a1a;margin-bottom:40px;padding:0 40px}
-.roster-tab{padding:16px 24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:#555;border-bottom:2px solid transparent;transition:.2s;display:flex;align-items:center;gap:10px}
-.roster-tab.active{color:#fff;border-bottom-color:var(--naranja)}
-.roster-tab .count{background:var(--naranja);color:#000;font-size:11px;font-weight:900;padding:2px 7px;border-radius:2px}
-.roster-filters{display:flex;gap:24px;padding:0 40px 32px;flex-wrap:wrap;align-items:flex-start}
-.filter-group{display:flex;flex-direction:column;gap:10px}
-.filter-label{font-size:10px;letter-spacing:2px;color:var(--gris);text-transform:uppercase}
-.filter-opts{display:flex;flex-wrap:wrap;gap:8px}
-.filter-btn{padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid #2a2a2a;background:transparent;color:#666;cursor:pointer;transition:.2s}
-.filter-btn:hover,.filter-btn.active{border-color:var(--naranja);color:var(--naranja)}
-.filter-btn.active-plat{border-color:#fff;color:#fff}
-.roster-count{padding:0 40px;font-size:11px;letter-spacing:2px;color:var(--gris);text-transform:uppercase;margin-bottom:24px}
-.roster-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:0;padding:0 40px}
-.talent-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;background:#111}
-.talent-card img{width:100%;height:100%;object-fit:cover;transition:.4s;filter:grayscale(10%)}
-.talent-card:hover img{transform:scale(1.06)}
-.talent-card .dot{position:absolute;top:12px;left:12px;width:8px;height:8px;border-radius:50%;background:var(--naranja)}
-.talent-info{position:absolute;bottom:0;left:0;right:0;padding:16px 14px;background:linear-gradient(transparent,rgba(0,0,0,.95))}
-.talent-nombre{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
-.talent-cats{font-size:10px;color:#aaa;margin-top:4px;line-height:1.4}
-.talent-hover{position:absolute;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s}
-.talent-card:hover .talent-hover{opacity:1}
-.btn-ver{background:transparent;border:1px solid #fff;color:#fff;padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+/* ── ROSTER ── */
+#roster{display:flex;flex-direction:column}
+.roster-top{padding:60px 40px 0}
+.roster-body{display:flex;flex:1;min-height:calc(100vh - 200px)}
 
-/* MODAL TALENTO */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;display:none;overflow-y:auto}
-.modal-overlay.open{display:block}
-.modal-inner{max-width:900px;margin:40px auto;background:#0f0f0f;position:relative;min-height:80vh}
-.modal-close{position:absolute;top:20px;right:24px;background:none;border:none;color:#aaa;font-size:12px;font-weight:700;letter-spacing:3px;cursor:pointer;text-transform:uppercase;z-index:10}
-.modal-close:hover{color:#fff}
-.modal-body{display:grid;grid-template-columns:380px 1fr;min-height:80vh}
-.modal-img{position:relative;background:#1a1a1a}
-.modal-img img{width:100%;height:100%;object-fit:cover;min-height:400px}
-.modal-detail{padding:48px 40px;overflow-y:auto}
-.modal-crew{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--naranja);text-transform:uppercase;margin-bottom:8px}
-.modal-nombre{font-size:52px;font-weight:900;line-height:1;margin-bottom:6px}
-.modal-pais{color:var(--gris);font-size:14px;margin-bottom:24px}
-.modal-bio{border-left:2px solid var(--naranja);padding-left:20px;color:#bbb;font-size:15px;line-height:1.8;margin-bottom:32px}
-.modal-section-title{font-size:10px;letter-spacing:3px;color:var(--gris);text-transform:uppercase;margin-bottom:16px}
-.redes-list{display:flex;flex-direction:column;gap:10px;margin-bottom:32px}
-.red-item{border:1px solid #1a1a1a;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;transition:.2s;text-decoration:none;color:#fff}
-.red-item:hover{border-color:#333}
-.red-nombre{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
-.red-handle{font-size:12px;color:var(--gris)}
-.red-stats{display:flex;align-items:center;gap:16px}
-.red-seg{font-size:20px;font-weight:900}
-.red-er{font-size:12px;color:var(--naranja);font-weight:700}
-.audiencia-info{font-size:13px;color:#aaa;line-height:1.8;margin-bottom:32px}
-.tags-list{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px}
-.tag{border:1px solid #2a2a2a;padding:6px 12px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#aaa}
-.trabajos-list{display:flex;flex-direction:column;gap:8px;margin-bottom:32px}
-.trabajo-item{border:1px solid #1a1a1a;padding:14px 18px;display:flex;align-items:center;gap:14px;text-decoration:none;color:#fff;transition:.2s}
-.trabajo-item:hover{border-color:#333;background:#111}
-.trabajo-tipo{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid;padding:3px 8px}
-.trabajo-tipo.organico{color:#aaa;border-color:#2a2a2a}
-.trabajo-tipo.marca{color:var(--naranja);border-color:var(--naranja)}
-.trabajo-titulo{font-size:13px;color:#ccc;flex:1}
-.btn-cotizar{display:block;background:var(--naranja);color:#000;text-align:center;padding:16px;font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;width:100%;text-decoration:none;margin-bottom:12px;transition:.2s}
-.btn-cotizar:hover{background:#ff6020}
-.btn-volver{display:block;background:transparent;color:#aaa;text-align:center;padding:14px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:1px solid #2a2a2a;cursor:pointer;width:100%;text-decoration:none;transition:.2s}
-.btn-volver:hover{color:#fff;border-color:#444}
+/* sidebar */
+.r-sidebar{width:200px;flex-shrink:0;border-right:1px solid var(--border);padding:24px 0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto}
+.r-sidebar::-webkit-scrollbar{width:0}
+.r-sb-section{margin-bottom:28px;padding:0 20px}
+.r-sb-label{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:12px;display:block}
+.r-sb-btn{display:block;width:100%;text-align:left;background:none;border:none;color:#555;font-size:13px;font-weight:600;padding:6px 0;cursor:pointer;transition:.15s;font-family:'Barlow',sans-serif;letter-spacing:.5px}
+.r-sb-btn:hover{color:#ccc}
+.r-sb-btn.active{color:var(--o)}
+.r-sb-btn.active-w{color:#fff}
 
-/* SERVICIOS */
-#servicios{padding:100px 40px}
-.servicios-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #1a1a1a;margin-top:48px}
-.servicio-card{padding:40px 36px;border:1px solid #1a1a1a;background:var(--naranja);cursor:pointer;transition:.15s;position:relative}
-.servicio-card.inactive{background:#111;cursor:default}
-.servicio-icon{font-size:28px;margin-bottom:20px;color:#000}
-.servicio-card.inactive .servicio-icon{color:var(--naranja)}
-.servicio-titulo{font-size:22px;font-weight:900;line-height:1.2;margin-bottom:16px;color:#000}
-.servicio-card.inactive .servicio-titulo{color:#fff}
-.servicio-desc{font-size:14px;line-height:1.7;color:rgba(0,0,0,.7)}
-.servicio-card.inactive .servicio-desc{color:#aaa}
-.servicio-link{display:inline-block;margin-top:24px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.6);text-decoration:none}
-.servicio-card.inactive .servicio-link{color:var(--naranja)}
-.proyectos-panel{border:1px solid #1a1a1a;border-top:none;padding:40px;background:#080808;display:none}
+/* main roster */
+.r-main{flex:1;padding:0 32px 60px;overflow:hidden}
+.r-tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:28px;padding-top:24px}
+.r-tab{padding:14px 20px;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;color:#444;border-bottom:2px solid transparent;transition:.2s;display:flex;align-items:center;gap:8px}
+.r-tab.active{color:#fff;border-bottom-color:var(--o)}
+.r-count-badge{background:var(--o);color:#000;font-size:10px;font-weight:900;padding:2px 6px}
+.r-info{font-size:10px;letter-spacing:2px;color:var(--g);text-transform:uppercase;margin-bottom:20px}
+.r-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:0}
+.t-card{position:relative;aspect-ratio:3/4;overflow:hidden;cursor:pointer;background:#111}
+.t-card img{width:100%;height:100%;object-fit:cover;transition:.4s}
+.t-card:hover img{transform:scale(1.06)}
+.t-dot{position:absolute;top:10px;left:10px;width:7px;height:7px;border-radius:50%;background:var(--o)}
+.t-info{position:absolute;bottom:0;left:0;right:0;padding:14px 12px;background:linear-gradient(transparent,rgba(0,0,0,.95))}
+.t-nom{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px}
+.t-cat{font-size:10px;color:#999;margin-top:3px;line-height:1.4}
+.t-hover{position:absolute;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;opacity:0;transition:.3s}
+.t-card:hover .t-hover{opacity:1}
+.t-btn{background:transparent;border:1px solid #fff;color:#fff;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;cursor:pointer;font-family:'Barlow',sans-serif}
+.t-placeholder{width:100%;height:100%;background:#111;display:flex;align-items:center;justify-content:center}
+.t-placeholder span{font-size:36px;font-weight:900;color:#222}
+
+/* ── MODAL ── */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:1000;display:none;overflow-y:auto}
+.modal-bg.open{display:block}
+.modal-wrap{max-width:880px;margin:48px auto;background:#0d0d0d;position:relative}
+.m-close{position:absolute;top:18px;right:20px;background:none;border:none;color:#555;font-size:11px;font-weight:700;letter-spacing:3px;cursor:pointer;text-transform:uppercase;z-index:10;transition:.2s}
+.m-close:hover{color:#fff}
+.m-layout{display:grid;grid-template-columns:360px 1fr}
+.m-img{background:#111;position:relative}
+.m-img img,.m-img .t-placeholder{width:100%;min-height:480px;object-fit:cover}
+.m-body{padding:44px 36px;overflow-y:auto;max-height:90vh}
+.m-crew{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--o);text-transform:uppercase;margin-bottom:6px}
+.m-name{font-size:44px;font-weight:900;line-height:1;margin-bottom:4px}
+.m-loc{color:var(--g);font-size:14px;margin-bottom:20px}
+.m-bio{border-left:2px solid var(--o);padding-left:16px;color:#bbb;font-size:14px;line-height:1.8;margin-bottom:28px}
+.m-stitle{font-size:9px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:12px}
+.redes-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:28px}
+.red-row{border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;color:#fff;transition:.2s}
+.red-row:hover{border-color:#333}
+.rn{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.rh{font-size:11px;color:var(--g);margin-top:2px}
+.rs{font-size:18px;font-weight:900}
+.rer{font-size:11px;color:var(--o);font-weight:700}
+.tags-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.tag-item{border:1px solid #222;padding:5px 10px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#666}
+.trabajos-wrap{display:flex;flex-direction:column;gap:6px;margin-bottom:28px}
+.trab-row{border:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;transition:.2s}
+.trab-row:hover{border-color:#333;background:#111}
+.trab-tipo{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:1px solid;padding:3px 7px;white-space:nowrap}
+.trab-tipo.org{color:#888;border-color:#333}
+.trab-tipo.mrc{color:var(--o);border-color:var(--o)}
+.trab-tit{font-size:12px;color:#ccc;flex:1}
+.btn-cot{display:block;background:var(--o);color:#000;text-align:center;padding:15px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;border:none;width:100%;margin-bottom:10px;transition:.15s;text-decoration:none}
+.btn-cot:hover{background:#ff6020}
+.btn-vol{display:block;text-align:center;padding:13px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border:1px solid #222;color:#666;cursor:pointer;transition:.15s;text-decoration:none}
+.btn-vol:hover{color:#fff;border-color:#444}
+
+/* ── SERVICIOS ── */
+#servicios .svc-hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--border);margin:0 40px}
+.svc-card{padding:36px 32px;border:1px solid var(--border);background:var(--o);cursor:pointer;transition:.1s;position:relative}
+.svc-icon{font-size:24px;color:#000;margin-bottom:16px;line-height:1}
+.svc-title{font-size:20px;font-weight:900;color:#000;line-height:1.2;margin-bottom:12px}
+.svc-desc{font-size:13px;line-height:1.7;color:rgba(0,0,0,.65)}
+.svc-more{margin-top:20px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(0,0,0,.5);display:inline-block}
+.svc-card.sel{outline:3px solid #fff}
+.proyectos-panel{margin:0 40px;border:1px solid var(--border);border-top:none;background:#080808;display:none;padding:36px}
 .proyectos-panel.open{display:block}
-.proyectos-label{font-size:10px;letter-spacing:3px;color:var(--gris);text-transform:uppercase;margin-bottom:24px}
-.proyectos-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.proyecto-card{position:relative;aspect-ratio:4/3;overflow:hidden;background:#1a1a1a;cursor:pointer}
-.proyecto-card img{width:100%;height:100%;object-fit:cover;transition:.3s;filter:brightness(.7)}
-.proyecto-card:hover img{filter:brightness(.9);transform:scale(1.04)}
-.proyecto-info{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(transparent,rgba(0,0,0,.9))}
-.proyecto-nombre{font-size:14px;font-weight:800}
-.proyecto-desc{font-size:12px;color:#aaa;margin-top:4px;line-height:1.4}
+.proj-label{font-size:10px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:20px}
+.proj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.proj-card{aspect-ratio:4/3;background:#1a1a1a;position:relative;overflow:hidden;cursor:pointer}
+.proj-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.6);transition:.3s}
+.proj-card:hover img{filter:brightness(.85);transform:scale(1.04)}
+.proj-info{position:absolute;bottom:0;left:0;right:0;padding:14px}
+.proj-nom{font-size:13px;font-weight:800}
+.proj-d{font-size:11px;color:#aaa;margin-top:3px;line-height:1.4}
+.proj-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#161616}
+.proj-placeholder span{font-size:12px;font-weight:700;color:#333;text-transform:uppercase;text-align:center;padding:12px}
+.svc-bottom{padding:60px 40px 80px}
 
-/* ÚNETE */
-#unete{padding:100px 40px}
-.unete-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:48px;border:1px solid #1a1a1a}
-.unete-card{padding:48px 40px;border:1px solid #1a1a1a;position:relative;overflow:hidden}
-.unete-card.active{border-color:var(--naranja)}
-.unete-num{position:absolute;right:32px;top:24px;font-size:80px;font-weight:900;color:#1a1a1a;line-height:1}
-.unete-tipo{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--naranja);text-transform:uppercase;margin-bottom:16px}
-.unete-titulo{font-size:clamp(28px,3vw,40px);font-weight:900;line-height:1.1;margin-bottom:20px}
-.unete-desc{color:#aaa;font-size:15px;line-height:1.7;margin-bottom:28px}
-.unete-lista{list-style:none;margin-bottom:32px}
-.unete-lista li{padding:12px 0;border-bottom:1px solid #1a1a1a;font-size:14px;color:#ccc;display:flex;align-items:center;gap:10px}
-.unete-lista li::before{content:'•';color:var(--naranja);font-size:18px}
-.unete-link{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--naranja);text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
-.unete-link:hover{gap:12px}
+/* ── ÚNETE ── */
+#unete .une-hero{padding:80px 40px 60px;border-bottom:1px solid var(--border)}
+.une-cards{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0 40px;border:1px solid var(--border)}
+.une-card{padding:44px 40px;border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:.2s}
+.une-card:hover{background:#0d0d0d}
+.une-card.sel{border-color:var(--o)}
+.une-n{position:absolute;right:28px;top:20px;font-size:72px;font-weight:900;color:var(--border);line-height:1}
+.une-tipo{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--o);text-transform:uppercase;margin-bottom:12px}
+.une-title{font-size:clamp(24px,2.5vw,36px);font-weight:900;line-height:1.1;margin-bottom:16px}
+.une-desc{color:#aaa;font-size:14px;line-height:1.7;margin-bottom:24px}
+.une-list{list-style:none;margin-bottom:28px}
+.une-list li{padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;color:#ccc;display:flex;align-items:center;gap:8px}
+.une-list li::before{content:'•';color:var(--o)}
+.une-cta{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--o)}
+.une-form{margin:0 40px;border:1px solid var(--border);border-top:none;background:#080808;display:none;padding:48px 40px}
+.une-form.open{display:block}
+.f-title{font-size:clamp(28px,3vw,48px);font-weight:900;color:#333;margin-bottom:6px}
+.f-sub{color:#444;font-size:14px;margin-bottom:32px}
+.f-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.fg{display:flex;flex-direction:column;gap:7px}
+.fg.full{grid-column:span 2}
+.fl{font-size:9px;font-weight:700;letter-spacing:2px;color:var(--g);text-transform:uppercase}
+.fi,.fs,.ft{background:#0f0f0f;border:1px solid #1a1a1a;color:#fff;padding:12px 14px;font-size:14px;font-family:'Barlow',sans-serif;width:100%;outline:none;transition:.2s}
+.fi:focus,.fs:focus,.ft:focus{border-color:var(--o)}
+.fs option{background:#0f0f0f}
+.ft{resize:vertical;min-height:120px}
+.btn-send{background:var(--o);color:#000;border:none;padding:14px 36px;font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:.15s}
+.btn-send:hover{background:#ff6020}
+.une-bottom{padding:40px}
 
-/* FORMULARIO ÚNETE */
-#form-unete{padding:0 40px 100px;max-width:900px}
-.form-title{font-size:clamp(32px,4vw,56px);font-weight:900;color:#333;margin-bottom:8px}
-.form-subtitle{color:#555;font-size:15px;margin-bottom:40px}
-.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
-.form-group{display:flex;flex-direction:column;gap:8px}
-.form-group.full{grid-column:span 2}
-.form-label{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gris);text-transform:uppercase}
-.form-input,.form-select,.form-textarea{background:#0f0f0f;border:1px solid #1a1a1a;color:#fff;padding:14px 16px;font-size:14px;font-family:'Barlow',sans-serif;width:100%;outline:none;transition:.2s}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--naranja)}
-.form-select option{background:#0f0f0f}
-.form-textarea{resize:vertical;min-height:140px}
-.btn-enviar{background:var(--naranja);color:#000;border:none;padding:16px 40px;font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:.2s}
-.btn-enviar:hover{background:#ff6020}
-
-/* HABLEMOS */
-#hablemos{padding:100px 40px}
-.hablemos-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start}
-.contacto-info .section-tag{margin-bottom:20px}
-.contacto-titulo{font-size:clamp(48px,7vw,96px);font-weight:900;line-height:1;margin-bottom:40px}
-.contacto-titulo span{color:var(--naranja)}
-.contacto-dato{margin-bottom:24px}
-.contacto-dato-label{font-size:10px;letter-spacing:3px;color:var(--gris);text-transform:uppercase;margin-bottom:4px}
-.contacto-dato-val{font-size:16px;color:#fff}
-.contacto-redes{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap}
-.btn-red{border:1px solid #2a2a2a;color:#aaa;padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:.2s}
+/* ── HABLEMOS ── */
+#hablemos .hab-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;min-height:calc(100vh - 60px)}
+.hab-left{padding:80px 60px;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:center}
+.hab-title{font-size:clamp(56px,8vw,112px);font-weight:900;line-height:.95;margin-bottom:48px}
+.hab-title em{color:var(--o);font-style:normal}
+.hab-dato{margin-bottom:20px}
+.hab-dl{font-size:9px;letter-spacing:3px;color:var(--g);text-transform:uppercase;margin-bottom:3px}
+.hab-dv{font-size:16px;color:#fff}
+.hab-redes{display:flex;gap:10px;margin-top:32px;flex-wrap:wrap}
+.btn-red{border:1px solid #222;color:#666;padding:9px 18px;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-decoration:none;transition:.2s}
 .btn-red:hover{border-color:#fff;color:#fff}
-.form-hablemos-title{font-size:24px;font-weight:900;margin-bottom:4px}
-.form-hablemos-sub{color:#aaa;font-size:14px;margin-bottom:32px}
+.hab-right{padding:80px 60px;display:flex;flex-direction:column;justify-content:center}
+.hab-form-t{font-size:22px;font-weight:900;margin-bottom:4px}
+.hab-form-s{color:#aaa;font-size:14px;margin-bottom:28px}
 
-/* FOOTER */
-footer{border-top:1px solid #1a1a1a;padding:32px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
-.footer-logo{font-size:20px;font-weight:900;color:var(--naranja);letter-spacing:2px}
-.footer-copy{font-size:12px;color:#333}
-.footer-nav{display:flex;gap:24px;list-style:none}
-.footer-nav a{font-size:12px;color:#444;text-decoration:none;letter-spacing:1px;text-transform:uppercase;transition:.2s}
-.footer-nav a:hover{color:#fff}
+/* footer */
+footer{border-top:1px solid var(--border);padding:28px 40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.f-logo{font-size:18px;font-weight:900;color:var(--o);letter-spacing:2px}
+.f-copy{font-size:11px;color:#333}
+.f-nav{display:flex;gap:20px;list-style:none}
+.f-nav a{font-size:11px;color:#333;text-decoration:none;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:.2s}
+.f-nav a:hover{color:#fff}
 
-/* URL DIRECTA TALENTO */
-.talent-page{display:none;position:fixed;inset:0;background:#0a0a0a;z-index:3000;overflow-y:auto}
-.talent-page.open{display:block}
-
-/* RESPONSIVE */
-@media(max-width:900px){
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
   nav{padding:0 20px}
   .nav-links{display:none}
-  .hamburger{display:flex}
-  #hero{padding:100px 20px 60px}
-  .hero-stats{display:none}
-  .hero-location{display:none}
-  h1{font-size:clamp(40px,10vw,72px)}
-  .stats-grid{grid-template-columns:1fr}
-  .stat-item{border-right:none;border-bottom:1px solid #1a1a1a;padding:40px 20px}
-  .nosotros-grid{grid-template-columns:1fr;gap:40px}
-  .valores-grid{grid-template-columns:1fr 1fr}
+  .burger{display:flex}
+  .hero{padding:0 20px}
+  h1{font-size:clamp(36px,9vw,64px)}
+  .hero-aside,.hero-loc{display:none}
+  .stats-strip{grid-template-columns:1fr}
+  .s-item{border-right:none;border-bottom:1px solid var(--border);padding:32px 20px}
+  .marcas-strip{padding:32px 20px}
+  .home-preview{grid-template-columns:1fr;padding:40px 20px}
+  .nos-body{grid-template-columns:1fr;gap:40px;padding:40px 20px}
+  .valores{grid-template-columns:1fr 1fr}
+  .equipo-sec{padding:40px 20px}
   .equipo-grid{grid-template-columns:repeat(3,1fr)}
-  .roster-grid{grid-template-columns:repeat(3,1fr);padding:0 20px}
-  .roster-filters{padding:0 20px 24px;gap:16px}
-  .roster-tabs{padding:0 20px}
-  .roster-header{padding:0 20px 32px}
-  .roster-count{padding:0 20px}
-  .servicios-grid{grid-template-columns:1fr}
-  .unete-grid{grid-template-columns:1fr}
-  .hablemos-grid{grid-template-columns:1fr;gap:48px}
-  .modal-body{grid-template-columns:1fr}
-  .modal-img img{min-height:300px}
-  .proyectos-grid{grid-template-columns:repeat(2,1fr)}
-  #nosotros,#servicios,#unete,#hablemos{padding:60px 20px}
-  #equipo{padding:40px 20px 60px}
-  #roster{padding:60px 0}
-  .form-grid{grid-template-columns:1fr}
-  .form-group.full{grid-column:span 1}
-  #form-unete{padding:0 20px 60px}
-  footer{padding:24px 20px}
-  .footer-nav{gap:16px}
+  #nosotros .nos-hero{padding:48px 20px 40px}
+  /* roster mobile */
+  .roster-body{flex-direction:column}
+  .r-sidebar{width:100%;height:auto;position:relative;border-right:none;border-bottom:1px solid var(--border);padding:16px 20px;display:flex;flex-wrap:wrap;gap:12px;top:0}
+  .r-sb-section{margin-bottom:0;padding:0}
+  .r-sb-label{display:none}
+  .r-sb-btn{display:inline-block;width:auto;border:1px solid #222;padding:6px 12px;font-size:11px}
+  .r-sb-btn.active{border-color:var(--o);color:var(--o)}
+  .r-sb-btn.active-w{border-color:#fff;color:#fff}
+  .r-main{padding:0 20px 48px}
+  .r-grid{grid-template-columns:repeat(3,1fr)}
+  .roster-top{padding:40px 20px 0}
+  .svc-grid{margin:0 20px}
+  .svc-grid{grid-template-columns:1fr}
+  .proyectos-panel{margin:0 20px}
+  .proj-grid{grid-template-columns:repeat(2,1fr)}
+  .svc-hero,.svc-bottom{padding:48px 20px}
+  .une-cards{margin:0 20px;grid-template-columns:1fr}
+  .une-form{margin:0 20px;padding:32px 20px}
+  #unete .une-hero{padding:48px 20px 40px}
+  .une-bottom{padding:24px 20px}
+  .hab-wrap{grid-template-columns:1fr}
+  .hab-left{padding:48px 24px 32px;border-right:none;border-bottom:1px solid var(--border)}
+  .hab-right{padding:40px 24px 60px}
+  .hab-title{font-size:clamp(48px,12vw,80px)}
+  footer{padding:20px}
+  .m-layout{grid-template-columns:1fr}
+  .m-img img,.m-img .t-placeholder{min-height:280px}
 }
 @media(max-width:600px){
-  .roster-grid{grid-template-columns:repeat(2,1fr)}
+  .r-grid{grid-template-columns:repeat(2,1fr)}
   .equipo-grid{grid-template-columns:repeat(2,1fr)}
-  .valores-grid{grid-template-columns:1fr}
-  .proyectos-grid{grid-template-columns:1fr}
-  .hero-btns{flex-direction:column}
-  .btn-primary,.btn-secondary{text-align:center}
+  .valores{grid-template-columns:1fr}
+  .btns{flex-direction:column}
+  .f-grid{grid-template-columns:1fr}
+  .fg.full{grid-column:span 1}
 }
 </style>
 </head>
@@ -292,362 +322,297 @@ footer{border-top:1px solid #1a1a1a;padding:32px 40px;display:flex;align-items:c
 
 <!-- NAV -->
 <nav>
-  <a href="#" class="logo" onclick="goHome()">MOVDI</a>
+  <a class="logo" onclick="nav('home')">MOVDI</a>
   <ul class="nav-links">
-    <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#roster">Roster</a></li>
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#unete">Únete</a></li>
-    <li><a href="#hablemos" class="btn-hablemos">Hablemos</a></li>
+    <li><a onclick="nav('nosotros')" id="nl-nosotros">Nosotros</a></li>
+    <li><a onclick="nav('roster')" id="nl-roster">Roster</a></li>
+    <li><a onclick="nav('servicios')" id="nl-servicios">Servicios</a></li>
+    <li><a onclick="nav('unete')" id="nl-unete">Únete</a></li>
+    <li><a onclick="nav('hablemos')" class="cta" id="nl-hablemos">Hablemos</a></li>
   </ul>
-  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+  <div class="burger" id="burger" onclick="toggleBurger()">
     <span></span><span></span><span></span>
   </div>
 </nav>
 
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#nosotros" onclick="closeMenu()">Nosotros</a>
-  <a href="#roster" onclick="closeMenu()">Roster</a>
-  <a href="#servicios" onclick="closeMenu()">Servicios</a>
-  <a href="#unete" onclick="closeMenu()">Únete</a>
-  <a href="#hablemos" class="btn-hablemos" onclick="closeMenu()">Hablemos</a>
+<div class="mob-menu" id="mobMenu">
+  <a onclick="nav('nosotros');closeBurger()">Nosotros</a>
+  <a onclick="nav('roster');closeBurger()">Roster</a>
+  <a onclick="nav('servicios');closeBurger()">Servicios</a>
+  <a onclick="nav('unete');closeBurger()">Únete</a>
+  <a onclick="nav('hablemos');closeBurger()">Hablemos</a>
 </div>
 
-<!-- MAIN CONTENT -->
-<div id="mainContent">
+<!-- ══ HOME ══ -->
+<div class="page active" id="home">
+  <section class="hero">
+    <div class="hero-bg"><svg viewBox="0 0 600 600" fill="none"><circle cx="300" cy="300" r="280" stroke="#FF4500" stroke-width=".8"/><circle cx="300" cy="300" r="190" stroke="#FF4500" stroke-width=".8"/><circle cx="300" cy="300" r="100" stroke="#FF4500" stroke-width=".8"/><line x1="20" y1="300" x2="580" y2="300" stroke="#FF4500" stroke-width=".8"/><line x1="300" y1="20" x2="300" y2="580" stroke="#FF4500" stroke-width=".8"/><line x1="90" y1="90" x2="510" y2="510" stroke="#FF4500" stroke-width=".8"/><line x1="510" y1="90" x2="90" y2="510" stroke="#FF4500" stroke-width=".8"/></svg></div>
+    <div class="hero-content">
+      <div class="tag">Agencia de Marketing Digital</div>
+      <h1>No seguimos<br>tendencias.<br><em>Las convertimos</em><br>en valor.</h1>
+      <p class="hero-sub">Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.</p>
+      <div class="btns">
+        <a class="btn-o" onclick="nav('roster')">Ver Talentos</a>
+        <a class="btn-g" onclick="nav('hablemos')">Hablemos</a>
+      </div>
+    </div>
+    <div class="hero-aside">
+      <div class="n">+50</div><div class="l">Talentos<br>Exclusivos</div>
+      <div class="n" style="margin-top:20px">MX</div><div class="l">(LATAM)</div>
+    </div>
+    <div class="hero-loc">Ciudad de México · Digital Agency</div>
+  </section>
 
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg">
-    <svg viewBox="0 0 600 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="300" cy="300" r="280" stroke="#FF4500" stroke-width="1"/>
-      <circle cx="300" cy="300" r="200" stroke="#FF4500" stroke-width="1"/>
-      <circle cx="300" cy="300" r="120" stroke="#FF4500" stroke-width="1"/>
-      <line x1="20" y1="300" x2="580" y2="300" stroke="#FF4500" stroke-width="1"/>
-      <line x1="300" y1="20" x2="300" y2="580" stroke="#FF4500" stroke-width="1"/>
-      <line x1="100" y1="100" x2="500" y2="500" stroke="#FF4500" stroke-width="1"/>
-      <line x1="500" y1="100" x2="100" y2="500" stroke="#FF4500" stroke-width="1"/>
-    </svg>
+  <div class="stats-strip">
+    <div class="s-item"><div class="s-num"><b>+</b>10</div><div class="s-lab">Años de Experiencia</div></div>
+    <div class="s-item"><div class="s-num"><b>+</b>200</div><div class="s-lab">Proyectos Ejecutados</div></div>
+    <div class="s-item"><div class="s-num"><b>+</b>5K</div><div class="s-lab">Creadores en el Crew</div></div>
   </div>
-  <div class="hero-content">
-    <div class="hero-tag">Agencia de Marketing Digital</div>
-    <h1>No seguimos<br>tendencias.<br><span>Las convertimos</span><br>en valor.</h1>
-    <p class="hero-sub">Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.</p>
-    <div class="hero-btns">
-      <a href="#roster" class="btn-primary">Ver Talentos</a>
-      <a href="#hablemos" class="btn-secondary">Hablemos</a>
+
+  <div class="marcas-strip">
+    <div class="marcas-lab">Marcas que han confiado en nosotros</div>
+    <div class="marcas-row">
+      <span class="m-logo">HBO</span><span class="m-logo">Pepsi</span><span class="m-logo">Warner</span>
+      <span class="m-logo">Pinterest</span><span class="m-logo">PlayStation</span><span class="m-logo">Sephora</span>
+      <span class="m-logo">Sony Music</span><span class="m-logo">McDonald's</span><span class="m-logo">Converse</span>
+      <span class="m-logo">Paramount</span><span class="m-logo">Nestlé</span>
     </div>
   </div>
-  <div class="hero-stats">
-    <div class="stat"><div class="num">+50</div><div class="label">Talentos<br>Exclusivos</div></div>
-    <div class="stat"><div class="num">MX</div><div class="label">(LATAM)</div></div>
-  </div>
-  <div class="hero-location">Ciudad de México · Digital Agency</div>
-</section>
 
-<!-- STATS -->
-<section id="stats">
-  <div class="stats-grid">
-    <div class="stat-item"><div class="stat-num"><span>+</span>10</div><div class="stat-label">Años de<br>Experiencia</div></div>
-    <div class="stat-item"><div class="stat-num"><span>+</span>200</div><div class="stat-label">Proyectos<br>Ejecutados</div></div>
-    <div class="stat-item"><div class="stat-num"><span>+</span>5K</div><div class="stat-label">Creadores<br>en el Crew</div></div>
+  <div class="home-preview">
+    <div class="preview-card" onclick="nav('nosotros')">
+      <div class="pc-tag">Nosotros</div>
+      <div class="pc-title">Más que una agencia.<br>Un movimiento digital.</div>
+      <div class="pc-desc">Nacimos en 2020 para vivir las tendencias que definen esta generación.</div>
+    </div>
+    <div class="preview-card" onclick="nav('servicios')">
+      <div class="pc-tag">Servicios</div>
+      <div class="pc-title">Servicios que<br>generan movimiento.</div>
+      <div class="pc-desc">Influencer Marketing, Gaming, Social Media, Branding y más.</div>
+    </div>
   </div>
-</section>
+  <footer>
+    <div class="f-logo">MOVDI</div>
+    <div class="f-copy">© 2026 MOVDI. Todos los derechos reservados.</div>
+    <ul class="f-nav">
+      <li><a onclick="nav('nosotros')">Nosotros</a></li>
+      <li><a onclick="nav('roster')">Roster</a></li>
+      <li><a onclick="nav('servicios')">Servicios</a></li>
+      <li><a onclick="nav('unete')">Únete</a></li>
+    </ul>
+  </footer>
+</div>
 
-<!-- MARCAS -->
-<section id="marcas">
-  <div class="marcas-label">Marcas que han confiado en nosotros</div>
-  <div class="marcas-scroll">
-    <span class="marca-item">HBO</span>
-    <span class="marca-item">Pepsi</span>
-    <span class="marca-item">Warner</span>
-    <span class="marca-item">Pinterest</span>
-    <span class="marca-item">PlayStation</span>
-    <span class="marca-item">No Name</span>
-    <span class="marca-item">Sephora</span>
-    <span class="marca-item">Sony Music</span>
-    <span class="marca-item">McDonald's</span>
-    <span class="marca-item">Converse</span>
-    <span class="marca-item">Paramount</span>
+<!-- ══ NOSOTROS ══ -->
+<div class="page" id="nosotros">
+  <div class="nos-hero">
+    <div class="tag">Nosotros</div>
+    <h2>Más que una agencia.<br><em>Un movimiento</em> digital.</h2>
   </div>
-</section>
-
-<!-- NOSOTROS -->
-<section id="nosotros">
-  <div class="section-tag">Nosotros</div>
-  <h2>Más que una agencia.<br><span>Un movimiento</span> digital.</h2>
-  <div class="nosotros-grid">
-    <div class="nosotros-text">
+  <div class="nos-body">
+    <div class="nos-text">
       <p>Nacimos en 2020 con una visión clara: <strong>no solo crear estrategias digitales, sino vivir las tendencias que definen esta generación.</strong></p>
       <p>Somos tu socio estratégico y creativo. Pensamos como el target, actuamos como aliados y trabajamos como si fuéramos parte de tu equipo. Convertimos marcas en referentes culturales — hacemos que tu mensaje conecte, no solo impacte.</p>
       <p>Estamos dentro de las comunidades que están definiendo la nueva cultura digital. Exactamente donde tu marca necesita estar.</p>
     </div>
-    <div class="valores-grid">
-      <div class="valor"><div class="valor-num">01</div><div class="valor-title">Humanidad</div><div class="valor-desc">Trabajamos con humanos, para humanos.</div></div>
-      <div class="valor"><div class="valor-num">02</div><div class="valor-title">Impacto</div><div class="valor-desc">Rastreamos y analizamos cada KPI.</div></div>
-      <div class="valor"><div class="valor-num">03</div><div class="valor-title">Creatividad</div><div class="valor-desc">Campañas auténticas que generan movimiento real.</div></div>
-      <div class="valor"><div class="valor-num">04</div><div class="valor-title">Cercanía</div><div class="valor-desc">Conexiones sociales genuinas desde adentro.</div></div>
-      <div class="valor"><div class="valor-num">05</div><div class="valor-title">Experiencia</div><div class="valor-desc">+5 años y +200 proyectos en el ecosistema digital MX.</div></div>
-      <div class="valor"><div class="valor-num">06</div><div class="valor-title">Estrategia</div><div class="valor-desc">Datos y métricas en cada decisión creativa.</div></div>
+    <div class="valores">
+      <div class="valor"><div class="v-n">01</div><div class="v-t">Humanidad</div><div class="v-d">Trabajamos con humanos, para humanos.</div></div>
+      <div class="valor"><div class="v-n">02</div><div class="v-t">Impacto</div><div class="v-d">Rastreamos y analizamos cada KPI.</div></div>
+      <div class="valor"><div class="v-n">03</div><div class="v-t">Creatividad</div><div class="v-d">Campañas auténticas que generan movimiento real.</div></div>
+      <div class="valor"><div class="v-n">04</div><div class="v-t">Cercanía</div><div class="v-d">Conexiones genuinas desde adentro.</div></div>
+      <div class="valor"><div class="v-n">05</div><div class="v-t">Experiencia</div><div class="v-d">+5 años y +200 proyectos en el ecosistema MX.</div></div>
+      <div class="valor"><div class="v-n">06</div><div class="v-t">Estrategia</div><div class="v-d">Datos y métricas en cada decisión creativa.</div></div>
     </div>
   </div>
-</section>
 
-<!-- EQUIPO -->
-<section id="equipo">
-  <div class="equipo-label">El Equipo</div>
-  <div class="equipo-grid" id="equipoGrid">
-    <!-- Featured card Daniela -->
-    <div class="equipo-featured" style="background:#111;min-height:320px">
-      <p class="frase">"Hacemos que las marcas se sientan tan reales como las personas detrás de ellas"</p>
-      <div class="nombre">Daniela Ramírez</div>
-      <div class="cargo">CEO & Co-Founder</div>
-    </div>
-    <!-- Resto del equipo: placeholders con color -->
-    <div class="equipo-card" style="background:#1a6b3c"><div class="equipo-info"><div class="equipo-nombre">Emmanuel Romero</div><div class="equipo-puesto">Founder</div></div></div>
-    <div class="equipo-card" style="background:#d4547a"><div class="equipo-info"><div class="equipo-nombre">Montserrat Gómez</div><div class="equipo-puesto">Head Talent Management</div></div></div>
-    <div class="equipo-card" style="background:#e8a020"><div class="equipo-info"><div class="equipo-nombre">Fernanda Hurtado</div><div class="equipo-puesto">Head Influencer Mkt & PR</div></div></div>
-    <div class="equipo-card" style="background:#c0392b"><div class="equipo-info"><div class="equipo-nombre">Diana Becerra</div><div class="equipo-puesto">Head E-commerce · Head Creativa</div></div></div>
-    <div class="equipo-card" style="background:#e8a020"><div class="equipo-info"><div class="equipo-nombre">Gloria Rivera</div><div class="equipo-puesto">Influencer Mkt & Talent Manager</div></div></div>
-    <div class="equipo-card" style="background:#1a4a8a"><div class="equipo-info"><div class="equipo-nombre">Mauricio Camacho</div><div class="equipo-puesto">Influencer Mkt & Talent Manager</div></div></div>
-    <div class="equipo-card" style="background:#c0392b"><div class="equipo-info"><div class="equipo-nombre">Salvador Jiménez</div><div class="equipo-puesto">Director Administrativo</div></div></div>
-    <div class="equipo-card" style="background:#1a6b3c"><div class="equipo-info"><div class="equipo-nombre">Sofía Esquivel</div><div class="equipo-puesto">Influencer Mkt & Talent Manager</div></div></div>
-    <div class="equipo-card" style="background:#8b4a9e"><div class="equipo-info"><div class="equipo-nombre">Sarai Ramírez</div><div class="equipo-puesto">People & Admin Officer</div></div></div>
-    <div class="equipo-card" style="background:#1a6b3c"><div class="equipo-info"><div class="equipo-nombre">Salvador Jiménez</div><div class="equipo-puesto">Director Administrativo</div></div></div>
-    <div class="equipo-card" style="background:#e8a020"><div class="equipo-info"><div class="equipo-nombre">Leonardo Valdez</div><div class="equipo-puesto">Influencer Mkt & Talent Manager</div></div></div>
-    <div class="equipo-card" style="background:#8b4a9e"><div class="equipo-info"><div class="equipo-nombre">Zazil Recinos</div><div class="equipo-puesto">Influencer Mkt & Talent Manager</div></div></div>
-    <div class="equipo-card" style="background:#d4547a"><div class="equipo-info"><div class="equipo-nombre">Mariana Ríos</div><div class="equipo-puesto">Content Social Digital</div></div></div>
-    <div class="equipo-card" style="background:#1a4a8a"><div class="equipo-info"><div class="equipo-nombre">Diego Laguna</div><div class="equipo-puesto">Recursos Humanos</div></div></div>
+  <!-- EQUIPO -->
+  <div class="equipo-sec">
+    <div class="sec-label">El Equipo</div>
+    <div class="equipo-grid" id="equipoGrid"></div>
   </div>
-</section>
+  <footer>
+    <div class="f-logo">MOVDI</div>
+    <div class="f-copy">© 2026 MOVDI.</div>
+    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li><li><a onclick="nav('roster')">Roster</a></li></ul>
+  </footer>
+</div>
 
-<!-- ROSTER -->
-<section id="roster">
-  <div class="roster-header">
-    <div class="section-tag">Roster</div>
-    <h2>Nuestros<br><span>talentos.</span></h2>
+<!-- ══ ROSTER ══ -->
+<div class="page" id="roster">
+  <div class="roster-top">
+    <div class="tag">Roster</div>
+    <h2 style="font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1;margin-bottom:0">Nuestros <em style="color:var(--o);font-style:normal">talentos.</em></h2>
   </div>
-  <div class="roster-tabs">
-    <div class="roster-tab active" onclick="setCrewTab('movdi',this)">Crew MOVDI <span class="count">45</span></div>
-    <div class="roster-tab" onclick="setCrewTab('ugc',this)">Crew UGC <span class="count">7</span></div>
-  </div>
-  <div class="roster-filters">
-    <div class="filter-group">
-      <div class="filter-label">Plataforma</div>
-      <div class="filter-opts" id="filtPlat">
-        <button class="filter-btn active-plat" onclick="setFilter('plat','todas',this)">Todas</button>
-        <button class="filter-btn" onclick="setFilter('plat','tiktok',this)">TikTok</button>
-        <button class="filter-btn" onclick="setFilter('plat','instagram',this)">Instagram</button>
-        <button class="filter-btn" onclick="setFilter('plat','youtube',this)">YouTube</button>
-        <button class="filter-btn" onclick="setFilter('plat','twitch',this)">Twitch</button>
+  <div class="roster-body">
+    <!-- Sidebar -->
+    <div class="r-sidebar">
+      <div class="r-sb-section">
+        <span class="r-sb-label">Plataforma</span>
+        <button class="r-sb-btn active-w" onclick="sbFilter('plat','todas',this)">Todas</button>
+        <button class="r-sb-btn" onclick="sbFilter('plat','tiktok',this)">TikTok</button>
+        <button class="r-sb-btn" onclick="sbFilter('plat','instagram',this)">Instagram</button>
+        <button class="r-sb-btn" onclick="sbFilter('plat','youtube',this)">YouTube</button>
+        <button class="r-sb-btn" onclick="sbFilter('plat','twitch',this)">Twitch</button>
+      </div>
+      <div class="r-sb-section">
+        <span class="r-sb-label">Categoría</span>
+        <button class="r-sb-btn active" onclick="sbFilter('cat','todas',this)">Todas</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Lifestyle',this)">Lifestyle</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Moda',this)">Moda</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Belleza',this)">Belleza</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Gaming',this)">Gaming</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Tecnología',this)">Tech</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Viajes',this)">Viajes</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Fitness',this)">Fitness</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Entretenimiento',this)">Entret.</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Geek',this)">Geek</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Cosplay',this)">Cosplay</button>
+        <button class="r-sb-btn" onclick="sbFilter('cat','Foodies',this)">Foodies</button>
+      </div>
+      <div class="r-sb-section">
+        <span class="r-sb-label">Alcance</span>
+        <button class="r-sb-btn active" onclick="sbFilter('alc','todas',this)">Todos</button>
+        <button class="r-sb-btn" onclick="sbFilter('alc','mega',this)">Mega +1M</button>
+        <button class="r-sb-btn" onclick="sbFilter('alc','macro',this)">Macro</button>
+        <button class="r-sb-btn" onclick="sbFilter('alc','micro',this)">Micro</button>
       </div>
     </div>
-    <div class="filter-group">
-      <div class="filter-label">Categoría</div>
-      <div class="filter-opts" id="filtCat">
-        <button class="filter-btn active" onclick="setFilter('cat','todas',this)">Todas</button>
-        <button class="filter-btn" onclick="setFilter('cat','Lifestyle',this)">Lifestyle</button>
-        <button class="filter-btn" onclick="setFilter('cat','Moda',this)">Moda</button>
-        <button class="filter-btn" onclick="setFilter('cat','Belleza',this)">Belleza</button>
-        <button class="filter-btn" onclick="setFilter('cat','Gaming',this)">Gaming</button>
-        <button class="filter-btn" onclick="setFilter('cat','Tech',this)">Tech</button>
-        <button class="filter-btn" onclick="setFilter('cat','Viajes',this)">Viajes</button>
-        <button class="filter-btn" onclick="setFilter('cat','Fitness',this)">Fitness</button>
-        <button class="filter-btn" onclick="setFilter('cat','Entretenimiento',this)">Entretenimiento</button>
-        <button class="filter-btn" onclick="setFilter('cat','Geek',this)">Geek</button>
-        <button class="filter-btn" onclick="setFilter('cat','Cosplay',this)">Cosplay</button>
+    <!-- Main -->
+    <div class="r-main">
+      <div class="r-tabs">
+        <div class="r-tab active" onclick="setCrew('movdi',this)">Crew MOVDI <span class="r-count-badge">45</span></div>
+        <div class="r-tab" onclick="setCrew('ugc',this)">Crew UGC <span class="r-count-badge">7</span></div>
       </div>
-    </div>
-    <div class="filter-group">
-      <div class="filter-label">Alcance</div>
-      <div class="filter-opts" id="filtAlc">
-        <button class="filter-btn active" onclick="setFilter('alc','todas',this)">Todos</button>
-        <button class="filter-btn" onclick="setFilter('alc','mega',this)">Mega +1M</button>
-        <button class="filter-btn" onclick="setFilter('alc','macro',this)">Macro</button>
-        <button class="filter-btn" onclick="setFilter('alc','micro',this)">Micro</button>
-      </div>
+      <div class="r-info" id="rInfo">44 Talentos</div>
+      <div class="r-grid" id="rGrid"></div>
     </div>
   </div>
-  <div class="roster-count" id="rosterCount">44 Talentos</div>
-  <div class="roster-grid" id="rosterGrid"></div>
-</section>
+  <footer style="margin-top:0">
+    <div class="f-logo">MOVDI</div>
+    <div class="f-copy">© 2026 MOVDI.</div>
+    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li></ul>
+  </footer>
+</div>
 
-<!-- MODAL TALENTO -->
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal-inner">
-    <button class="modal-close" onclick="closeModal()">Cerrar ×</button>
-    <div class="modal-body" id="modalBody"></div>
+<!-- MODAL -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal-wrap">
+    <button class="m-close" onclick="closeModal()">Cerrar ×</button>
+    <div class="m-layout" id="mLayout"></div>
   </div>
 </div>
 
-<!-- SERVICIOS -->
-<section id="servicios">
-  <div class="section-tag">Lo que hacemos</div>
-  <h2>Servicios que<br>generan movimiento.</h2>
-  <div class="servicios-grid">
-    <div class="servicio-card" onclick="toggleServicio('influencer',this)">
-      <div class="servicio-icon">▪▪<br>▪</div>
-      <div class="servicio-titulo">Influencer Marketing / UGC</div>
-      <div class="servicio-desc">Generamos tendencias y diseñamos estrategias no convencionales para lograr conversiones, posicionamiento y visibilidad para nuestros clientes.</div>
-      <span class="servicio-link">Conoce más →</span>
-    </div>
-    <div class="servicio-card" onclick="toggleServicio('gaming',this)">
-      <div class="servicio-icon">▲</div>
-      <div class="servicio-titulo">We Speak Gaming</div>
-      <div class="servicio-desc">Transformamos la comunicación digital, potenciando tu imagen y reputación con estrategias de tendencia.</div>
-      <span class="servicio-link">Conoce más →</span>
-    </div>
-    <div class="servicio-card" onclick="toggleServicio('social',this)">
-      <div class="servicio-icon">●●<br>●●</div>
-      <div class="servicio-titulo">Social Media & Consultoría Estratégica</div>
-      <div class="servicio-desc">Damos voz a tu marca en las plataformas adecuadas. Creamos comunidades activas y contenido que fomenta interacción.</div>
-      <span class="servicio-link">Conoce más →</span>
-    </div>
-    <div class="servicio-card" onclick="toggleServicio('web',this)">
-      <div class="servicio-icon">●<br>▲</div>
-      <div class="servicio-titulo">Web Design</div>
-      <div class="servicio-desc">Creamos sitios web visualmente atractivos y funcionales, centrados en ofrecer una experiencia de usuario única que refleje la esencia de tu marca.</div>
-      <span class="servicio-link">Conoce más →</span>
-    </div>
-    <div class="servicio-card" onclick="toggleServicio('data',this)">
-      <div class="servicio-icon">∧</div>
-      <div class="servicio-titulo">Data Driven</div>
-      <div class="servicio-desc">Utilizamos datos para optimizar cada estrategia, asegurando decisiones basadas en métricas clave que impulsan resultados medibles.</div>
-      <span class="servicio-link">Conoce más →</span>
-    </div>
-    <div class="servicio-card" onclick="toggleServicio('branding',this)">
-      <div class="servicio-icon">▲</div>
-      <div class="servicio-titulo">Branding</div>
-      <div class="servicio-desc">Es la esencia visual y emocional de tu marca. En MOVDI creamos identidades únicas que conectan con tu audiencia, asegurando que tu negocio destaque con coherencia y autenticidad.</div>
-      <span class="servicio-link">Conoce más →</span>
-    </div>
+<!-- ══ SERVICIOS ══ -->
+<div class="page" id="servicios">
+  <div class="svc-hero">
+    <div class="tag">Lo que hacemos</div>
+    <h2 style="font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1">Servicios que<br>generan movimiento.</h2>
   </div>
-  <div class="proyectos-panel" id="proyectosPanel">
-    <div class="proyectos-label" id="proyectosLabel">Proyectos · Influencer Marketing / UGC</div>
-    <div class="proyectos-grid" id="proyectosGrid"></div>
+  <div class="svc-grid" id="svcGrid"></div>
+  <div class="proyectos-panel" id="projPanel">
+    <div class="proj-label" id="projLabel">Proyectos</div>
+    <div class="proj-grid" id="projGrid"></div>
   </div>
-</section>
+  <div class="svc-bottom">
+    <p style="color:var(--g);font-size:14px;max-width:500px;line-height:1.7">¿Tienes un proyecto en mente? <a onclick="nav('hablemos')" style="color:var(--o);cursor:pointer;font-weight:700">Hablemos →</a></p>
+  </div>
+  <footer>
+    <div class="f-logo">MOVDI</div>
+    <div class="f-copy">© 2026 MOVDI.</div>
+    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li></ul>
+  </footer>
+</div>
 
-<!-- ÚNETE -->
-<section id="unete">
-  <div class="section-tag">Únete</div>
-  <h2>Forma parte<br>del <span>crew.</span></h2>
-  <div class="unete-grid">
-    <div class="unete-card" onclick="activarUnete('creador',this)">
-      <div class="unete-num">01</div>
-      <div class="unete-tipo">Para Creadores</div>
-      <div class="unete-titulo">Soy creador de contenido</div>
-      <div class="unete-desc">Buscamos talentos auténticos con comunidades comprometidas. Si creas contenido y quieres llevar tu carrera al siguiente nivel, MOVDI es tu casa.</div>
-      <ul class="unete-lista">
+<!-- ══ ÚNETE ══ -->
+<div class="page" id="unete">
+  <div class="une-hero">
+    <div class="tag">Únete</div>
+    <h2 style="font-size:clamp(36px,5vw,72px);font-weight:900;line-height:1">Forma parte<br>del <em style="color:var(--o);font-style:normal">crew.</em></h2>
+  </div>
+  <div class="une-cards">
+    <div class="une-card" id="uneCreador" onclick="abrirForm('creador')">
+      <div class="une-n">01</div>
+      <div class="une-tipo">Para Creadores</div>
+      <div class="une-title">Soy creador de contenido</div>
+      <div class="une-desc">Buscamos talentos auténticos con comunidades comprometidas. Si creas contenido y quieres llevar tu carrera al siguiente nivel, MOVDI es tu casa.</div>
+      <ul class="une-list">
         <li>Acceso a campañas con marcas nacionales e internacionales</li>
         <li>Gestión y representación profesional</li>
         <li>Estrategia de crecimiento y personal branding</li>
         <li>Parte del #CrewMOVDI</li>
       </ul>
-      <span class="unete-link">Aplicar aquí →</span>
+      <span class="une-cta">Aplicar aquí →</span>
     </div>
-    <div class="unete-card active" onclick="activarUnete('profesional',this)">
-      <div class="unete-num">02</div>
-      <div class="unete-tipo">Para Profesionales</div>
-      <div class="unete-titulo">Quiero trabajar en MOVDI</div>
-      <div class="unete-desc">Somos un equipo joven, apasionado y en constante movimiento. Si te apasiona el mundo digital y quieres crecer con nosotros, queremos conocerte.</div>
-      <ul class="unete-lista">
+    <div class="une-card sel" id="unePro" onclick="abrirForm('profesional')">
+      <div class="une-n">02</div>
+      <div class="une-tipo">Para Profesionales</div>
+      <div class="une-title">Quiero trabajar en MOVDI</div>
+      <div class="une-desc">Somos un equipo joven, apasionado y en constante movimiento. Si te apasiona el mundo digital y quieres crecer con nosotros, queremos conocerte.</div>
+      <ul class="une-list">
         <li>Ambiente creativo y dinámico</li>
         <li>Proyectos con marcas de talla internacional</li>
         <li>Crecimiento profesional real</li>
         <li>Cultura MOVDI — We break the rules</li>
       </ul>
-      <span class="unete-link">Aplicar aquí →</span>
+      <span class="une-cta">Aplicar aquí →</span>
     </div>
   </div>
-</section>
-
-<!-- FORMULARIO ÚNETE -->
-<div id="form-unete">
-  <h2 class="form-title">Cuéntanos de ti.</h2>
-  <p class="form-subtitle" id="formUneteSubtitle">Selecciona una opción arriba para continuar.</p>
-  <form id="formUnete" action="https://formspree.io/f/xkoybwgl" method="POST">
-    <input type="hidden" name="_subject" id="formUneteSubject" value="Nueva aplicación MOVDI">
-    <input type="hidden" name="tipo" id="formUneteTipo" value="">
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">Nombre Completo</label>
-        <input class="form-input" type="text" name="nombre" placeholder="Tu nombre" required>
+  <div class="une-form open" id="uneForm">
+    <h3 class="f-title">Cuéntanos de ti.</h3>
+    <p class="f-sub" id="uneFormSub">Cuéntanos sobre tu perfil y experiencia.</p>
+    <form action="https://formspree.io/f/xkoybwgl" method="POST">
+      <input type="hidden" name="_subject" id="uneSubject" value="Nueva aplicación MOVDI">
+      <input type="hidden" name="tipo" id="uneTipo" value="profesional">
+      <div class="f-grid">
+        <div class="fg"><label class="fl">Nombre Completo</label><input class="fi" type="text" name="nombre" placeholder="Tu nombre" required></div>
+        <div class="fg"><label class="fl">Correo Electrónico</label><input class="fi" type="email" name="email" placeholder="hola@tucorreo.com" required></div>
+        <div class="fg"><label class="fl">Me Interesa</label>
+          <select class="fs" name="interes" id="uneSelect">
+            <option value="creador">Soy creador de contenido</option>
+            <option value="profesional" selected>Quiero trabajar en MOVDI</option>
+          </select>
+        </div>
+        <div class="fg"><label class="fl">Perfil o Portafolio</label><input class="fi" type="text" name="perfil" placeholder="Instagram, TikTok, LinkedIn o sitio web"></div>
+        <div class="fg full"><label class="fl">Cuéntanos Más</label><textarea class="ft" name="mensaje" placeholder="¿Quién eres, qué haces y por qué quieres ser parte de MOVDI?"></textarea></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Correo Electrónico</label>
-        <input class="form-input" type="email" name="email" placeholder="hola@tucorreo.com" required>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Me Interesa</label>
-        <select class="form-select" name="interes" id="selectInteres">
-          <option value="">Selecciona una opción</option>
-          <option value="creador">Soy creador de contenido</option>
-          <option value="profesional">Quiero trabajar en MOVDI</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tu Perfil o Portafolio</label>
-        <input class="form-input" type="text" name="perfil" placeholder="Instagram, TikTok, LinkedIn o sitio web">
-      </div>
-      <div class="form-group full">
-        <label class="form-label">Cuéntanos Más</label>
-        <textarea class="form-textarea" name="mensaje" placeholder="¿Quién eres, qué haces y por qué quieres ser parte de MOVDI?"></textarea>
-      </div>
-    </div>
-    <button type="submit" class="btn-enviar">Enviar</button>
-  </form>
+      <button type="submit" class="btn-send">Enviar</button>
+    </form>
+  </div>
+  <div class="une-bottom"></div>
+  <footer>
+    <div class="f-logo">MOVDI</div>
+    <div class="f-copy">© 2026 MOVDI.</div>
+    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li></ul>
+  </footer>
 </div>
 
-<!-- HABLEMOS -->
-<section id="hablemos">
-  <div class="hablemos-grid">
-    <div class="contacto-info">
-      <div class="section-tag">Contacto</div>
-      <div class="contacto-titulo">Hable<span>mos.</span></div>
-      <div class="contacto-dato">
-        <div class="contacto-dato-label">Correo</div>
-        <div class="contacto-dato-val">hola@movdi.mx</div>
-      </div>
-      <div class="contacto-dato">
-        <div class="contacto-dato-label">Teléfono / WhatsApp</div>
-        <div class="contacto-dato-val">+52 (55) 4841 8158</div>
-      </div>
-      <div class="contacto-dato">
-        <div class="contacto-dato-label">Ubicación</div>
-        <div class="contacto-dato-val">Ciudad de México, México</div>
-      </div>
-      <div class="contacto-redes">
+<!-- ══ HABLEMOS ══ -->
+<div class="page" id="hablemos">
+  <div class="hab-wrap">
+    <div class="hab-left">
+      <div class="tag">Contacto</div>
+      <div class="hab-title">Hable<em>mos.</em></div>
+      <div class="hab-dato"><div class="hab-dl">Correo</div><div class="hab-dv">hola@movdi.mx</div></div>
+      <div class="hab-dato"><div class="hab-dl">Teléfono / WhatsApp</div><div class="hab-dv">+52 (55) 4841 8158</div></div>
+      <div class="hab-dato"><div class="hab-dl">Ubicación</div><div class="hab-dv">Ciudad de México, México</div></div>
+      <div class="hab-redes">
         <a href="#" class="btn-red">Instagram</a>
         <a href="#" class="btn-red">LinkedIn</a>
         <a href="#" class="btn-red">WhatsApp</a>
       </div>
     </div>
-    <div>
-      <div class="form-hablemos-title">¿Tienes un proyecto en mente?</div>
-      <div class="form-hablemos-sub">Cuéntanos qué necesitas y nos ponemos en contacto en menos de 24 horas.</div>
+    <div class="hab-right">
+      <div class="hab-form-t">¿Tienes un proyecto en mente?</div>
+      <div class="hab-form-s">Cuéntanos qué necesitas y nos ponemos en contacto en menos de 24 horas.</div>
       <form action="https://formspree.io/f/xkoybwgl" method="POST">
         <input type="hidden" name="_subject" value="Nuevo proyecto — MOVDI">
-        <div class="form-grid">
-          <div class="form-group">
-            <label class="form-label">Nombre</label>
-            <input class="form-input" type="text" name="nombre" placeholder="Tu nombre" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Empresa / Marca</label>
-            <input class="form-input" type="text" name="empresa" placeholder="Nombre de tu marca">
-          </div>
-          <div class="form-group">
-            <label class="form-label">Correo</label>
-            <input class="form-input" type="email" name="email" placeholder="hola@tumarca.com" required>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Teléfono</label>
-            <input class="form-input" type="tel" name="telefono" placeholder="+52 55 0000 0000">
-          </div>
-          <div class="form-group full">
-            <label class="form-label">¿En qué podemos ayudarte?</label>
-            <select class="form-select" name="servicio">
+        <div class="f-grid">
+          <div class="fg"><label class="fl">Nombre</label><input class="fi" type="text" name="nombre" placeholder="Tu nombre" required></div>
+          <div class="fg"><label class="fl">Empresa / Marca</label><input class="fi" type="text" name="empresa" placeholder="Nombre de tu marca"></div>
+          <div class="fg"><label class="fl">Correo</label><input class="fi" type="email" name="email" placeholder="hola@tumarca.com" required></div>
+          <div class="fg"><label class="fl">Teléfono</label><input class="fi" type="tel" name="telefono" placeholder="+52 55 0000 0000"></div>
+          <div class="fg full"><label class="fl">¿En qué podemos ayudarte?</label>
+            <select class="fs" name="servicio">
               <option value="">Selecciona un servicio</option>
               <option>Influencer Marketing / UGC</option>
               <option>We Speak Gaming</option>
@@ -657,37 +622,46 @@ footer{border-top:1px solid #1a1a1a;padding:32px 40px;display:flex;align-items:c
               <option>Branding</option>
             </select>
           </div>
-          <div class="form-group full">
-            <label class="form-label">Mensaje</label>
-            <textarea class="form-textarea" name="mensaje" placeholder="Cuéntanos sobre tu proyecto, objetivos o cualquier duda que tengas..."></textarea>
-          </div>
+          <div class="fg full"><label class="fl">Mensaje</label><textarea class="ft" name="mensaje" placeholder="Cuéntanos sobre tu proyecto..."></textarea></div>
         </div>
-        <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+        <button type="submit" class="btn-send">Enviar Mensaje</button>
       </form>
     </div>
   </div>
-</section>
-
-</div><!-- /mainContent -->
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo">MOVDI</div>
-  <div class="footer-copy">© 2026 MOVDI. Todos los derechos reservados.</div>
-  <ul class="footer-nav">
-    <li><a href="#nosotros">Nosotros</a></li>
-    <li><a href="#roster">Roster</a></li>
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#unete">Únete</a></li>
-  </ul>
-</footer>
+  <footer>
+    <div class="f-logo">MOVDI</div>
+    <div class="f-copy">© 2026 MOVDI. Todos los derechos reservados.</div>
+    <ul class="f-nav"><li><a onclick="nav('home')">Inicio</a></li><li><a onclick="nav('roster')">Roster</a></li></ul>
+  </footer>
+</div>
 
 <script>
-// ─── DATOS TALENTOS ───────────────────────────────────────────────────────────
-const talentos = [
+// ─── DATOS ────────────────────────────────────────────────────────────────────
+const equipo=[
+  {nombre:'Daniela Ramírez',puesto:'CEO & Co-Founder',frase:'Hacemos que las marcas se sientan tan reales como las personas detrás de ellas',foto:'',color:'#111',featured:true},
+  {nombre:'Emmanuel Romero',puesto:'Founder',frase:'Construimos ideas que convierten talento, cultura y contenido en impacto real.',foto:'',color:'#1a6b3c'},
+  {nombre:'Montserrat Gómez',puesto:'Head Talent Management',frase:'Todos nuestros sueños pueden convertirse en realidad si tenemos el coraje de perseguirlos.',foto:'',color:'#d4547a'},
+  {nombre:'Fernanda Hurtado',puesto:'Head Influencer Mkt & PR',frase:'Entre intención y resultado… ahí es donde nosotros brillamos.',foto:'',color:'#e8a020'},
+  {nombre:'Diana Becerra',puesto:'Head E-commerce · Head Creativa',frase:'Creamos desde las tendencias, pero diseñamos desde el corazón.',foto:'',color:'#c0392b'},
+  {nombre:'Gloria Rivera',puesto:'Influencer Mkt & Talent Manager',frase:'Analítica, creativa y muy de entender a la gente. Hacemos que las cosas sucedan.',foto:'',color:'#e8a020'},
+  {nombre:'Mauricio Camacho',puesto:'Influencer Mkt & Talent Manager',frase:'Fallas el 100% de los tiros que no haces.',foto:'',color:'#1a4a8a'},
+  {nombre:'Salvador Jiménez',puesto:'Director Administrativo',frase:'Lo que no siempre se ve en un reel también importa: detrás de cada campaña hay un trabajo esencial.',foto:'',color:'#2d2d2d'},
+  {nombre:'Sofía Esquivel',puesto:'Influencer Mkt & Talent Manager',frase:'Crea tu propio estilo… que sea único para ti y, a la vez, reconocible para los demás.',foto:'',color:'#1a6b3c'},
+  {nombre:'Sarai Ramírez',puesto:'People & Admin Officer',frase:'Lo humano también necesita estructura para florecer.',foto:'',color:'#8b4a9e'},
+  {nombre:'Leonardo Valdez',puesto:'Influencer Mkt & Talent Manager',frase:'La gestión no es solo seguimiento, es asegurar que cada propuesta supere la expectativa.',foto:'',color:'#e8a020'},
+  {nombre:'Okami Victoria',puesto:'Especialista en Relaciones Públicas',frase:'Si eres una piedra en el medio del gaming, quiero ser tu amigo.',foto:'',color:'#c0392b'},
+  {nombre:'Isaac Camacho',puesto:'Influencer Mkt & Talent Manager',frase:'No se trata de hacer ruido… se trata de conectar.',foto:'',color:'#1a4a8a'},
+  {nombre:'Zazil Recinos',puesto:'Influencer Mkt & Talent Manager',frase:'Entre caos, ideas y emoción… ahí es donde creo magia.',foto:'',color:'#8b4a9e'},
+  {nombre:'Fátima Guerrero',puesto:'Trainee Influencer Marketing',frase:'Los pequeños pasos también construyen grandes resultados.',foto:'',color:'#1a6b3c'},
+  {nombre:'Jimena Huerta',puesto:'Trainee Personal Manager',frase:'Cada detalle cuenta cuando el objetivo es hacerlo bien.',foto:'',color:'#d4547a'},
+  {nombre:'Mariana Ríos',puesto:'Content Social Digital',frase:'Curiosa, creativa y fan de las buenas ideas.',foto:'',color:'#d4547a'},
+  {nombre:'Diego Laguna',puesto:'Recursos Humanos',frase:'Si necesitas algo, te puedo ayudar.',foto:'',color:'#1a4a8a'},
+];
+
+const talentos=[
   {slug:'alba',nombre:'Alba',crew:'movdi',cats:['Lifestyle','Fitness','Gaming'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'alliege',nombre:'Alliege',crew:'movdi',cats:['Gaming','Tecnología','Geek'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
-  {slug:'amaury',nombre:'Amaury',crew:'movdi',cats:['Entretenimiento','Geek','Lifestyle','Viajes'],foto:'',pais:'México',bio:'Oscar es creador de contenido enfocado en entretenimiento, cultura geek y lifestyle, destacando por su personalidad extrovertida y su estilo dinámico.',redes:[{plat:'TikTok',handle:'@oscaramau3',seg:'9.1M',er:'10%',url:'https://tiktok.com/@oscaramau3'},{plat:'Instagram',handle:'@oscxr.amxury',seg:'970K',er:'5.5%',url:'https://instagram.com/oscxr.amxury'},{plat:'YouTube',handle:'@OscarAmaury',seg:'11.1M',er:'2.9%',url:'https://youtube.com/@OscarAmaury'}],marcas:["Carl's Jr","Rappi","Duolingo","Crunchyroll","Mirinda","PUBG","Coca Cola","Liverpool"],trabajos:[{tipo:'organico',titulo:'El humor de la vida otaku',url:''},{tipo:'organico',titulo:'Reseña de anime',url:''},{tipo:'marca',titulo:"Campaña con Carl's Jr",url:''},{tipo:'marca',titulo:'Campaña con Duolingo',url:''}]},
+  {slug:'amaury',nombre:'Amaury',crew:'movdi',cats:['Entretenimiento','Geek','Lifestyle'],foto:'',pais:'México',bio:'Oscar es creador de contenido enfocado en entretenimiento, cultura geek y lifestyle. Su contenido combina viajes, storytelling y humor.',redes:[{plat:'TikTok',handle:'@oscaramau3',seg:'9.1M',er:'10%',url:'https://tiktok.com/@oscaramau3'},{plat:'Instagram',handle:'@oscxr.amxury',seg:'970K',er:'5.5%',url:'https://instagram.com/oscxr.amxury'},{plat:'YouTube',handle:'@OscarAmaury',seg:'11.1M',er:'2.9%',url:'https://youtube.com/@OscarAmaury'}],marcas:["Carl's Jr","Rappi","Duolingo","Crunchyroll","Mirinda","PUBG","Coca Cola","Liverpool"],trabajos:[{tipo:'org',titulo:'El humor de la vida otaku',url:''},{tipo:'org',titulo:'Reseña de anime',url:''},{tipo:'mrc',titulo:"Campaña con Carl's Jr",url:''},{tipo:'mrc',titulo:'Campaña con Duolingo',url:''}]},
   {slug:'angie-monsivais',nombre:'Angie Monsivais',crew:'movdi',cats:['Moda','Belleza','Lifestyle'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'anita',nombre:'Anita',crew:'movdi',cats:['Lifestyle','Viajes','Entretenimiento'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'ansi',nombre:'Ansi',crew:'movdi',cats:['Gaming','Lifestyle','Entretenimiento'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
@@ -730,7 +704,6 @@ const talentos = [
   {slug:'tori',nombre:'Tori',crew:'movdi',cats:['Geek','Moda','Lifestyle'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'valebonis',nombre:'Valebonis',crew:'movdi',cats:['Lifestyle','Moda','Viajes'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'vicky',nombre:'Vicky',crew:'movdi',cats:['Gaming','Entretenimiento','Lifestyle'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
-  // UGC
   {slug:'amanda-pime',nombre:'Amanda Pimentel',crew:'ugc',cats:['Lifestyle','Moda','Belleza'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'andrea-basu',nombre:'Andrea Basurto',crew:'ugc',cats:['Lifestyle','Motivación','Belleza'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
   {slug:'azyhadee',nombre:'Azyhadee',crew:'ugc',cats:['Moda','Belleza','Lifestyle'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
@@ -740,153 +713,163 @@ const talentos = [
   {slug:'xime-bonis',nombre:'Xime Bonis',crew:'ugc',cats:['Lifestyle','Motivación','Moda'],foto:'',pais:'México',bio:'',redes:[],marcas:[],trabajos:[]},
 ];
 
-// ─── PROYECTOS POR SERVICIO ────────────────────────────────────────────────────
-const proyectos = {
-  influencer:[
-    {nombre:'Pepsi Black',desc:'Activación con influencers lifestyle y músicos.',img:'',url:''},
-    {nombre:'Nestlé Chocotrio',desc:'Estrategia UGC para evento inmersivo.',img:'',url:''},
-    {nombre:'Calvin Klein × Bad Bunny',desc:'Estrategia de influencer marketing.',img:'',url:''},
-    {nombre:'Ring Amazon',desc:'Estrategia UGC en TikTok centrada en storytelling.',img:'',url:''},
-  ],
-  gaming:[],social:[],web:[],branding:[]
-};
+const servicios=[
+  {id:'influencer',icon:'▪▪<br>▪',titulo:'Influencer Marketing / UGC',desc:'Generamos tendencias y diseñamos estrategias no convencionales para lograr conversiones, posicionamiento y visibilidad.',proyectos:[{nom:'Pepsi Black',desc:'Activación con influencers lifestyle y músicos.',img:'',url:''},{nom:'Nestlé Chocotrio',desc:'Estrategia UGC para evento inmersivo.',img:'',url:''},{nom:'Calvin Klein × Bad Bunny',desc:'Estrategia de influencer marketing.',img:'',url:''},{nom:'Ring Amazon',desc:'Estrategia UGC en TikTok centrada en storytelling.',img:'',url:''}]},
+  {id:'gaming',icon:'▲',titulo:'We Speak Gaming',desc:'No llegamos al gaming porque está de moda. Llevamos años trabajando dentro del ecosistema gaming, geek y tech.',proyectos:[]},
+  {id:'social',icon:'●●<br>●●',titulo:'Social Media & Consultoría Estratégica',desc:'Damos voz a tu marca en las plataformas adecuadas. Creamos comunidades activas y contenido que fomenta interacción.',proyectos:[]},
+  {id:'web',icon:'●<br>▲',titulo:'Web Design',desc:'Creamos sitios web visualmente atractivos y funcionales, centrados en ofrecer una experiencia única.',proyectos:[]},
+  {id:'data',icon:'∧',titulo:'Data Driven',desc:'Utilizamos datos para optimizar cada estrategia, asegurando decisiones basadas en métricas clave.',proyectos:[]},
+  {id:'branding',icon:'▲',titulo:'Branding',desc:'Identidades únicas con coherencia y autenticidad que conectan con tu audiencia y destacan con personalidad.',proyectos:[]},
+];
 
-// ─── ESTADO ───────────────────────────────────────────────────────────────────
-let crewActual='movdi', filtCat='todas', filtAlc='todas', filtPlat='todas';
-
-// ─── HAMBURGER ────────────────────────────────────────────────────────────────
-function toggleMenu(){
-  document.getElementById('hamburger').classList.toggle('open');
-  document.getElementById('mobileMenu').classList.toggle('open');
-}
-function closeMenu(){
-  document.getElementById('hamburger').classList.remove('open');
-  document.getElementById('mobileMenu').classList.remove('open');
+// ─── NAV ─────────────────────────────────────────────────────────────────────
+let paginaActual='home';
+function nav(p){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  document.getElementById(p).classList.add('active');
+  document.querySelectorAll('.nav-links a').forEach(a=>a.classList.remove('active'));
+  const nl=document.getElementById('nl-'+p);
+  if(nl) nl.classList.add('active');
+  paginaActual=p;
+  window.scrollTo(0,0);
+  history.pushState({p},'',(p==='home'?'/':'/'+p));
 }
 
-// ─── ROSTER ───────────────────────────────────────────────────────────────────
-function setCrewTab(crew,el){
-  crewActual=crew;
-  document.querySelectorAll('.roster-tab').forEach(t=>t.classList.remove('active'));
+function toggleBurger(){
+  document.getElementById('burger').classList.toggle('x');
+  document.getElementById('mobMenu').classList.toggle('open');
+}
+function closeBurger(){
+  document.getElementById('burger').classList.remove('x');
+  document.getElementById('mobMenu').classList.remove('open');
+}
+
+// ─── EQUIPO ───────────────────────────────────────────────────────────────────
+function renderEquipo(){
+  const g=document.getElementById('equipoGrid');
+  g.innerHTML=equipo.map(e=>{
+    if(e.featured) return `<div class="eq-featured"><p class="frase-f">"${e.frase}"</p><div class="nom-f">${e.nombre}</div><div class="cargo-f">${e.puesto}</div></div>`;
+    const img=e.foto?`<img src="${e.foto}" alt="${e.nombre}">`:`<div class="eq-placeholder" style="background:${e.color}"><span>${e.nombre[0]}</span></div>`;
+    return `<div class="eq-card">${img}<div class="eq-overlay"><div class="eq-frase">"${e.frase}"</div><div class="eq-nombre">${e.nombre}</div><div class="eq-puesto">${e.puesto}</div></div></div>`;
+  }).join('');
+}
+
+// ─── ROSTER ──────────────────────────────────────────────────────────────────
+let crewAct='movdi',catAct='todas';
+function setCrew(c,el){
+  crewAct=c;
+  document.querySelectorAll('.r-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderRoster();
 }
-
-function setFilter(tipo,val,el){
-  if(tipo==='cat'){filtCat=val; document.querySelectorAll('#filtCat .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
-  if(tipo==='alc'){filtAlc=val; document.querySelectorAll('#filtAlc .filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
-  if(tipo==='plat'){filtPlat=val; document.querySelectorAll('#filtPlat .filter-btn').forEach(b=>b.classList.remove('active-plat')); el.classList.add('active-plat');}
+function sbFilter(tipo,val,el){
+  if(tipo==='cat'){catAct=val; document.querySelectorAll('.r-sb-section:nth-child(2) .r-sb-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
+  if(tipo==='plat'){document.querySelectorAll('.r-sb-section:nth-child(1) .r-sb-btn').forEach(b=>b.classList.remove('active-w')); el.classList.add('active-w');}
+  if(tipo==='alc'){document.querySelectorAll('.r-sb-section:nth-child(3) .r-sb-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active');}
   renderRoster();
 }
-
 function renderRoster(){
-  let lista = talentos.filter(t=>t.crew===crewActual);
-  if(filtCat!=='todas') lista=lista.filter(t=>t.cats.some(c=>c.toLowerCase()===filtCat.toLowerCase()));
-  const grid=document.getElementById('rosterGrid');
-  document.getElementById('rosterCount').textContent=`${lista.length} Talentos`;
-  grid.innerHTML=lista.map(t=>`
-    <div class="talent-card" onclick="openTalent('${t.slug}')">
-      ${t.foto?`<img src="${t.foto}" alt="${t.nombre}" loading="lazy">`:`<div style="width:100%;height:100%;background:#1a1a1a;display:flex;align-items:center;justify-content:center"><span style="color:#333;font-size:40px;font-weight:900">${t.nombre[0]}</span></div>`}
-      <div class="dot"></div>
-      <div class="talent-info">
-        <div class="talent-nombre">${t.nombre}</div>
-        <div class="talent-cats">${t.cats.join(' · ')}</div>
-      </div>
-      <div class="talent-hover"><button class="btn-ver">Ver Perfil</button></div>
+  let lista=talentos.filter(t=>t.crew===crewAct);
+  if(catAct!=='todas') lista=lista.filter(t=>t.cats.some(c=>c.toLowerCase()===catAct.toLowerCase()));
+  document.getElementById('rInfo').textContent=`${lista.length} Talentos`;
+  document.getElementById('rGrid').innerHTML=lista.map(t=>`
+    <div class="t-card" onclick="openTalent('${t.slug}')">
+      ${t.foto?`<img src="${t.foto}" alt="${t.nombre}" loading="lazy">`:`<div class="t-placeholder" style="background:#111"><span>${t.nombre[0]}</span></div>`}
+      <div class="t-dot"></div>
+      <div class="t-info"><div class="t-nom">${t.nombre}</div><div class="t-cat">${t.cats.join(' · ')}</div></div>
+      <div class="t-hover"><button class="t-btn">Ver Perfil</button></div>
     </div>`).join('');
 }
 
-// ─── MODAL / URL TALENTO ──────────────────────────────────────────────────────
+// ─── MODAL ────────────────────────────────────────────────────────────────────
 function openTalent(slug){
   const t=talentos.find(x=>x.slug===slug);
   if(!t) return;
-  history.pushState({slug},'',`/${t.slug}`);
-  renderModal(t);
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-
-function renderModal(t){
-  const redesHtml=t.redes.map(r=>`
-    <a class="red-item" href="${r.url||'#'}" target="_blank">
-      <div><div class="red-nombre">${r.plat}</div><div class="red-handle">${r.handle} ↗</div></div>
-      <div class="red-stats"><span class="red-seg">${r.seg}</span><span class="red-er">ER ${r.er}</span></div>
-    </a>`).join('');
-  const marcasHtml=t.marcas.length?`<div class="modal-section-title">Marcas con las que ha trabajado</div><div class="tags-list">${t.marcas.map(m=>`<span class="tag">${m}</span>`).join('')}</div>`:'';
-  const trabajosHtml=t.trabajos.length?`<div class="modal-section-title">Conoce su trabajo</div><div class="trabajos-list">${t.trabajos.map(tr=>`<a class="trabajo-item" href="${tr.url||'#'}" target="_blank"><span class="trabajo-tipo ${tr.tipo}">${tr.tipo.toUpperCase()}</span><span class="trabajo-titulo">${tr.titulo}</span><span>↗</span></a>`).join('')}</div>`:'';
-  document.getElementById('modalBody').innerHTML=`
-    <div class="modal-img">${t.foto?`<img src="${t.foto}" alt="${t.nombre}">`:`<div style="width:100%;min-height:400px;background:#1a1a1a;display:flex;align-items:center;justify-content:center"><span style="color:#333;font-size:80px;font-weight:900">${t.nombre[0]}</span></div>`}</div>
-    <div class="modal-detail">
-      <div class="modal-crew">Crew ${t.crew.toUpperCase()}</div>
-      <div class="modal-nombre">${t.nombre.toUpperCase()}</div>
-      <div class="modal-pais">${t.pais}</div>
-      ${t.bio?`<div class="modal-bio">${t.bio}</div>`:''}
-      ${t.redes.length?`<div class="modal-section-title">Redes & Audiencia</div><div class="redes-list">${redesHtml}</div>`:''}
-      ${marcasHtml}${trabajosHtml}
-      <a href="#hablemos" class="btn-cotizar" onclick="closeModal()">Solicitar Cotización</a>
-      <a href="#roster" class="btn-volver" onclick="closeModal()">← Volver al Roster</a>
+  const redes=t.redes.map(r=>`<a class="red-row" href="${r.url||'#'}" target="_blank"><div><div class="rn">${r.plat}</div><div class="rh">${r.handle} ↗</div></div><div style="display:flex;align-items:center;gap:12px"><span class="rs">${r.seg}</span><span class="rer">ER ${r.er}</span></div></a>`).join('');
+  const marcas=t.marcas.length?`<div class="m-stitle" style="margin-top:20px">Marcas</div><div class="tags-wrap">${t.marcas.map(m=>`<span class="tag-item">${m}</span>`).join('')}</div>`:'';
+  const trabajos=t.trabajos.length?`<div class="m-stitle" style="margin-top:4px">Conoce su trabajo</div><div class="trabajos-wrap">${t.trabajos.map(tr=>`<a class="trab-row" href="${tr.url||'#'}" target="_blank"><span class="trab-tipo ${tr.tipo}">${tr.tipo==='org'?'ORGÁNICO':'MARCA'}</span><span class="trab-tit">${tr.titulo}</span><span>↗</span></a>`).join('')}</div>`:'';
+  document.getElementById('mLayout').innerHTML=`
+    <div class="m-img">${t.foto?`<img src="${t.foto}" alt="${t.nombre}">`:`<div class="t-placeholder" style="background:#111;min-height:480px"><span style="font-size:80px;font-weight:900;color:#222">${t.nombre[0]}</span></div>`}</div>
+    <div class="m-body">
+      <div class="m-crew">Crew ${t.crew.toUpperCase()}</div>
+      <div class="m-name">${t.nombre.toUpperCase()}</div>
+      <div class="m-loc">${t.pais}</div>
+      ${t.bio?`<div class="m-bio">${t.bio}</div>`:''}
+      ${t.redes.length?`<div class="m-stitle">Redes & Audiencia</div><div class="redes-wrap">${redes}</div>`:''}
+      ${marcas}${trabajos}
+      <a onclick="nav('hablemos');closeModal()" class="btn-cot" style="cursor:pointer;margin-top:16px">Solicitar Cotización</a>
+      <a onclick="closeModal()" class="btn-vol" style="cursor:pointer">← Volver al Roster</a>
     </div>`;
+  document.getElementById('modalBg').classList.add('open');
+  document.body.style.overflow='hidden';
+  history.pushState({slug},'',`/${slug}`);
 }
-
 function closeModal(){
-  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('modalBg').classList.remove('open');
   document.body.style.overflow='';
-  history.pushState({},'','/');
+  history.pushState({p:paginaActual},'','/'+(paginaActual==='home'?'':paginaActual));
 }
-
-// URL directa: movdi.mx/alba
-function checkURL(){
-  const path=window.location.pathname.replace('/','');
-  if(path){
-    const t=talentos.find(x=>x.slug===path);
-    if(t){setTimeout(()=>openTalent(t.slug),100);}
-  }
-}
-
-window.addEventListener('popstate',e=>{
-  if(e.state&&e.state.slug) openTalent(e.state.slug);
-  else closeModal();
-});
 
 // ─── SERVICIOS ────────────────────────────────────────────────────────────────
-let servicioActivo=null;
-function toggleServicio(id,el){
-  const panel=document.getElementById('proyectosPanel');
-  const label=document.getElementById('proyectosLabel');
-  const grid=document.getElementById('proyectosGrid');
-  const proys=proyectos[id]||[];
-  if(servicioActivo===id){panel.classList.remove('open');servicioActivo=null;return;}
-  servicioActivo=id;
-  const nombres={influencer:'Influencer Marketing / UGC',gaming:'We Speak Gaming',social:'Social Media',web:'Web Design',data:'Data Driven',branding:'Branding'};
-  label.textContent=`Proyectos · ${nombres[id]}`;
-  if(!proys.length){grid.innerHTML='<p style="color:#555;font-size:14px;grid-column:span 4">Proyectos próximamente.</p>';}
-  else{grid.innerHTML=proys.map(p=>`
-    <div class="proyecto-card" onclick="window.open('${p.url||'#'}','_blank')">
-      ${p.img?`<img src="${p.img}" alt="${p.nombre}">`:`<div style="width:100%;height:100%;background:#222;display:flex;align-items:center;justify-content:center"><span style="color:#444;font-size:13px;font-weight:700;text-transform:uppercase;text-align:center;padding:16px">${p.nombre}</span></div>`}
-      <div class="proyecto-info"><div class="proyecto-nombre">${p.nombre}</div><div class="proyecto-desc">${p.desc}</div></div>
+let svcAct=null;
+function renderServicios(){
+  document.getElementById('svcGrid').innerHTML=servicios.map(s=>`
+    <div class="svc-card${svcAct===s.id?' sel':''}" onclick="toggleSvc('${s.id}',this)">
+      <div class="svc-icon">${s.icon}</div>
+      <div class="svc-title">${s.titulo}</div>
+      <div class="svc-desc">${s.desc}</div>
+      <span class="svc-more">Conoce más →</span>
+    </div>`).join('');
+}
+function toggleSvc(id){
+  const panel=document.getElementById('projPanel');
+  const grid=document.getElementById('projGrid');
+  const label=document.getElementById('projLabel');
+  const svc=servicios.find(s=>s.id===id);
+  if(svcAct===id){svcAct=null;panel.classList.remove('open');renderServicios();return;}
+  svcAct=id;
+  label.textContent=`Proyectos · ${svc.titulo}`;
+  if(!svc.proyectos.length){grid.innerHTML='<p style="color:#444;font-size:13px;grid-column:span 4">Próximamente.</p>';}
+  else{grid.innerHTML=svc.proyectos.map(p=>`
+    <div class="proj-card" onclick="window.open('${p.url||'#'}','_blank')">
+      ${p.img?`<img src="${p.img}" alt="${p.nom}">`:`<div class="proj-placeholder"><span>${p.nom}</span></div>`}
+      <div class="proj-info"><div class="proj-nom">${p.nom}</div><div class="proj-d">${p.desc}</div></div>
     </div>`).join('');}
   panel.classList.add('open');
-  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  renderServicios();
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'nearest'}),80);
 }
 
-// ─── ÚNETE FORM ───────────────────────────────────────────────────────────────
-function activarUnete(tipo,el){
-  document.querySelectorAll('.unete-card').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  const subtitles={creador:'Cuéntanos sobre tu contenido y comunidad.',profesional:'Cuéntanos sobre tu perfil y experiencia.'};
-  document.getElementById('formUneteSubtitle').textContent=subtitles[tipo];
-  document.getElementById('formUneteTipo').value=tipo;
-  document.getElementById('selectInteres').value=tipo;
-  document.getElementById('form-unete').scrollIntoView({behavior:'smooth'});
+// ─── ÚNETE ────────────────────────────────────────────────────────────────────
+function abrirForm(tipo){
+  document.querySelectorAll('.une-card').forEach(c=>c.classList.remove('sel'));
+  document.getElementById(tipo==='creador'?'uneCreador':'unePro').classList.add('sel');
+  document.getElementById('uneTipo').value=tipo;
+  document.getElementById('uneSelect').value=tipo;
+  document.getElementById('uneSubject').value=tipo==='creador'?'Nuevo talento MOVDI':'Aplicación de trabajo MOVDI';
+  document.getElementById('uneFormSub').textContent=tipo==='creador'?'Cuéntanos sobre tu contenido y comunidad.':'Cuéntanos sobre tu perfil y experiencia.';
+  const form=document.getElementById('uneForm');
+  form.classList.add('open');
+  setTimeout(()=>form.scrollIntoView({behavior:'smooth'}),80);
 }
 
-function goHome(){
-  closeModal();
-  window.scrollTo({top:0,behavior:'smooth'});
+// ─── URL ROUTING ──────────────────────────────────────────────────────────────
+function checkURL(){
+  const path=location.pathname.replace('/','').split('/')[0];
+  const pages=['nosotros','roster','servicios','unete','hablemos'];
+  if(pages.includes(path)){nav(path);return;}
+  if(path){const t=talentos.find(x=>x.slug===path);if(t){nav('roster');setTimeout(()=>openTalent(t.slug),200);}}
 }
+window.addEventListener('popstate',e=>{
+  if(e.state?.slug) openTalent(e.state.slug);
+  else if(e.state?.p) nav(e.state.p);
+  else{closeModal();nav('home');}
+});
 
 // ─── INIT ─────────────────────────────────────────────────────────────────────
+renderEquipo();
 renderRoster();
+renderServicios();
 checkURL();
 </script>
 </body>
