@@ -7,6 +7,7 @@
 <meta property="og:title" content="MOVDI — Digital Movement Agency">
 <meta property="og:description" content="Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.">
 <title>MOVDI — Digital Movement Agency</title>
+<link rel="canonical" href="https://movdi.mx/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;0,900;1,800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -336,6 +337,67 @@ ul{list-style:none}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--black)}
 ::-webkit-scrollbar-thumb{background:var(--black3)}
+
+/* ═══ SIDEBAR FILTERS (desktop) ════════ */
+.roster-layout{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:start}
+.sidebar-filters{position:sticky;top:calc(var(--nav) + 56px);display:flex;flex-direction:column;gap:20px}
+.sf-group{display:flex;flex-direction:column;gap:8px}
+.sf-group-lbl{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--w30)}
+.sf-pills{display:flex;flex-direction:column;gap:4px}
+.sf-pill{font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--w60);padding:6px 10px;border-radius:2px;border:1px solid transparent;background:transparent;text-align:left;transition:all var(--t);cursor:pointer}
+.sf-pill:hover{color:var(--white);border-color:var(--border)}
+.sf-pill.active{background:var(--orange);color:var(--black);border-color:var(--orange)}
+.sf-crew-tabs{display:flex;flex-direction:column;gap:4px}
+.sf-crew-tab{font-family:var(--fd);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--w30);padding:8px 10px;border-radius:2px;border:1px solid transparent;background:transparent;text-align:left;transition:all var(--t);cursor:pointer;display:flex;align-items:center;justify-content:space-between}
+.sf-crew-tab.active{color:var(--white);border-left:2px solid var(--orange);padding-left:8px}
+.sf-crew-tab:hover{color:var(--w60)}
+.sf-cnt{font-family:var(--fd);font-size:10px;font-weight:800;color:var(--orange);background:var(--orange-dim);padding:1px 6px;border-radius:2px}
+.sf-clear{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--orange);background:none;border:none;cursor:pointer;text-align:left;padding:4px 0;opacity:0;pointer-events:none;transition:opacity var(--t)}
+.sf-clear.on{opacity:1;pointer-events:auto}
+/* Mobile: horizontal scroll tabs */
+.mobile-filters{display:none;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:6px;padding-bottom:12px;margin-bottom:16px}
+.mobile-filters::-webkit-scrollbar{display:none}
+.mobile-filters{display:none;flex-wrap:nowrap;white-space:nowrap}
+/* Hide old filters, show sidebar on desktop */
+.filters{display:none}
+.crew-tabs{display:none}
+@media(max-width:860px){
+  .roster-layout{grid-template-columns:1fr}
+  .sidebar-filters{display:none}
+  .mobile-filters{display:flex}
+  .filters{display:none}
+}
+
+/* ═══ MOBILE FILTER SCROLL TABS ════════ */
+.mf-section{margin-bottom:12px}
+.mf-section-lbl{font-family:var(--fd);font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--w30);margin-bottom:6px;padding:0 2px}
+.mf-row{display:flex;gap:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:4px}
+.mf-row::-webkit-scrollbar{display:none}
+.mf-chip{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--w60);padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;white-space:nowrap;flex-shrink:0;transition:all var(--t);cursor:pointer}
+.mf-chip:hover{border-color:var(--w30);color:var(--white)}
+.mf-chip.active{background:var(--orange);color:var(--black);border-color:var(--orange)}
+
+/* ═══ MODAL SHARE + BACK ════════════════ */
+.modal-actions{display:flex;gap:8px;padding:0 26px 0;margin-bottom:16px;justify-content:space-between;align-items:center}
+.btn-back{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--w60);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 0;transition:color var(--t)}
+.btn-back:hover{color:var(--orange)}
+.btn-back svg{width:14px;height:14px}
+.btn-share{font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--w60);background:none;border:1px solid var(--border);cursor:pointer;display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:2px;transition:all var(--t)}
+.btn-share:hover{border-color:var(--orange);color:var(--orange)}
+.btn-share svg{width:12px;height:12px}
+.share-toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:var(--black2);border:1px solid var(--border);color:var(--white);font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:10px 20px;border-radius:2px;z-index:3000;opacity:0;pointer-events:none;transition:opacity .3s ease;white-space:nowrap}
+.share-toast.show{opacity:1}
+
+/* ═══ COTIZAR BTN ════════════════════════ */
+.btn-cotizar-wrap{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:28px}
+.btn-cotizar{font-family:var(--fd);font-size:13px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;background:var(--orange);color:var(--black);padding:15px 28px;border-radius:var(--r);transition:opacity var(--t),transform var(--t);text-align:center;display:block;cursor:pointer;border:none;width:100%}
+.btn-cotizar:hover{opacity:.88;transform:translateY(-1px)}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:6px;background:var(--black3);border:1px solid var(--border);color:var(--white);padding:15px 16px;border-radius:var(--r);transition:all var(--t);cursor:pointer;white-space:nowrap;font-family:var(--fd);font-size:10px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none}
+.btn-wa:hover{border-color:var(--orange);color:var(--orange)}
+
+/* ═══ URL SLUG INDICATOR ════════════════ */
+.modal-url-badge{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--w30);padding:0 26px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.modal-url-badge::before{content:'movdi.mx/';color:var(--orange)}
 </style>
 </head>
 <body>
@@ -428,18 +490,52 @@ ul{list-style:none}
       <div class="lbl">Roster</div>
       <h2 class="stitle">Nuestros<br><em>talentos.</em></h2>
     </div>
-    <div class="crew-tabs" role="tablist">
-      <button class="crew-tab active" data-crew="movdi" role="tab">Crew MOVDI <span class="ctab-cnt" id="cntM">0</span></button>
-      <button class="crew-tab" data-crew="ugc" role="tab">Crew UGC <span class="ctab-cnt" id="cntU">0</span></button>
+    <!-- Mobile filter chips -->
+    <div class="mobile-filters" id="mobileFilters">
+      <!-- built by JS -->
     </div>
-    <div class="filters" id="rFilters">
-      <div class="fg"><div class="fg-lbl">Plataforma</div><div class="pills" id="fPlat"></div></div>
-      <div class="fg"><div class="fg-lbl">Categoría</div><div class="pills" id="fCat"></div></div>
-      <div class="fg"><div class="fg-lbl">Alcance</div><div class="pills" id="fTier"></div></div>
-      <button class="clear-btn" id="clearBtn">↺ Limpiar</button>
+
+    <!-- Desktop sidebar + grid layout -->
+    <div class="roster-layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar-filters" id="sidebarFilters">
+        <div class="sf-crew-tabs" id="sfCrewTabs">
+          <button class="sf-crew-tab active" data-crew="movdi">
+            Crew MOVDI <span class="sf-cnt" id="sfCntM">0</span>
+          </button>
+          <button class="sf-crew-tab" data-crew="ugc">
+            Crew UGC <span class="sf-cnt" id="sfCntU">0</span>
+          </button>
+        </div>
+        <div style="height:1px;background:var(--border);margin:4px 0"></div>
+        <div class="sf-group" id="sfPlat">
+          <div class="sf-group-lbl">Plataforma</div>
+          <div class="sf-pills" id="sfPlatPills"></div>
+        </div>
+        <div class="sf-group" id="sfCat">
+          <div class="sf-group-lbl">Categoría</div>
+          <div class="sf-pills" id="sfCatPills"></div>
+        </div>
+        <div class="sf-group" id="sfTier">
+          <div class="sf-group-lbl">Alcance</div>
+          <div class="sf-pills" id="sfTierPills"></div>
+        </div>
+        <button class="sf-clear" id="sfClear">↺ Limpiar filtros</button>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <div>
+        <div class="rc" id="rCount"></div>
+        <div class="tgrid" id="tGrid"></div>
+      </div>
     </div>
-    <div class="rc" id="rCount"></div>
-    <div class="tgrid" id="tGrid"></div>
+
+    <!-- Hidden old filter containers (JS compatibility) -->
+    <div style="display:none">
+      <div id="cntM"></div><div id="cntU"></div>
+      <div id="fPlat"></div><div id="fCat"></div><div id="fTier"></div>
+      <button id="clearBtn"></button>
+    </div>
   </div>
 </section>
 
@@ -848,6 +944,8 @@ const fiObserver=new IntersectionObserver(entries=>{
   entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');fiObserver.unobserve(e.target);}});
 },{threshold:0.1,rootMargin:'0px 0px -30px 0px'});
 document.querySelectorAll('#hero-wrap .fi').forEach(el=>fiObserver.observe(el));
+// Handle direct URL like movdi.mx/alba
+handleRouting();
 
 /* ── TEAM ───────────────────────── */
 function initTeam(){
@@ -869,15 +967,8 @@ function initTeam(){
 /* ── ROSTER ─────────────────────── */
 function getActive(){return currentCrew==='movdi'?talentosMovdi:talentosUGC;}
 
-function buildPills(){
-  const t=getActive();
-  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.name)))].sort();
-  const cats=[...new Set(t.flatMap(x=>x.categorias))].sort();
-  const tiers=[...new Set(t.map(x=>x.tier))].sort();
-  makePills('fPlat',plats,'plataforma');
-  makePills('fCat',cats,'categoria');
-  makePills('fTier',tiers,'tier');
-}
+function buildPills(){/* handled by sidebar */}
+
 function makePills(id,opts,key){
   const el=document.getElementById(id);
   el.innerHTML=opts.map(o=>`
@@ -928,75 +1019,258 @@ function renderRoster(){
   });
 }
 function initRoster(){
-  document.getElementById('cntM').textContent=talentosMovdi.length;
-  document.getElementById('cntU').textContent=talentosUGC.length;
-  document.querySelectorAll('.crew-tab').forEach(tab=>{
+  // Counts
+  const mCount=talentosMovdi.length;
+  const uCount=talentosUGC.length;
+  document.getElementById('sfCntM').textContent=mCount;
+  document.getElementById('sfCntU').textContent=uCount;
+
+  // Sidebar crew tabs
+  document.querySelectorAll('.sf-crew-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
       currentCrew=tab.dataset.crew;
-      document.querySelectorAll('.crew-tab').forEach(t=>{t.classList.toggle('active',t===tab);t.setAttribute('aria-selected',t===tab?'true':'false');});
+      document.querySelectorAll('.sf-crew-tab').forEach(t=>t.classList.toggle('active',t===tab));
       activeFilters={plataforma:null,categoria:null,tier:null};
-      buildPills();renderRoster();updateClear();
+      buildSidebarFilters();
+      buildMobileFilters();
+      renderRoster();
+      updateSfClear();
     });
   });
-  document.getElementById('clearBtn').addEventListener('click',()=>{
+
+  // Clear button
+  document.getElementById('sfClear').addEventListener('click',()=>{
     activeFilters={plataforma:null,categoria:null,tier:null};
-    buildPills();renderRoster();updateClear();
+    buildSidebarFilters();
+    buildMobileFilters();
+    renderRoster();
+    updateSfClear();
   });
-  buildPills();renderRoster();
+
+  buildSidebarFilters();
+  buildMobileFilters();
+  renderRoster();
   document.getElementById('tGrid').dataset.init='1';
 }
 
+function buildSidebarFilters(){
+  const t=getActive();
+  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.name)))].sort();
+  const cats=[...new Set(t.flatMap(x=>x.categorias))].sort();
+  const tiers=[...new Set(t.map(x=>x.tier))].sort();
+  makeSfPills('sfPlatPills',plats,'plataforma');
+  makeSfPills('sfCatPills',cats,'categoria');
+  makeSfPills('sfTierPills',tiers,'tier');
+}
+
+function makeSfPills(id,opts,key){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.innerHTML=opts.map(o=>`
+    <button class="sf-pill${activeFilters[key]===o?' active':''}" data-k="${key}" data-v="${o}">${o}</button>
+  `).join('');
+  el.querySelectorAll('.sf-pill').forEach(p=>{
+    p.addEventListener('click',()=>{
+      activeFilters[p.dataset.k]=activeFilters[p.dataset.k]===p.dataset.v?null:p.dataset.v;
+      buildSidebarFilters();
+      buildMobileFilters();
+      renderRoster();
+      updateSfClear();
+    });
+  });
+}
+
+function buildMobileFilters(){
+  const container=document.getElementById('mobileFilters');
+  if(!container)return;
+  const t=getActive();
+  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.name)))].sort();
+  const cats=[...new Set(t.flatMap(x=>x.categorias))].sort();
+  const tiers=[...new Set(t.map(x=>x.tier))].sort();
+
+  // Build crew row + filter rows
+  container.innerHTML=`
+    <div class="mf-section">
+      <div class="mf-section-lbl">Crew</div>
+      <div class="mf-row">
+        <button class="mf-chip${currentCrew==='movdi'?' active':''}" data-crew="movdi">Crew MOVDI</button>
+        <button class="mf-chip${currentCrew==='ugc'?' active':''}" data-crew="ugc">Crew UGC</button>
+      </div>
+    </div>
+    <div class="mf-section">
+      <div class="mf-section-lbl">Plataforma</div>
+      <div class="mf-row">${plats.map(p=>`<button class="mf-chip${activeFilters.plataforma===p?' active':''}" data-k="plataforma" data-v="${p}">${p}</button>`).join('')}</div>
+    </div>
+    <div class="mf-section">
+      <div class="mf-section-lbl">Categoría</div>
+      <div class="mf-row">${cats.map(c=>`<button class="mf-chip${activeFilters.categoria===c?' active':''}" data-k="categoria" data-v="${c}">${c}</button>`).join('')}</div>
+    </div>
+    <div class="mf-section">
+      <div class="mf-section-lbl">Alcance</div>
+      <div class="mf-row">${tiers.map(tr=>`<button class="mf-chip${activeFilters.tier===tr?' active':''}" data-k="tier" data-v="${tr}">${tr}</button>`).join('')}
+      ${Object.values(activeFilters).some(Boolean)?'<button class="mf-chip" id="mfClear" style="color:var(--orange);border-color:var(--orange)">↺ Limpiar</button>':''}</div>
+    </div>`;
+
+  // Crew chips
+  container.querySelectorAll('[data-crew]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      currentCrew=btn.dataset.crew;
+      activeFilters={plataforma:null,categoria:null,tier:null};
+      buildSidebarFilters();
+      buildMobileFilters();
+      renderRoster();
+      updateSfClear();
+    });
+  });
+  // Filter chips
+  container.querySelectorAll('[data-k]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      activeFilters[btn.dataset.k]=activeFilters[btn.dataset.k]===btn.dataset.v?null:btn.dataset.v;
+      buildSidebarFilters();
+      buildMobileFilters();
+      renderRoster();
+      updateSfClear();
+    });
+  });
+  // Clear
+  const cl=document.getElementById('mfClear');
+  if(cl)cl.addEventListener('click',()=>{
+    activeFilters={plataforma:null,categoria:null,tier:null};
+    buildSidebarFilters();
+    buildMobileFilters();
+    renderRoster();
+    updateSfClear();
+  });
+}
+
+function updateSfClear(){
+  const hasF=Object.values(activeFilters).some(Boolean);
+  const btn=document.getElementById('sfClear');
+  if(btn)btn.classList.toggle('on',hasF);
+}
+
 /* ── MODAL ──────────────────────── */
-function openModal(slug){
+function openModal(slug,pushState){
   const all=[...talentosMovdi,...talentosUGC];
   const t=all.find(x=>x.slug===slug);
   if(!t)return;
   const crew=talentosMovdi.includes(t)?'CREW MOVDI':'CREW UGC';
   const pm=getPM(t.nombre);
+  const shareUrl=`https://movdi.mx/${t.slug}`;
   const platsH=t.plataformas.map(p=>`
     <div class="prow">
       <div class="pname">${p.name}</div>
-      <div class="phandle">
-        ${p.link&&p.link!=='#'
-          ?`<a href="${p.link}" target="_blank" rel="noopener">${p.handle} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 8L8 2M8 2H3.5M8 2v4.5"/></svg></a>`
-          :p.handle}
-      </div>
+      <div class="phandle">${p.link&&p.link!=='#'
+        ?`<a href="${p.link}" target="_blank" rel="noopener">${p.handle} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 8L8 2M8 2H3.5M8 2v4.5"/></svg></a>`
+        :p.handle}</div>
       <div class="pfollow">${p.followers}</div>
       <div class="per">ER ${p.er}</div>
     </div>`).join('');
   const brandsH=t.marcas.map(b=>`<span class="tag">${b}</span>`).join('');
   const catsH=t.categorias.map(c=>`<span class="tag cat">${c}</span>`).join('');
   const vidsH=t.videos.map(v=>`
-    <a class="vrow" href="${v.url!=='#'?v.url:'javascript:void(0)'}" ${v.url!=='#'?'target="_blank" rel="noopener"':''}>
+    <a class="vrow" href="${v.url&&v.url!=='#'?v.url:'javascript:void(0)'}" ${v.url&&v.url!=='#'?'target="_blank" rel="noopener"':''}>
       <div class="vtipo">${v.tipo}</div>
       <div class="vdesc">${v.desc}</div>
       <svg class="varr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
     </a>`).join('');
+  const emailSubject=encodeURIComponent(`Cotización — ${t.nombre} · movdi.mx → PM: ${pm}`);
+  const emailBody=encodeURIComponent(`Hola, me interesa cotizar una campaña con ${t.nombre}.`);
+  const emailHref=`mailto:${pm}?subject=${emailSubject}&cc=hola@movdi.mx&body=${emailBody}`;
+  const waMsg=encodeURIComponent(`Hola MOVDI, me interesa cotizar una campaña con ${t.nombre}.`);
+  const waHref=`https://wa.me/525548418158?text=${waMsg}`;
+
   document.getElementById('modalBody').innerHTML=`
-    <div class="mhero">
-      <img class="mphoto" src="${t.photo}" alt="${t.nombre}" loading="eager" onerror="this.style.background='var(--black3)'">
-      <div>
-        <div class="mcrew">${crew}</div>
-        <h2 class="mname">${t.nombre}</h2>
-        <div class="mcity">${t.ciudad}</div>
-        <p class="mbio">${t.bio}</p>
-      </div>
+    <div class="modal-actions">
+      <button class="btn-back" onclick="closeModal();return false">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 2L3 7l6 5"/></svg>
+        Volver al roster
+      </button>
+      <button class="btn-share" onclick="shareCard('${t.nombre}','${t.slug}')">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="2.5" r="1.5"/><circle cx="2.5" cy="7" r="1.5"/><circle cx="11" cy="11.5" r="1.5"/><path d="M4 6l6-3M4 8l6 3"/></svg>
+        Compartir
+      </button>
     </div>
-    <div class="msect"><div class="msect-t">Redes & Audiencia</div>${platsH}</div>
-    ${t.audiencia?`<div class="msect"><div class="msect-t">Audiencia principal</div><div class="maud">${t.audiencia}</div></div>`:''}
-    <div class="msect"><div class="msect-t">Categorías</div><div class="tags">${catsH}</div></div>
-    <div class="msect"><div class="msect-t">Marcas con las que ha trabajado</div><div class="tags">${brandsH}</div></div>
-    ${t.videos.length?`<div class="msect"><div class="msect-t">Conoce su trabajo</div>${vidsH}</div>`:''}
-    <div class="m-cta">
-      <a class="btn-cotizar" href="mailto:${pm}?subject=${encodeURIComponent(`Cotización — ${t.nombre} · movdi.mx → PM: ${pm}`)}&cc=hola@movdi.mx&body=${encodeURIComponent(`Hola, me interesa cotizar una campaña con ${t.nombre}.`)}">
-        Solicitar cotización
-      </a>
+    <div class="modal-url-badge">${t.slug}</div>
+    <div class="mbody">
+      <div class="mhero">
+        <img class="mphoto" src="${t.photo}" alt="${t.nombre}" loading="eager" onerror="this.style.background='var(--black3)'">
+        <div>
+          <div class="mcrew">${crew}</div>
+          <h2 class="mname">${t.nombre}</h2>
+          <div class="mcity">${t.ciudad}</div>
+          <p class="mbio">${t.bio}</p>
+        </div>
+      </div>
+      <div class="msect"><div class="msect-t">Redes & Audiencia</div>${platsH}</div>
+      ${t.audiencia?`<div class="msect"><div class="msect-t">Audiencia principal</div><div class="maud">${t.audiencia}</div></div>`:''}
+      <div class="msect"><div class="msect-t">Categorías</div><div class="tags">${catsH}</div></div>
+      ${t.marcas.length?`<div class="msect"><div class="msect-t">Marcas con las que ha trabajado</div><div class="tags">${brandsH}</div></div>`:''}
+      ${t.videos.length?`<div class="msect"><div class="msect-t">Conoce su trabajo</div>${vidsH}</div>`:''}
+      <div class="btn-cotizar-wrap">
+        <button class="btn-cotizar" onclick="window.location.href='${emailHref}'">Solicitar cotización</button>
+        <a class="btn-wa" href="${waHref}" target="_blank" rel="noopener">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WA
+        </a>
+      </div>
     </div>`;
   document.getElementById('modal-ov').classList.add('open');
   document.body.style.overflow='hidden';
   document.getElementById('modalBox').scrollTop=0;
+  // URL routing
+  if(pushState!==false){
+    history.pushState({slug:t.slug},'',`/${t.slug}`);
+    document.title=`${t.nombre} — MOVDI`;
+  }
 }
-function closeModal(){document.getElementById('modal-ov').classList.remove('open');document.body.style.overflow='';}
+function closeModal(){
+  document.getElementById('modal-ov').classList.remove('open');
+  document.body.style.overflow='';
+  // Restore URL
+  if(history.state&&history.state.slug){
+    history.pushState({},'','/')
+    document.title='MOVDI — Digital Movement Agency';
+  }
+}
+
+function shareCard(nombre,slug){
+  const url=`https://movdi.mx/${slug}`;
+  if(navigator.share){
+    navigator.share({title:`${nombre} — MOVDI`,text:`Mira el perfil de ${nombre} en MOVDI`,url}).catch(()=>{});
+  }else{
+    navigator.clipboard.writeText(url).then(()=>showToast('Link copiado')).catch(()=>showToast('movdi.mx/'+slug));
+  }
+}
+
+function showToast(msg){
+  let t=document.getElementById('shareToast');
+  if(!t){t=document.createElement('div');t.id='shareToast';t.className='share-toast';document.body.appendChild(t);}
+  t.textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+
+// URL routing — open talent page directly
+function handleRouting(){
+  const slug=location.pathname.replace(/^\/|\/?$/g,'');
+  if(!slug||slug==='index.html')return;
+  const all=[...talentosMovdi,...talentosUGC];
+  const t=all.find(x=>x.slug===slug);
+  if(t){
+    // show roster section first
+    showSection('roster');
+    setTimeout(()=>openModal(t.slug,false),200);
+  }
+}
+
+window.addEventListener('popstate',e=>{
+  if(e.state&&e.state.slug){
+    openModal(e.state.slug,false);
+  }else{
+    closeModal();
+  }
+});
 document.getElementById('modalCloseBtn').addEventListener('click',closeModal);
 document.getElementById('modal-ov').addEventListener('click',e=>{if(e.target===document.getElementById('modal-ov'))closeModal();});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
