@@ -895,7 +895,10 @@ function showSection(id){
   window.scrollTo({top:0,behavior:'smooth'});
 
   // Lazy init sections
-  if(id==='roster'&&!document.getElementById('tGrid').dataset.init){initRoster();}
+  if(id==='roster'){
+    if(!document.getElementById('tGrid').dataset.init){initRoster();}
+    else{bindRosterCardEvents();}
+  }
   if(id==='servicios'&&!document.getElementById('srvGrid').dataset.init){initServices();}
   if(id==='nosotros'&&!document.getElementById('teamGrid').dataset.init){initTeam();}
   if(id==='unete'){initUnete();}
@@ -1013,6 +1016,31 @@ function renderRoster(){
     </div>`).join('');
   // Event delegation already set up in initRoster — no per-card listeners needed
 }
+function bindRosterCardEvents(){
+  const grid=document.getElementById('tGrid');
+  if(!grid)return;
+  if(grid.dataset.clickBound==='1')return;
+  grid.dataset.clickBound='1';
+  grid.addEventListener('click',e=>{
+    const card=e.target.closest('.tcard');
+    if(!card||!grid.contains(card))return;
+    const slug=card.dataset.slug;
+    console.log('[MOVDI] Click card slug:',slug);
+    if(!slug){console.warn('[MOVDI] Card sin data-slug',card);return;}
+    if(typeof openModal!=='function'){console.error('[MOVDI] openModal no definido');return;}
+    openModal(slug);
+  });
+  grid.addEventListener('keydown',e=>{
+    const card=e.target.closest('.tcard');
+    if(!card||!grid.contains(card))return;
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      const slug=card.dataset.slug;
+      if(slug&&typeof openModal==='function')openModal(slug);
+    }
+  });
+}
+
 function initRoster(){
   // Counts
   const mCount=talentosMovdi.length;
@@ -1046,26 +1074,7 @@ function initRoster(){
   buildMobileFilters();
   renderRoster();
   document.getElementById('tGrid').dataset.init='1';
-
-  // ── Event delegation for tcard clicks (survives re-renders) ─────────────
-  const tGrid=document.getElementById('tGrid');
-  tGrid.addEventListener('click',e=>{
-    const card=e.target.closest('.tcard');
-    if(!card)return;
-    const slug=card.dataset.slug;
-    if(!slug){console.warn('[MOVDI] tcard sin slug',card);return;}
-    if(typeof openModal!=='function'){console.error('[MOVDI] openModal no definido');return;}
-    openModal(slug);
-  });
-  tGrid.addEventListener('keydown',e=>{
-    const card=e.target.closest('.tcard');
-    if(!card)return;
-    if(e.key==='Enter'||e.key===' '){
-      e.preventDefault();
-      const slug=card.dataset.slug;
-      if(slug)openModal(slug);
-    }
-  });
+  bindRosterCardEvents();
 }
 
 function buildSidebarFilters(){
