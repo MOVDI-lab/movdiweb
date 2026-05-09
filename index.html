@@ -150,9 +150,9 @@ ul{list-style:none}
 /* Talent grid */
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2px}
 .tcard{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--black3);cursor:pointer}
-.tcard-img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .45s cubic-bezier(.4,0,.2,1),filter .45s ease;will-change:transform}
+.tcard-img{width:100%;height:100%;object-fit:cover;object-position:top center;pointer-events:none;transition:transform .45s cubic-bezier(.4,0,.2,1),filter .45s ease;will-change:transform}
 .tcard:hover .tcard-img{transform:scale(1.04);filter:brightness(.75)}
-.tcard-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.95) 0%,rgba(10,10,10,.4) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;transition:background .35s ease;pointer-events:none}
+.tcard-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.95) 0%,rgba(10,10,10,.4) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;transition:background .35s ease;pointer-events:none;cursor:pointer}
 .tcard:hover .tcard-ov{background:linear-gradient(to top,rgba(10,10,10,.97) 0%,rgba(10,10,10,.7) 60%,rgba(255,75,0,.07) 100%)}
 .tdot{position:absolute;top:9px;left:9px;width:6px;height:6px;border-radius:50%;background:var(--orange);opacity:.7}
 .tname{font-family:var(--fd);font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
@@ -1015,8 +1015,11 @@ function renderRoster(){
     return;
   }
   grid.innerHTML=t.map((x,i)=>`
-    <div class="tcard" data-slug="${x.slug}" role="button" tabindex="0" aria-label="Ver perfil de ${x.nombre}"
-      style="animation-delay:${Math.min(i*.025,.35)}s">
+    <div class="tcard" data-slug="${x.slug}" role="button" tabindex="0"
+      aria-label="Ver perfil de ${x.nombre}"
+      style="animation-delay:${Math.min(i*.025,.35)}s"
+      onclick="openModal('${x.slug}')"
+      onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openModal('${x.slug}');}">
       <span class="tdot" aria-hidden="true"></span>
       <img class="tcard-img" src="${x.photo}" alt="${x.nombre}" loading="lazy" width="280" height="373"
         onerror="this.style.opacity='0'">
@@ -1026,11 +1029,11 @@ function renderRoster(){
       </div>
       <div class="tcard-cta" aria-hidden="true"><span class="tcard-cta-i">Ver perfil</span></div>
     </div>`).join('');
-  // Event delegation already set up in initRoster — no per-card listeners needed
 }
 function bindRosterCardEvents(){
   const grid=document.getElementById('tGrid');
   if(!grid)return;
+  // onclick inline handles clicks — delegation as backup
   if(grid.dataset.clickBound==='1')return;
   grid.dataset.clickBound='1';
   grid.addEventListener('click',e=>{
