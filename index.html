@@ -85,7 +85,7 @@ ul{list-style:none}
 .snum{font-family:var(--fd);font-size:clamp(34px,4vw,50px);font-weight:900;color:var(--orange);line-height:1;letter-spacing:-.02em}
 .slbl{font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--w30);margin-top:4px;text-align:right}
 @media(max-width:768px){
-  #hero{align-items:flex-start;padding-top:calc(var(--nav) + 20px);padding-bottom:48px}
+  #hero{align-items:flex-start;min-height:auto;padding-top:calc(var(--nav) + 16px);padding-bottom:40px}
   .hero-grid{grid-template-columns:1fr}
   .hero-stats{flex-direction:row;align-items:flex-start;justify-content:flex-start}
   .slbl{text-align:left}
@@ -152,7 +152,7 @@ ul{list-style:none}
 .tcard{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--black3);cursor:pointer}
 .tcard-img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .45s cubic-bezier(.4,0,.2,1),filter .45s ease;will-change:transform}
 .tcard:hover .tcard-img{transform:scale(1.04);filter:brightness(.75)}
-.tcard-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.95) 0%,rgba(10,10,10,.4) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;transition:background .35s ease}
+.tcard-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.95) 0%,rgba(10,10,10,.4) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:14px;transition:background .35s ease;pointer-events:none}
 .tcard:hover .tcard-ov{background:linear-gradient(to top,rgba(10,10,10,.97) 0%,rgba(10,10,10,.7) 60%,rgba(255,75,0,.07) 100%)}
 .tdot{position:absolute;top:9px;left:9px;width:6px;height:6px;border-radius:50%;background:var(--orange);opacity:.7}
 .tname{font-family:var(--fd);font-size:14px;font-weight:900;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
@@ -1011,11 +1011,7 @@ function renderRoster(){
       </div>
       <div class="tcard-cta" aria-hidden="true"><span class="tcard-cta-i">Ver perfil</span></div>
     </div>`).join('');
-  grid.querySelectorAll('.tcard').forEach(c=>{
-    const open=()=>openModal(c.dataset.slug);
-    c.addEventListener('click',open);
-    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open();}});
-  });
+  // Event delegation already set up in initRoster — no per-card listeners needed
 }
 function initRoster(){
   // Counts
@@ -1050,6 +1046,26 @@ function initRoster(){
   buildMobileFilters();
   renderRoster();
   document.getElementById('tGrid').dataset.init='1';
+
+  // ── Event delegation for tcard clicks (survives re-renders) ─────────────
+  const tGrid=document.getElementById('tGrid');
+  tGrid.addEventListener('click',e=>{
+    const card=e.target.closest('.tcard');
+    if(!card)return;
+    const slug=card.dataset.slug;
+    if(!slug){console.warn('[MOVDI] tcard sin slug',card);return;}
+    if(typeof openModal!=='function'){console.error('[MOVDI] openModal no definido');return;}
+    openModal(slug);
+  });
+  tGrid.addEventListener('keydown',e=>{
+    const card=e.target.closest('.tcard');
+    if(!card)return;
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      const slug=card.dataset.slug;
+      if(slug)openModal(slug);
+    }
+  });
 }
 
 function buildSidebarFilters(){
@@ -1395,7 +1411,7 @@ function renderSrvPanel(s){
         <div style="font-family:var(--fd);font-size:16px;font-weight:900;text-transform:uppercase;color:var(--white)">Hablemos de tu proyecto</div>
       </div>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-p" onclick="showSection('hablemos')" style="font-size:12px;padding:12px 22px">Contactar por form</button>
+        <button class="btn-p" onclick="showSection('hablemos')" style="font-size:12px;padding:12px 22px">Hablemos de esto</button>
         <a href="https://wa.me/525548418158?text=${encodeURIComponent('Hola MOVDI, me interesa el servicio de '+s.title+'.')}" target="_blank" rel="noopener"
           style="display:inline-flex;align-items:center;gap:7px;background:var(--black3);border:1px solid var(--border);color:var(--white);padding:12px 18px;border-radius:var(--r);font-family:var(--fd);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;transition:all var(--t)"
           onmouseover="this.style.borderColor='#25d366';this.style.color='#25d366'"
