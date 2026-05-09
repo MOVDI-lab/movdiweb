@@ -798,6 +798,11 @@ function loadData(){
         const sfU=document.getElementById('sfCntU');
         if(sfM)sfM.textContent=talentosMovdi.length;
         if(sfU)sfU.textContent=talentosUGC.length;
+        // Re-render roster so cards use JSON slugs, and reset bind flag so delegation re-attaches
+        const grid=document.getElementById('tGrid');
+        if(grid)grid.dataset.clickBound='';
+        if(typeof renderRoster==='function')renderRoster();
+        if(typeof bindRosterCardEvents==='function')bindRosterCardEvents();
       })
       .catch(()=>{}); // silently ignore — inline data already in use
   }
