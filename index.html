@@ -1150,6 +1150,25 @@ function updateSfClear(){
 }
 
 /* ── MODAL ──────────────────────── */
+/* ── PM ROUTING ─────────────────────── */
+const PM={
+  'isaac@movdi.mx':['papi sosa','alliege','artux','ryu','amaury','michelle','jess','late'],
+  'mauricio@movdi.mx':['chaparrito','mingod','saac','soy pan','creador 150','nuvia','prishcka','gigi'],
+  'leonardo@movdi.mx':['natalan','deus amir','ansi','caprimint'],
+  'gloria@movdi.mx':['alba','ren','rodezel','kameoyo','haruki','sin6','hell','pau'],
+  'sofia@movdi.mx':['valebonis','arihessi','vicky','tori','maryblog','julieta','shoana','maleen','anita'],
+  'jimena@movdi.mx':['nezumi'],
+  'zazil@movdi.mx':['patty meza','sailornat','crystal molly','nanatyx','eli monsivais','angie monsivais','paloma escalante'],
+  'fernanda@movdi.mx':['amanda','comiendosoyfeliz','xime bonis','andrea','pamela','chemaceja','azyhadee'],
+};
+function getPM(n){
+  const s=n.toLowerCase().trim();
+  for(const[e,t]of Object.entries(PM)){
+    if(t.some(x=>s.includes(x)||x.includes(s)))return e;
+  }
+  return 'hola@movdi.mx';
+}
+
 function openModal(slug,pushState){
   const all=[...talentosMovdi,...talentosUGC];
   const t=all.find(x=>x.slug===slug);
