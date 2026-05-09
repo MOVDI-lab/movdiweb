@@ -798,11 +798,9 @@ function loadData(){
         const sfU=document.getElementById('sfCntU');
         if(sfM)sfM.textContent=talentosMovdi.length;
         if(sfU)sfU.textContent=talentosUGC.length;
-        // Re-render roster so cards use JSON slugs, and reset bind flag so delegation re-attaches
+        // Re-render con datos del JSON (delegación ya está activa)
         const grid=document.getElementById('tGrid');
-        if(grid)grid.dataset.clickBound='';
-        if(typeof renderRoster==='function')renderRoster();
-        if(typeof bindRosterCardEvents==='function')bindRosterCardEvents();
+        if(grid&&grid.dataset.init){renderRoster();}
       })
       .catch(()=>{}); // silently ignore — inline data already in use
   }
@@ -914,7 +912,7 @@ function showSection(id){
   // Lazy init sections
   if(id==='roster'){
     if(!document.getElementById('tGrid').dataset.init){initRoster();}
-    else{bindRosterCardEvents();}
+    else{ renderRoster(); bindRosterCardEvents(); }
   }
   if(id==='servicios'&&!document.getElementById('srvGrid').dataset.init){initServices();}
   if(id==='nosotros'&&!document.getElementById('teamGrid').dataset.init){initTeam();}
@@ -1037,9 +1035,7 @@ function renderRoster(){
 }
 function bindRosterCardEvents(){
   const grid=document.getElementById('tGrid');
-  if(!grid)return;
-  // onclick inline handles clicks — delegation as backup
-  if(grid.dataset.clickBound==='1')return;
+  if(!grid||grid.dataset.clickBound==='1')return;
   grid.dataset.clickBound='1';
   grid.addEventListener('click',e=>{
     const card=e.target.closest('.tcard');
