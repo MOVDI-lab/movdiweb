@@ -777,21 +777,33 @@ let TEAM=[];
 let talentosMovdi=[];
 let talentosUGC=[];
 
-async function loadData(){
-  try{
-    // Try to load from external JSON (production)
-    const r=await fetch('/talentos.json');
-    if(!r.ok)throw new Error('404');
-    const d=await r.json();
-    TEAM=(d.team||[]).sort((a,b)=>a.pos-b.pos);
-    talentosMovdi=d.movdi||[];
-    talentosUGC=d.ugc||[];
-  }catch{
-    // Fallback: load inline data (development / file:// mode)
-    TEAM=TEAM_INLINE.sort((a,b)=>a.pos-b.pos);
-    talentosMovdi=MOVDI_INLINE;
-    talentosUGC=UGC_INLINE;
+function loadData(){
+  // ── Inline data loads SYNCHRONOUSLY first — always works ────────────────
+  TEAM=TEAM_INLINE.slice().sort((a,b)=>a.pos-b.pos);
+  talentosMovdi=MOVDI_INLINE.slice();
+  talentosUGC=UGC_INLINE.slice();
+
+  // ── Then try JSON in background (production Netlify) ────────────────────
+  // If it loads, silently refresh the data arrays without blocking UI
+  if(location.protocol!=='file:'){
+    fetch('/talentos.json')
+      .then(r=>r.ok?r.json():null)
+      .then(d=>{
+        if(!d)return;
+        TEAM=(d.team||[]).sort((a,b)=>a.pos-b.pos);
+        talentosMovdi=d.movdi||[];
+        talentosUGC=d.ugc||[];
+        // Refresh counts if roster is visible
+        const sfM=document.getElementById('sfCntM');
+        const sfU=document.getElementById('sfCntU');
+        if(sfM)sfM.textContent=talentosMovdi.length;
+        if(sfU)sfU.textContent=talentosUGC.length;
+      })
+      .catch(()=>{}); // silently ignore — inline data already in use
   }
+
+  // Returns synchronously — data is ready immediately
+  return Promise.resolve();
 }
 
 
