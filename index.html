@@ -460,6 +460,10 @@ ul{list-style:none}
 .footer-social{display:flex;gap:16px;align-items:center;margin-top:12px}
 .footer-social a{color:var(--w60);transition:color var(--t)}
 .footer-social a:hover{color:var(--orange)}
+
+.hero-social{display:flex;gap:20px;align-items:center;margin-top:24px}
+.hero-social a{display:flex;align-items:center;gap:6px;color:var(--w60);font-family:var(--fd);font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:color var(--t)}
+.hero-social a:hover{color:var(--orange)}
 </style>
 </head>
 <body>
@@ -504,6 +508,16 @@ ul{list-style:none}
       <div class="hero-actions fi">
         <button class="btn-p" onclick="showSection('roster')">Ver talentos</button>
         <button class="btn-s" onclick="showSection('hablemos')">Hablemos</button>
+      </div>
+      <div class="hero-social">
+        <a href="https://www.instagram.com/movdimx/" target="_blank" rel="noopener" aria-label="Instagram MOVDI">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor"/></svg>
+          @movdimx
+        </a>
+        <a href="https://mx.linkedin.com/company/movdi" target="_blank" rel="noopener" aria-label="LinkedIn MOVDI">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          MOVDI
+        </a>
       </div>
     </div>
     <div class="hero-stats fi">
@@ -1189,19 +1203,20 @@ function openModal(slug,pushState){
   const pm=getPM(t.nombre);
   const platsH=t.plataformas.map(p=>`
     <div class="prow">
-      <div class="pname">${p.name}</div>
+      <div class="pname">${p.plat||p.name||''}</div>
       <div class="phandle">${p.link&&p.link!=='#'
         ?`<a href="${p.link}" target="_blank" rel="noopener">${p.handle} <svg width="9" height="9" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M2 8L8 2M8 2H3.5M8 2v4.5"/></svg></a>`
         :p.handle}</div>
-      <div class="pfollow">${p.followers}</div>
+      <div class="pfollow">${p.seg||p.followers||''}</div>
       <div class="per">ER ${p.er}</div>
     </div>`).join('');
-  const brandsH=t.marcas.map(b=>`<span class="tag">${b}</span>`).join('');
+  const marcasArr=Array.isArray(t.marcas)?t.marcas:(t.marcas?t.marcas.split(',').map(s=>s.trim()):[]);
+  const brandsH=marcasArr.map(b=>`<span class="tag">${b}</span>`).join('');
   const catsH=t.categorias.map(c=>`<span class="tag cat">${c}</span>`).join('');
   const vidsH=t.videos.map(v=>`
-    <a class="vrow" href="${v.url&&v.url!=='#'?v.url:'javascript:void(0)'}" ${v.url&&v.url!=='#'?'target="_blank" rel="noopener"':''}>
-      <div class="vtipo">${v.tipo}</div>
-      <div class="vdesc">${v.desc}</div>
+    <a class="vrow" href="${(v.link||v.url)&&(v.link||v.url)!=='#'?(v.link||v.url):'javascript:void(0)'}" ${(v.link||v.url)&&(v.link||v.url)!=='#'?'target="_blank" rel="noopener"':''}>
+      <div class="vtipo">${v.tipo||''}</div>
+      <div class="vdesc">${v.titulo||v.desc||''}</div>
       <svg class="varr" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
     </a>`).join('');
 
@@ -1230,7 +1245,7 @@ function openModal(slug,pushState){
       <div class="msect"><div class="msect-t">Redes & Audiencia</div>${platsH}</div>
       ${t.audiencia?`<div class="msect"><div class="msect-t">Audiencia principal</div><div class="maud">${t.audiencia}</div></div>`:''}
       <div class="msect"><div class="msect-t">Categorías</div><div class="tags">${catsH}</div></div>
-      ${t.marcas.length?`<div class="msect"><div class="msect-t">Marcas con las que ha trabajado</div><div class="tags">${brandsH}</div></div>`:''}
+      ${marcasArr.length?`<div class="msect"><div class="msect-t">Marcas con las que ha trabajado</div><div class="tags">${brandsH}</div></div>`:''}
       ${t.videos.length?`<div class="msect"><div class="msect-t">Conoce su trabajo</div>${vidsH}</div>`:''}
       <div class="btn-cotizar-wrap">
         <button class="btn-cotizar" onclick="openCotizarModal('${t.slug}')">Solicitar cotización</button>
