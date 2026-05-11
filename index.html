@@ -68,7 +68,7 @@ ul{list-style:none}
 /* ═══ HERO ═══════════════════════════════ */
 #hero{min-height:100svh;display:flex;align-items:flex-end;padding-bottom:80px;padding-top:var(--nav);position:relative;overflow:hidden}
 .hero-bg-word{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:var(--fd);font-size:clamp(120px,18vw,260px);font-weight:900;text-transform:uppercase;color:rgba(255,75,0,.04);white-space:nowrap;pointer-events:none;user-select:none;letter-spacing:-.02em;line-height:1}
-.hero-side{position:absolute;right:24px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--w30);white-space:nowrap;transform-origin:center}
+.hero-side{position:absolute;right:-8px;top:50%;transform:translateY(-50%) rotate(90deg);font-family:var(--fd);font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--w30);white-space:nowrap;transform-origin:center}
 .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:flex-end;gap:40px;width:100%}
 .hero-lbl{margin-bottom:28px}
 .hero-h{font-family:var(--fd);font-size:clamp(52px,8vw,116px);font-weight:900;line-height:.92;text-transform:uppercase;letter-spacing:-.02em;margin-bottom:28px}
@@ -99,7 +99,8 @@ ul{list-style:none}
 .sb-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;bottom:20%;width:1px;background:var(--border)}
 .sb-num{font-family:var(--fd);font-size:clamp(52px,7vw,84px);font-weight:900;color:var(--orange);line-height:1;letter-spacing:-.02em}
 .sb-lbl{font-family:var(--fd);font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--w30);margin-top:6px;text-align:center}
-@media(max-width:600px){.sb-grid{grid-template-columns:1fr;gap:32px}.sb-item:not(:last-child)::after{display:none}.sb-item{padding:0}}
+@media(max-width:600px){
+.hero-side{display:none}.sb-grid{grid-template-columns:1fr;gap:32px}.sb-item:not(:last-child)::after{display:none}.sb-item{padding:0}}
 
 /* ═══ BRANDS ═════════════════════════════ */
 #brands{padding:44px 0;overflow:hidden;border-bottom:1px solid var(--border)}
