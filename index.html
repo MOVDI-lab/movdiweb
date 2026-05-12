@@ -1432,10 +1432,12 @@ function showToast(msg){
 function handleRouting(){
   const slug=location.pathname.replace(/^\/|\/?$/g,'');
   if(!slug||slug==='index.html')return;
+  if(slug==='roster'){showSection('roster');return;}
+  if(slug==='servicios'){showSection('servicios');return;}
+  if(slug==='nosotros'){showSection('nosotros');return;}
   const all=[...talentosMovdi,...talentosUGC];
   const t=all.find(x=>x.slug===slug);
   if(t){
-    // show roster section first
     showSection('roster');
     setTimeout(()=>openModal(t.slug,false),200);
   }
