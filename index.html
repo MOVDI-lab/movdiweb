@@ -991,7 +991,7 @@ function updateClear(){
 }
 function filterT(t){
   return t.filter(x=>{
-    if(activeFilters.plataforma&&!x.plataformas.some(p=>p.name===activeFilters.plataforma))return false;
+    if(activeFilters.plataforma&&!x.plataformas.some(p=>(p.plat||p.name)===activeFilters.plataforma))return false;
     if(activeFilters.categoria&&!x.categorias.includes(activeFilters.categoria))return false;
     if(activeFilters.tier&&x.tier!==activeFilters.tier)return false;
     return true;
@@ -1085,7 +1085,7 @@ function initRoster(){
 
 function buildSidebarFilters(){
   const t=getActive();
-  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.name)))].sort();
+  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.plat||p.name)))].sort();
   const cats=[...new Set(t.flatMap(x=>x.categorias))].sort();
   const tiers=[...new Set(t.map(x=>x.tier))].sort();
   makeSfPills('sfPlatPills',plats,'plataforma');
@@ -1114,7 +1114,7 @@ function buildMobileFilters(){
   const container=document.getElementById('mobileFilters');
   if(!container)return;
   const t=getActive();
-  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.name)))].sort();
+  const plats=[...new Set(t.flatMap(x=>x.plataformas.map(p=>p.plat||p.name)))].sort();
   const cats=[...new Set(t.flatMap(x=>x.categorias))].sort();
   const tiers=[...new Set(t.map(x=>x.tier))].sort();
 
