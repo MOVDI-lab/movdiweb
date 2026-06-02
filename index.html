@@ -220,6 +220,13 @@ a{color:inherit;text-decoration:none}
 
 footer{border-top:1px solid var(--line);padding:50px 0;text-align:center;color:var(--muted);font-size:13px}
 footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
+.btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:12px;padding:14px;border-radius:10px;background:#25D366;color:#072b16;font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:15px;border:none;cursor:pointer;text-decoration:none;transition:.2s}
+.btn-wa:hover{filter:brightness(1.07)}
+.btn-wa svg{width:20px;height:20px}
+.foot-social{display:flex;gap:24px;justify-content:center;margin:6px 0 18px;flex-wrap:wrap}
+.foot-social a{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:12px;transition:.2s;text-decoration:none}
+.foot-social a:hover{color:var(--orange)}
+.foot-social svg{width:16px;height:16px}
 
 /* ---------- MODAL ---------- */
 .ov{position:fixed;inset:0;z-index:200;background:rgba(4,4,4,.6);backdrop-filter:blur(8px);display:none;justify-content:center;align-items:flex-start;overflow-y:auto;padding:40px 16px}
@@ -440,6 +447,11 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
 
 <footer>
   <div class="logo">MOV<span class="em">DI</span></div>
+  <div class="foot-social">
+    <a href="https://www.instagram.com/movdimx/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a>
+    <a href="https://mx.linkedin.com/company/movdi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.66 4.79 6.12V21H18v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H9z"/></svg>LinkedIn</a>
+    <a id="waFoot" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.84-2-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.21-.62.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.05-.17-.29-.02-.45.13-.6.13-.13.3-.34.44-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.08-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.77.36-.26.29-1.01.99-1.01 2.41 0 1.42 1.04 2.79 1.18 2.98.15.19 2.04 3.12 4.95 4.37.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.08 1.7-.7 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM12 2a10 10 0 0 0-8.6 15.06L2 22l5.05-1.32A10 10 0 1 0 12 2z"/></svg>WhatsApp</a>
+  </div>
   <div>© 2026 MOVDI · Digital Movement Agency · Ciudad de México</div>
 </footer>
 
@@ -479,6 +491,8 @@ const sb = supabase.createClient(
   "sb_publishable_Vti8-CZWWEEgXK51ySsduw_36QttHvd"
 );
 const FORMSPREE="https://formspree.io/f/mrerqovl";
+const WA="525548418158"; /* WhatsApp MOVDI: +52 55 4841 8158 */
+function waLink(txt){return "https://wa.me/"+WA+"?text="+encodeURIComponent(txt);}
 const BRANDS = ['Amazon','Gotrendier','Yakampot','Fashion Nova','Pandora','Heineken','Silicare','YouTube','L\'Oréal','Nestlé','Pepsi','Calvin Klein','Ring','VISA','BAC','Rappi','Duolingo','Crunchyroll','Coca-Cola','Liverpool','DiDi','PUBG'];
 const SERVICES = [
   {id:'imkt',ico:'▣▣',title:'Influencer Marketing / UGC',
@@ -644,7 +658,7 @@ function openM(slug){
       </div></div>
     <div class="body2"><div class="sub-t">Plataformas</div>${plats||"<div style='color:var(--muted)'>Sin plataformas listadas</div>"}
       ${(t.marcas||[]).length?`<div class="sub-t">Marcas</div><div class="chips">${(t.marcas||[]).map(m=>`<span class="c">${esc(m)}</span>`).join("")}</div>`:""}
-      ${vids?`<div class="sub-t">Contenido destacado</div><div class="vids">${vids}</div>`:""}<button class="btn-p" style="width:100%;margin-top:26px" onclick="openCotizar('${t.slug}')">Pedir cotización con ${esc(t.nombre)}</button></div>`;
+      ${vids?`<div class="sub-t">Contenido destacado</div><div class="vids">${vids}</div>`:""}<button class="btn-p" style="width:100%;margin-top:26px" onclick="openCotizar('${t.slug}')">Hablemos de ${esc(t.nombre)}</button><a class="btn-wa" href="${waLink('Hola MOVDI \u{1F44B} me interesa trabajar con '+t.nombre)}" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.84-2-.94-.26-.1-.45-.15-.64.15-.19.29-.74.94-.9 1.13-.17.19-.33.21-.62.07-.3-.15-1.25-.46-2.38-1.47-.88-.79-1.47-1.76-1.64-2.05-.17-.29-.02-.45.13-.6.13-.13.3-.34.44-.51.15-.17.2-.29.3-.48.1-.19.05-.36-.02-.51-.08-.15-.64-1.55-.88-2.12-.23-.55-.47-.48-.64-.49-.17-.01-.36-.01-.55-.01-.19 0-.51.07-.77.36-.26.29-1.01.99-1.01 2.41 0 1.42 1.04 2.79 1.18 2.98.15.19 2.04 3.12 4.95 4.37.69.3 1.23.48 1.65.61.69.22 1.32.19 1.82.12.56-.08 1.7-.7 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.34zM12 2a10 10 0 0 0-8.6 15.06L2 22l5.05-1.32A10 10 0 1 0 12 2z"/></svg>Escr\u00edbenos por WhatsApp</a></div>`;
   document.getElementById("ov").classList.add("open");document.body.style.overflow="hidden";
   if(!_routing) pushURL("/talento/"+t.slug);
   setMeta(t.nombre+" \u00b7 MOVDI",(t.bio||META.roster[1]).slice(0,180),SITE+"/talento/"+t.slug,t.photo);
@@ -760,6 +774,7 @@ window.addEventListener("scroll",()=>{document.getElementById("nav").classList.t
 
 /* ----- init ----- */
 buildBrands();buildServices();buildValues();buildTeam();loadRoster();loadTeam();applyRoute();window.addEventListener('popstate',applyRoute);
+(function(){const w=document.getElementById('waFoot');if(w)w.href=waLink('Hola MOVDI \u{1F44B} quiero m\u00e1s informaci\u00f3n');})();
 </script>
 </body>
 </html>
