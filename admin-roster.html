@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOVDI · Panel de Roster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --orange:#FF4D17;
+    --orange-soft:#FFE9E0;
+    --ink:#141210;
+    --paper:#F7F4EE;
+    --card:#FFFFFF;
+    --line:#E7E1D6;
+    --muted:#8A8175;
+    --green:#1F9D55;
+    --red:#D6453B;
+    --radius:14px;
+    --shadow:0 1px 0 var(--line), 0 18px 40px -28px rgba(20,18,16,.45);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Inter Tight",sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+  }
+  h1,h2,h3{font-family:"Fraunces",serif;font-weight:600;letter-spacing:-.01em;margin:0}
+  button{font-family:inherit;cursor:pointer}
+  input,select,textarea{font-family:inherit;font-size:14px}
+  .hidden{display:none !important}
+
+  /* ---------- Login ---------- */
+  #login{min-height:100vh;display:grid;place-items:center;padding:24px}
+  .login-card{
+    width:100%;max-width:380px;background:var(--card);border:1px solid var(--line);
+    border-radius:var(--radius);box-shadow:var(--shadow);padding:34px 30px;
+  }
+  .brand{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+  .brand .dot{width:10px;height:10px;border-radius:50%;background:var(--orange);display:inline-block}
+  .brand b{font-family:"Fraunces",serif;font-size:22px;letter-spacing:.04em}
+  .login-card h2{font-size:26px;margin:14px 0 4px}
+  .login-card p.sub{color:var(--muted);font-size:13px;margin:0 0 22px}
+  label.fld{display:block;margin-bottom:14px}
+  label.fld span{display:block;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:6px}
+  .ctrl{
+    width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;
+    background:#fff;color:var(--ink);outline:none;transition:border-color .15s;
+  }
+  .ctrl:focus{border-color:var(--orange)}
+  .btn{
+    border:none;border-radius:10px;padding:12px 16px;font-weight:600;font-size:14px;
+    background:var(--orange);color:#fff;width:100%;transition:filter .15s, transform .05s;
+  }
+  .btn:hover{filter:brightness(1.05)}
+  .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+  .btn.ghost:hover{border-color:var(--orange);color:var(--orange);filter:none}
+  .btn.danger{background:var(--red)}
+  .btn.sm{width:auto;padding:8px 13px;font-size:13px}
+  .msg{font-size:13px;margin-top:12px;min-height:18px}
+  .msg.err{color:var(--red)}
+  .msg.ok{color:var(--green)}
+
+  /* ---------- App shell ---------- */
+  header.bar{
+    position:sticky;top:0;z-index:20;background:rgba(247,244,238,.85);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;
+    padding:14px 26px;flex-wrap:wrap;
+  }
+  header.bar .brand b{font-size:18px}
+  header.bar .spacer{flex:1}
+  .who{font-size:13px;color:var(--muted)}
+  .wrap{max-width:1180px;margin:0 auto;padding:26px}
+  .toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+  .toolbar .search{flex:1;min-width:200px}
+  .pill{
+    border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;color:var(--muted)
+  }
+  .pill.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .count{font-size:13px;color:var(--muted)}
+
+  /* ---------- Table ---------- */
+  .table{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .row{display:grid;grid-template-columns:54px 1.7fr .8fr .7fr 1fr 96px 120px;gap:12px;align-items:center;padding:11px 16px;border-bottom:1px solid var(--line)}
+  .row.head{background:#fbf9f5;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600}
+  .row:last-child{border-bottom:none}
+  .row .ph{width:40px;height:40px;border-radius:9px;object-fit:cover;background:var(--orange-soft);border:1px solid var(--line)}
+  .row .nm{font-weight:600}
+  .row .slug{font-size:12px;color:var(--muted)}
+  .tag{display:inline-block;background:var(--orange-soft);color:#b8350f;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:600;margin:1px 2px 1px 0}
+  .tag.crew{background:#ECE7DC;color:#5e574a}
+  .cats{font-size:12px;color:var(--muted);line-height:1.3;max-height:38px;overflow:hidden}
+  .switch{position:relative;display:inline-block;width:42px;height:24px}
+  .switch input{display:none}
+  .slider{position:absolute;inset:0;background:#d9d3c7;border-radius:999px;transition:.18s}
+  .slider:before{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.18s}
+  .switch input:checked + .slider{background:var(--green)}
+  .switch input:checked + .slider:before{transform:translateX(18px)}
+  .acts{display:flex;gap:6px}
+  .iconbtn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 9px;font-size:12px;font-weight:600;color:var(--ink)}
+  .iconbtn:hover{border-color:var(--orange);color:var(--orange)}
+  .iconbtn.del:hover{border-color:var(--red);color:var(--red)}
+  .empty{padding:40px;text-align:center;color:var(--muted)}
+
+  /* ---------- Editor modal ---------- */
+  .overlay{position:fixed;inset:0;background:rgba(20,18,16,.45);z-index:50;display:flex;justify-content:center;align-items:flex-start;padding:30px 16px;overflow-y:auto}
+  .modal{background:var(--card);width:100%;max-width:760px;border-radius:var(--radius);box-shadow:0 30px 80px -30px rgba(0,0,0,.5);border:1px solid var(--line)}
+  .modal header{display:flex;align-items:center;padding:18px 24px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);border-radius:var(--radius) var(--radius) 0 0;z-index:2}
+  .modal header h2{font-size:21px;flex:1}
+  .modal .body{padding:22px 24px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .grid3{display:grid;grid-template-columns:1.2fr 1fr .7fr;gap:10px}
+  .section{margin-top:22px}
+  .section h3{font-size:13px;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);font-weight:600;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+  .section h3 .line{flex:1;height:1px;background:var(--line)}
+  textarea.ctrl{min-height:90px;resize:vertical;line-height:1.5}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}
+  .chip{display:inline-flex;align-items:center;gap:6px;background:var(--orange-soft);color:#b8350f;border-radius:7px;padding:4px 8px;font-size:12px;font-weight:600}
+  .chip b{cursor:pointer;font-size:14px;line-height:1}
+  .chip.brand{background:#ECE7DC;color:#5e574a}
+  .rowedit{display:grid;gap:8px;padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:8px;background:#fbf9f5;position:relative}
+  .rowedit .rm{position:absolute;top:8px;right:8px;border:none;background:transparent;color:var(--muted);font-size:16px;line-height:1}
+  .rowedit .rm:hover{color:var(--red)}
+  .addmini{margin-top:2px}
+  .modal footer{display:flex;gap:10px;justify-content:flex-end;padding:16px 24px;border-top:1px solid var(--line);position:sticky;bottom:0;background:var(--card);border-radius:0 0 var(--radius) var(--radius)}
+  .photo-prev{width:48px;height:48px;border-radius:9px;object-fit:cover;border:1px solid var(--line);background:var(--orange-soft)}
+  .inline{display:flex;gap:12px;align-items:center}
+  @media(max-width:720px){
+    .row{grid-template-columns:44px 1.4fr 96px 110px;}
+    .row .c-tier,.row .c-cats{display:none}
+    .grid2,.grid3{grid-template-columns:1fr}
+  }
+.vtabs{display:flex;gap:6px;background:#efe9dd;border-radius:10px;padding:3px;margin-right:6px}
+.vtab{border:none;background:transparent;padding:7px 14px;border-radius:8px;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer;font-family:inherit}
+.vtab.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.row.trow{grid-template-columns:54px 1.3fr 1.6fr 96px 120px}
+@media(max-width:720px){.row.trow{grid-template-columns:44px 1.4fr 96px 110px}.row.trow .c-puesto{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div id="login">
+  <div class="login-card">
+    <div class="brand"><span class="dot"></span><b>MOVDI</b></div>
+    <h2>Panel de Roster</h2>
+    <p class="sub">Edita el roster que se muestra en movdi.mx</p>
+    <label class="fld"><span>Correo</span><input id="email" class="ctrl" type="email" autocomplete="username" placeholder="tu@movdi.mx"></label>
+    <label class="fld"><span>Contraseña</span><input id="password" class="ctrl" type="password" autocomplete="current-password" placeholder="••••••••"></label>
+    <button class="btn" id="loginBtn">Entrar</button>
+    <div class="msg" id="loginMsg"></div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div id="app" class="hidden">
+  <header class="bar">
+    <div class="brand"><span class="dot"></span><b>MOVDI</b></div>
+    <span class="who" id="who"></span>
+    <div class="spacer"></div>
+    <div class="vtabs">
+      <button class="vtab active" data-view="roster" onclick="switchView('roster')">Roster</button>
+      <button class="vtab" data-view="equipo" onclick="switchView('equipo')">Equipo</button>
+    </div>
+    <button class="btn sm" id="newBtn" onclick="onNew()">+ Nuevo talento</button>
+    <button class="btn ghost sm" id="logoutBtn">Salir</button>
+  </header>
+
+  <div class="wrap">
+    <div id="rosterView">
+      <div class="toolbar">
+        <input id="search" class="ctrl search" placeholder="Buscar por nombre, slug o categoría…">
+        <button class="pill active" data-crew="todos">Todos</button>
+        <button class="pill" data-crew="MOVDI">Crew MOVDI</button>
+        <button class="pill" data-crew="UGC">Crew UGC</button>
+        <span class="count" id="count"></span>
+      </div>
+      <div class="table" id="table">
+        <div class="row head">
+          <div></div><div>Talento</div><div class="c-tier">Tier</div><div>Crew</div>
+          <div class="c-cats">Categorías</div><div>Publicado</div><div>Acciones</div>
+        </div>
+        <div id="rows"></div>
+      </div>
+    </div>
+    <div id="equipoView" class="hidden">
+      <div class="toolbar"><span class="count" id="teamCount"></span></div>
+      <div class="table">
+        <div class="row trow head"><div></div><div>Nombre</div><div class="c-puesto">Puesto</div><div>Publicado</div><div>Acciones</div></div>
+        <div id="teamRows"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= EDITOR ================= -->
+<div id="editor" class="overlay hidden">
+  <div class="modal">
+    <header>
+      <h2 id="editorTitle">Editar talento</h2>
+      <button class="iconbtn" id="closeEditor">Cerrar ✕</button>
+    </header>
+    <div class="body">
+      <input type="hidden" id="f_id">
+      <div class="section">
+        <div class="grid2">
+          <label class="fld"><span>Nombre *</span><input id="f_nombre" class="ctrl"></label>
+          <label class="fld"><span>Slug * (url, sin espacios)</span><input id="f_slug" class="ctrl"></label>
+        </div>
+        <div class="grid3">
+          <label class="fld"><span>Crew</span>
+            <select id="f_crew" class="ctrl"><option>MOVDI</option><option>UGC</option></select></label>
+          <label class="fld"><span>Tier</span>
+            <select id="f_tier" class="ctrl"><option>Mega</option><option>Macro</option><option>Micro</option></select></label>
+          <label class="fld"><span>Orden</span><input id="f_orden" class="ctrl" type="number"></label>
+        </div>
+        <label class="fld"><span>Ciudad</span><input id="f_ciudad" class="ctrl"></label>
+        <label class="fld"><span>Foto (URL)</span>
+          <div class="inline"><input id="f_photo" class="ctrl" oninput="document.getElementById('photoPrev').src=this.value">
+          <img id="photoPrev" class="photo-prev" alt=""></div>
+        </label>
+        <label class="fld"><span>Bio</span><textarea id="f_bio" class="ctrl"></textarea></label>
+        <label class="fld"><span>Audiencia / demografía</span><textarea id="f_audiencia" class="ctrl" style="min-height:64px"></textarea></label>
+        <label class="fld"><span>Manager (correo)</span><input id="f_pm" class="ctrl" placeholder="nombre@movdi.mx"></label>
+      </div>
+
+      <div class="section">
+        <h3>Categorías <span class="line"></span></h3>
+        <div class="chips" id="catChips"></div>
+        <div class="inline">
+          <input id="catInput" class="ctrl" list="catList" placeholder="Agregar categoría y Enter">
+          <button class="iconbtn" id="catAdd" type="button">Agregar</button>
+        </div>
+        <datalist id="catList"></datalist>
+      </div>
+
+      <div class="section">
+        <h3>Marcas <span class="line"></span></h3>
+        <div class="chips" id="brandChips"></div>
+        <div class="inline">
+          <input id="brandInput" class="ctrl" placeholder="Agregar marca y Enter">
+          <button class="iconbtn" id="brandAdd" type="button">Agregar</button>
+        </div>
+      </div>
+
+      <div class="section">
+        <h3>Plataformas <span class="line"></span></h3>
+        <div id="platRows"></div>
+        <button class="iconbtn addmini" id="addPlat" type="button">+ Agregar plataforma</button>
+      </div>
+
+      <div class="section">
+        <h3>Videos destacados <span class="line"></span></h3>
+        <div id="vidRows"></div>
+        <button class="iconbtn addmini" id="addVid" type="button">+ Agregar video</button>
+      </div>
+
+      <div class="section">
+        <label class="inline" style="gap:10px;cursor:pointer">
+          <span class="switch"><input type="checkbox" id="f_publicado" checked><span class="slider"></span></span>
+          <span style="font-size:14px;font-weight:600">Publicado (visible en movdi.mx)</span>
+        </label>
+      </div>
+      <div class="msg" id="editorMsg"></div>
+    </div>
+    <footer>
+      <button class="btn ghost sm" id="cancelBtn" type="button">Cancelar</button>
+      <button class="btn sm" id="saveBtn" type="button" style="min-width:140px">Guardar</button>
+    </footer>
+  </div>
+</div>
+
+<div id="teamEditor" class="overlay hidden">
+  <div class="modal" style="max-width:520px">
+    <header><h2 id="teamEditorTitle">Editar persona</h2><button class="iconbtn" id="closeTeam">Cerrar ✕</button></header>
+    <div class="body">
+      <input type="hidden" id="t_id">
+      <label class="fld"><span>Nombre *</span><input id="t_nombre" class="ctrl"></label>
+      <label class="fld"><span>Puesto</span><input id="t_puesto" class="ctrl"></label>
+      <label class="fld"><span>Frase</span><textarea id="t_frase" class="ctrl" style="min-height:64px"></textarea></label>
+      <label class="fld"><span>Foto (URL)</span>
+        <div class="inline"><input id="t_foto" class="ctrl" oninput="document.getElementById('tphotoPrev').src=this.value">
+        <img id="tphotoPrev" class="photo-prev" alt=""></div></label>
+      <label class="fld"><span>Orden</span><input id="t_orden" class="ctrl" type="number"></label>
+      <label class="inline" style="gap:10px;cursor:pointer">
+        <span class="switch"><input type="checkbox" id="t_publicado" checked><span class="slider"></span></span>
+        <span style="font-size:14px;font-weight:600">Publicado (visible en movdi.mx)</span>
+      </label>
+      <div class="msg" id="teamMsg"></div>
+    </div>
+    <footer>
+      <button class="btn ghost sm" id="teamCancel" type="button">Cancelar</button>
+      <button class="btn sm" id="teamSave" type="button" style="min-width:140px">Guardar</button>
+    </footer>
+  </div>
+</div>
+
+<script>
+/* ===================== CONFIG ===================== */
+const SB_URL = "https://bspnyanetywxysygnkaw.supabase.co";
+const SB_KEY = "sb_publishable_Vti8-CZWWEEgXK51ySsduw_36QttHvd";
+const CATEGORIAS = ["Arte","Belleza","Comedia","Cosplay","Educación","Entretenimiento","Familia","Fitness","Foodies","Gaming","Geek","Lifestyle","Moda","Motivación","Tecnología","Viajes","Wellness"];
+const PLATAFORMAS = ["TikTok","Instagram","YouTube","Twitch"];
+
+const sb = supabase.createClient(SB_URL, SB_KEY);
+let ALL = [];          // todos los talentos cargados
+let crewFilter = "todos";
+let editState = { cats:[], brands:[] };
+
+/* ===================== HELPERS ===================== */
+const $ = id => document.getElementById(id);
+const esc = s => (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function show(el){el.classList.remove("hidden")}
+function hide(el){el.classList.add("hidden")}
+
+/* ===================== AUTH ===================== */
+async function checkSession(){
+  const { data } = await sb.auth.getSession();
+  if(data.session){ enterApp(data.session.user); }
+}
+$("loginBtn").onclick = async () => {
+  const msg = $("loginMsg"); msg.textContent=""; msg.className="msg";
+  const email = $("email").value.trim(), password = $("password").value;
+  if(!email || !password){ msg.textContent="Pon tu correo y contraseña."; msg.className="msg err"; return; }
+  $("loginBtn").textContent="Entrando…";
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  $("loginBtn").textContent="Entrar";
+  if(error){ msg.textContent = error.message.includes("Invalid")?"Correo o contraseña incorrectos.":error.message; msg.className="msg err"; return; }
+  enterApp(data.user);
+};
+$("password").addEventListener("keydown", e=>{ if(e.key==="Enter") $("loginBtn").click(); });
+$("logoutBtn").onclick = async ()=>{ await sb.auth.signOut(); location.reload(); };
+
+function enterApp(user){
+  hide($("login")); show($("app"));
+  $("who").textContent = user.email;
+  loadTalentos();
+  loadEquipo();
+}
+
+/* ===================== LOAD + RENDER ===================== */
+async function loadTalentos(){
+  const { data, error } = await sb.from("talentos").select("*").order("orden",{ascending:true});
+  if(error){ alert("Error cargando: "+error.message); return; }
+  ALL = data;
+  renderTable();
+}
+
+function renderTable(){
+  const q = $("search").value.trim().toLowerCase();
+  let list = ALL.filter(t => crewFilter==="todos" || t.crew===crewFilter);
+  if(q){
+    list = list.filter(t =>
+      (t.nombre||"").toLowerCase().includes(q) ||
+      (t.slug||"").toLowerCase().includes(q) ||
+      (t.categorias||[]).join(" ").toLowerCase().includes(q)
+    );
+  }
+  $("count").textContent = `${list.length} de ${ALL.length}`;
+  const rows = $("rows");
+  if(!list.length){ rows.innerHTML = `<div class="empty">Sin resultados.</div>`; return; }
+  rows.innerHTML = list.map(t => `
+    <div class="row">
+      <div><img class="ph" src="${esc(t.photo)}" alt="" onerror="this.style.visibility='hidden'"></div>
+      <div><div class="nm">${esc(t.nombre)}</div><div class="slug">/${esc(t.slug)}</div></div>
+      <div class="c-tier"><span class="tag crew">${esc(t.tier||"—")}</span></div>
+      <div><span class="tag crew">${esc(t.crew)}</span></div>
+      <div class="c-cats cats">${(t.categorias||[]).slice(0,4).map(c=>`<span class="tag">${esc(c)}</span>`).join("")}${(t.categorias||[]).length>4?` +${t.categorias.length-4}`:""}</div>
+      <div>
+        <label class="switch"><input type="checkbox" ${t.publicado?"checked":""} onchange="togglePub('${t.id}',this.checked)"><span class="slider"></span></label>
+      </div>
+      <div class="acts">
+        <button class="iconbtn" onclick="openEditor('${t.id}')">Editar</button>
+        <button class="iconbtn del" onclick="delTalento('${t.id}','${esc(t.nombre).replace(/'/g,"")}')">✕</button>
+      </div>
+    </div>`).join("");
+}
+
+$("search").addEventListener("input", renderTable);
+document.querySelectorAll(".pill").forEach(p=>{
+  p.onclick = ()=>{
+    document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
+    p.classList.add("active");
+    crewFilter = p.dataset.crew;
+    renderTable();
+  };
+});
+
+/* ===================== QUICK TOGGLE ===================== */
+async function togglePub(id, val){
+  const { error } = await sb.from("talentos").update({ publicado: val }).eq("id", id);
+  if(error){ alert("No se pudo actualizar: "+error.message); loadTalentos(); return; }
+  const t = ALL.find(x=>x.id===id); if(t) t.publicado = val;
+}
+window.togglePub = togglePub;
+
+/* ===================== DELETE ===================== */
+async function delTalento(id, nombre){
+  if(!confirm(`¿Eliminar a ${nombre} del roster? Esta acción no se puede deshacer.`)) return;
+  const { error } = await sb.from("talentos").delete().eq("id", id);
+  if(error){ alert("No se pudo eliminar: "+error.message); return; }
+  loadTalentos();
+}
+window.delTalento = delTalento;
+
+/* ===================== EDITOR: CHIPS ===================== */
+$("catList").innerHTML = CATEGORIAS.map(c=>`<option value="${c}">`).join("");
+
+function renderChips(){
+  $("catChips").innerHTML = editState.cats.map((c,i)=>`<span class="chip">${esc(c)}<b onclick="rmChip('cats',${i})">✕</b></span>`).join("") || `<span style="color:var(--muted);font-size:12px">Ninguna aún</span>`;
+  $("brandChips").innerHTML = editState.brands.map((c,i)=>`<span class="chip brand">${esc(c)}<b onclick="rmChip('brands',${i})">✕</b></span>`).join("") || `<span style="color:var(--muted);font-size:12px">Ninguna aún</span>`;
+}
+function rmChip(kind,i){ editState[kind].splice(i,1); renderChips(); }
+window.rmChip = rmChip;
+function addChip(kind, inputEl){
+  const v = inputEl.value.trim(); if(!v) return;
+  if(!editState[kind].includes(v)) editState[kind].push(v);
+  inputEl.value=""; renderChips();
+}
+$("catAdd").onclick = ()=>addChip("cats",$("catInput"));
+$("brandAdd").onclick = ()=>addChip("brands",$("brandInput"));
+$("catInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addChip("cats",$("catInput"));}});
+$("brandInput").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();addChip("brands",$("brandInput"));}});
+
+/* ===================== EDITOR: PLATFORM / VIDEO ROWS ===================== */
+function platRowHTML(p={}){
+  return `<div class="rowedit">
+    <button class="rm" type="button" onclick="this.parentNode.remove()">✕</button>
+    <div class="grid3">
+      <select class="ctrl p-name">${PLATAFORMAS.map(x=>`<option ${x===p.plataforma?"selected":""}>${x}</option>`).join("")}</select>
+      <input class="ctrl p-handle" placeholder="@handle" value="${esc(p.handle)}">
+      <input class="ctrl p-er" placeholder="ER %" value="${esc(p.er)}">
+    </div>
+    <input class="ctrl p-link" placeholder="https://…" value="${esc(p.link)}">
+    <input class="ctrl p-seg" placeholder="Seguidores (ej. 1.2M)" value="${esc(p.seguidores)}">
+  </div>`;
+}
+function vidRowHTML(v={}){
+  return `<div class="rowedit">
+    <button class="rm" type="button" onclick="this.parentNode.remove()">✕</button>
+    <input class="ctrl v-tit" placeholder="Título del video" value="${esc(v.titulo)}">
+    <div class="grid2">
+      <input class="ctrl v-link" placeholder="https://…" value="${esc(v.link)}">
+      <select class="ctrl v-tipo"><option ${v.tipo==="Orgánico"?"selected":""}>Orgánico</option><option ${v.tipo==="Marca"?"selected":""}>Marca</option></select>
+    </div>
+  </div>`;
+}
+$("addPlat").onclick = ()=>$("platRows").insertAdjacentHTML("beforeend", platRowHTML());
+$("addVid").onclick  = ()=>$("vidRows").insertAdjacentHTML("beforeend", vidRowHTML());
+
+/* ===================== EDITOR: OPEN / SAVE ===================== */
+function openEditor(id){
+  const t = id ? ALL.find(x=>x.id===id) : null;
+  $("editorTitle").textContent = t ? "Editar talento" : "Nuevo talento";
+  $("editorMsg").textContent="";
+  $("f_id").value = t?.id || "";
+  $("f_nombre").value = t?.nombre || "";
+  $("f_slug").value = t?.slug || "";
+  $("f_crew").value = t?.crew || "MOVDI";
+  $("f_tier").value = t?.tier || "Mega";
+  $("f_orden").value = t?.orden ?? (ALL.length);
+  $("f_ciudad").value = t?.ciudad || "México";
+  $("f_photo").value = t?.photo || "";
+  $("photoPrev").src = t?.photo || "";
+  $("f_bio").value = t?.bio || "";
+  $("f_audiencia").value = t?.audiencia || "";
+  $("f_pm").value = t?.pm_email || "";
+  $("f_publicado").checked = t ? !!t.publicado : true;
+  editState.cats = [...(t?.categorias||[])];
+  editState.brands = [...(t?.marcas||[])];
+  renderChips();
+  $("platRows").innerHTML = (t?.plataformas||[]).map(platRowHTML).join("") || platRowHTML();
+  $("vidRows").innerHTML  = (t?.videos||[]).map(vidRowHTML).join("");
+  show($("editor"));
+}
+window.openEditor = openEditor;
+/* newBtn -> onNew() inline */
+$("closeEditor").onclick = $("cancelBtn").onclick = ()=>hide($("editor"));
+
+function collectRows(container, sel){
+  return [...container.querySelectorAll(".rowedit")].map(r=>{
+    const o={}; for(const k in sel){ o[k] = r.querySelector(sel[k])?.value.trim() || ""; }
+    return o;
+  });
+}
+
+$("saveBtn").onclick = async ()=>{
+  const msg = $("editorMsg"); msg.textContent=""; msg.className="msg";
+  const nombre = $("f_nombre").value.trim();
+  let slug = $("f_slug").value.trim().toLowerCase().replace(/\s+/g,"-");
+  if(!nombre || !slug){ msg.textContent="Nombre y slug son obligatorios."; msg.className="msg err"; return; }
+
+  const plataformas = collectRows($("platRows"), {plataforma:".p-name", handle:".p-handle", link:".p-link", seguidores:".p-seg", er:".p-er"})
+                      .filter(p=>p.handle||p.link);
+  const videos = collectRows($("vidRows"), {titulo:".v-tit", link:".v-link", tipo:".v-tipo"})
+                 .filter(v=>v.titulo||v.link);
+
+  const payload = {
+    nombre, slug,
+    crew: $("f_crew").value, tier: $("f_tier").value,
+    orden: parseInt($("f_orden").value||"0",10),
+    ciudad: $("f_ciudad").value.trim(),
+    photo: $("f_photo").value.trim(),
+    bio: $("f_bio").value.trim(),
+    audiencia: $("f_audiencia").value.trim(),
+    pm_email: $("f_pm").value.trim(),
+    categorias: editState.cats,
+    marcas: editState.brands,
+    plataformas, videos,
+    publicado: $("f_publicado").checked
+  };
+
+  $("saveBtn").textContent="Guardando…";
+  const id = $("f_id").value;
+  let error;
+  if(id){ ({error} = await sb.from("talentos").update(payload).eq("id", id)); }
+  else  { ({error} = await sb.from("talentos").insert(payload)); }
+  $("saveBtn").textContent="Guardar";
+
+  if(error){
+    msg.className="msg err";
+    msg.textContent = error.code==="23505" ? "Ese slug ya existe, usa otro." : error.message;
+    return;
+  }
+  hide($("editor"));
+  loadTalentos();
+};
+
+/* ===================== START ===================== */
+/* ===================== VIEW SWITCH + EQUIPO ===================== */
+let currentView="roster";
+function switchView(v){
+  currentView=v;
+  document.querySelectorAll(".vtab").forEach(t=>t.classList.toggle("active",t.dataset.view===v));
+  $("rosterView").classList.toggle("hidden",v!=="roster");
+  $("equipoView").classList.toggle("hidden",v!=="equipo");
+  $("newBtn").textContent = v==="equipo" ? "+ Nueva persona" : "+ Nuevo talento";
+}
+window.switchView=switchView;
+function onNew(){ currentView==="equipo"?openTeamEditor(null):openEditor(null); }
+window.onNew=onNew;
+
+let TEAM=[];
+async function loadEquipo(){
+  const { data, error } = await sb.from("equipo").select("*").order("orden",{ascending:true});
+  if(error){ console.error(error); return; }
+  TEAM=data; renderTeam();
+}
+function renderTeam(){
+  $("teamCount").textContent = `${TEAM.length} en el equipo`;
+  $("teamRows").innerHTML = TEAM.map(m=>`
+    <div class="row trow">
+      <div><img class="ph" src="${esc(m.foto)}" alt="" onerror="this.style.visibility='hidden'"></div>
+      <div><div class="nm">${esc(m.nombre)}</div></div>
+      <div class="c-puesto slug">${esc(m.puesto)}</div>
+      <div><label class="switch"><input type="checkbox" ${m.publicado?"checked":""} onchange="toggleTeamPub('${m.id}',this.checked)"><span class="slider"></span></label></div>
+      <div class="acts">
+        <button class="iconbtn" onclick="openTeamEditor('${m.id}')">Editar</button>
+        <button class="iconbtn del" onclick="delTeam('${m.id}','${esc(m.nombre).replace(/'/g,"")}')">✕</button>
+      </div>
+    </div>`).join("") || `<div class="empty">Aún no hay personas.</div>`;
+}
+async function toggleTeamPub(id,val){
+  const { error } = await sb.from("equipo").update({ publicado: val }).eq("id", id);
+  if(error){ alert("No se pudo actualizar: "+error.message); loadEquipo(); return; }
+  const m=TEAM.find(x=>x.id===id); if(m) m.publicado=val;
+}
+window.toggleTeamPub=toggleTeamPub;
+async function delTeam(id,nombre){
+  if(!confirm(`¿Eliminar a ${nombre} del equipo?`)) return;
+  const { error } = await sb.from("equipo").delete().eq("id", id);
+  if(error){ alert("No se pudo eliminar: "+error.message); return; }
+  loadEquipo();
+}
+window.delTeam=delTeam;
+function openTeamEditor(id){
+  const m = id ? TEAM.find(x=>x.id===id) : null;
+  $("teamEditorTitle").textContent = m ? "Editar persona" : "Nueva persona";
+  $("teamMsg").textContent="";
+  $("t_id").value = m?.id || "";
+  $("t_nombre").value = m?.nombre || "";
+  $("t_puesto").value = m?.puesto || "";
+  $("t_frase").value = m?.frase || "";
+  $("t_foto").value = m?.foto || "";
+  $("tphotoPrev").src = m?.foto || "";
+  $("t_orden").value = (m?.orden ?? TEAM.length);
+  $("t_publicado").checked = m ? !!m.publicado : true;
+  show($("teamEditor"));
+}
+window.openTeamEditor=openTeamEditor;
+$("closeTeam").onclick = $("teamCancel").onclick = ()=>hide($("teamEditor"));
+$("teamSave").onclick = async ()=>{
+  const msg=$("teamMsg"); msg.textContent=""; msg.className="msg";
+  const nombre=$("t_nombre").value.trim();
+  if(!nombre){ msg.textContent="El nombre es obligatorio."; msg.className="msg err"; return; }
+  const payload={ nombre, puesto:$("t_puesto").value.trim(), frase:$("t_frase").value.trim(),
+    foto:$("t_foto").value.trim(), orden:parseInt($("t_orden").value||"0",10), publicado:$("t_publicado").checked };
+  $("teamSave").textContent="Guardando…";
+  const id=$("t_id").value; let error;
+  if(id){ ({error}=await sb.from("equipo").update(payload).eq("id",id)); }
+  else  { ({error}=await sb.from("equipo").insert(payload)); }
+  $("teamSave").textContent="Guardar";
+  if(error){ msg.className="msg err"; msg.textContent=error.message; return; }
+  hide($("teamEditor")); loadEquipo();
+};
+
+checkSession();
+</script>
+</body>
+</html>
