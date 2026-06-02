@@ -567,6 +567,7 @@ async function loadRoster(){
   const {data,error}=await sb.from("talentos").select("*").eq("publicado",true).order("orden",{ascending:true});
   if(error){console.error(error);document.getElementById("grid").innerHTML="<p style='color:var(--muted)'>No se pudo cargar el roster.</p>";return;}
   TAL=data; buildStats(); buildFilters(); render();
+  if(pendingSlug){ const s=pendingSlug; pendingSlug=null; openM(s); }
 }
 function buildStats(){
   let reach=0;TAL.forEach(t=>(t.plataformas||[]).forEach(p=>reach+=parseNum(p.seguidores)));
@@ -645,8 +646,12 @@ function openM(slug){
       ${(t.marcas||[]).length?`<div class="sub-t">Marcas</div><div class="chips">${(t.marcas||[]).map(m=>`<span class="c">${esc(m)}</span>`).join("")}</div>`:""}
       ${vids?`<div class="sub-t">Contenido destacado</div><div class="vids">${vids}</div>`:""}<button class="btn-p" style="width:100%;margin-top:26px" onclick="openCotizar('${t.slug}')">Pedir cotización con ${esc(t.nombre)}</button></div>`;
   document.getElementById("ov").classList.add("open");document.body.style.overflow="hidden";
+  if(!_routing) pushURL("/talento/"+t.slug);
+  setMeta(t.nombre+" \u00b7 MOVDI",(t.bio||META.roster[1]).slice(0,180),SITE+"/talento/"+t.slug,t.photo);
 }
-function closeM(){document.getElementById("ov").classList.remove("open");document.body.style.overflow="";}
+function closeM(){document.getElementById("ov").classList.remove("open");document.body.style.overflow="";
+  if(!_routing&&location.pathname.indexOf("/talento/")===0){ pushURL("/"); setMeta(META.roster[0],META.roster[1],SITE+"/",OG_DEFAULT); }
+}
 document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeM();closeCotizar();}});
 
 /* ----- forms (Formspree) ----- */
@@ -701,7 +706,45 @@ async function submitCotizar(){
 }
 
 /* ----- nav / sections ----- */
+/* ----- router (URLs compartibles + SEO) ----- */
+const SITE="https://movdi.mx";
+const SEC_PATH={roster:"/",servicios:"/servicios",nosotros:"/nosotros",unete:"/unete",hablemos:"/contacto"};
+const PATH_SEC={"":"roster","/":"roster","/roster":"roster","/servicios":"servicios","/nosotros":"nosotros","/unete":"unete","/contacto":"hablemos","/hablemos":"hablemos"};
+const META={
+  roster:["MOVDI \u00b7 Roster de talento","Conoce a los m\u00e1s de 50 creadores del crew MOVDI: gaming, lifestyle, belleza, moda, comedia y m\u00e1s."],
+  servicios:["MOVDI \u00b7 Servicios","Influencer marketing, manejo de talento, estrategia, PR y producci\u00f3n. As\u00ed trabajamos en MOVDI."],
+  nosotros:["MOVDI \u00b7 Nosotros","Somos una agencia de talento y marketing de influencers en CDMX. Conoce al equipo MOVDI."],
+  unete:["MOVDI \u00b7 \u00danete","\u00bfEres creador o quieres sumarte al equipo? \u00danete a MOVDI."],
+  hablemos:["MOVDI \u00b7 Contacto","Hablemos de tu pr\u00f3xima campa\u00f1a con creadores. Cont\u00e1ctanos."]
+};
+const OG_DEFAULT=SITE+"/og-image.png";
+let _routing=false, pendingSlug=null;
+function setMeta(title,desc,url,image){
+  document.title=title;
+  const S=(sel,val)=>{const e=document.querySelector(sel);if(e&&val!=null)e.setAttribute("content",val);};
+  S('meta[name="description"]',desc);
+  S('meta[property="og:title"]',title);S('meta[name="twitter:title"]',title);
+  S('meta[property="og:description"]',desc);S('meta[name="twitter:description"]',desc);
+  S('meta[property="og:url"]',url);
+  S('meta[property="og:image"]',image||OG_DEFAULT);S('meta[name="twitter:image"]',image||OG_DEFAULT);
+}
+function pushURL(path){ if(location.pathname!==path){ history.pushState({},"",path); } }
+function applyRoute(){
+  _routing=true;
+  const raw=location.pathname.replace(/\/+$/,"");
+  const mt=raw.match(/^\/talento\/([^/]+)$/);
+  if(mt){
+    showSection("roster",true);
+    const slug=decodeURIComponent(mt[1]);
+    if(TAL&&TAL.length) openM(slug); else pendingSlug=slug;
+  }else{
+    closeM();
+    showSection(PATH_SEC[raw]||"roster",true);
+  }
+  _routing=false;
+}
 function showSection(id,noScroll){
+  const _ov=document.getElementById("ov"); if(_ov)_ov.classList.remove("open"); document.body.style.overflow="";
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
   const el=document.getElementById(id); if(!el)return;
   el.classList.add('show');
@@ -709,12 +752,14 @@ function showSection(id,noScroll){
   document.querySelectorAll('.nav-tab[data-s]').forEach(t=>t.classList.toggle('active',t.dataset.s===id));
   document.getElementById('navMob').style.display='none';
   if(!noScroll) window.scrollTo({top:Math.max(0,el.offsetTop-64),behavior:'smooth'});
+  const path=SEC_PATH[id];
+  if(path){ if(!_routing) pushURL(path); const m=META[id]; if(m) setMeta(m[0],m[1],SITE+path,OG_DEFAULT); }
 }
 function toggleMob(){const m=document.getElementById("navMob");m.style.display=m.style.display==="flex"?"none":"flex";}
 window.addEventListener("scroll",()=>{document.getElementById("nav").classList.toggle("solid",scrollY>40);});
 
 /* ----- init ----- */
-buildBrands();buildServices();buildValues();buildTeam();showSection('roster',true);loadRoster();loadTeam();
+buildBrands();buildServices();buildValues();buildTeam();loadRoster();loadTeam();applyRoute();window.addEventListener('popstate',applyRoute);
 </script>
 </body>
 </html>
