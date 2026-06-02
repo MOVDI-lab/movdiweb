@@ -27,6 +27,7 @@
 :root{
   --black:#070707; --black2:#0e0e0e; --black3:#161616; --line:#262626;
   --orange:#FF4B00; --orange-d:#d23d00; --white:#f4f1ea; --muted:#8d8d8a; --maxw:1280px;
+  --ease:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:80px}
@@ -44,23 +45,21 @@ a{color:inherit;text-decoration:none}
 @keyframes fadePanel{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* ---------- LIQUID GLASS ---------- */
-.glass{
-  position:relative;border-radius:20px;overflow:hidden;
+.glass{position:relative;border-radius:20px;overflow:hidden;background:var(--black3);border:1px solid var(--line);box-shadow:0 8px 26px rgba(0,0,0,.4)}
+.glass.lux{
   background:linear-gradient(135deg,rgba(255,255,255,.09),rgba(255,255,255,.025));
   backdrop-filter:blur(18px) saturate(180%);-webkit-backdrop-filter:blur(18px) saturate(180%);
   border:1px solid rgba(255,255,255,.13);
   box-shadow:0 10px 34px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.25), inset 0 -1px 0 rgba(0,0,0,.35);
 }
-.glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+.glass.lux::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
   background:radial-gradient(130% 90% at 0% 0%,rgba(255,255,255,.20),transparent 48%)}
-.glass::after{content:"";position:absolute;left:-40%;top:0;width:40%;height:100%;pointer-events:none;
+.glass.lux::after{content:"";position:absolute;left:-40%;top:0;width:40%;height:100%;pointer-events:none;
   background:linear-gradient(100deg,transparent,rgba(255,255,255,.12),transparent);transform:skewX(-18deg);
   animation:sheen 7s ease-in-out infinite}
 @keyframes sheen{0%,72%{left:-50%}88%,100%{left:120%}}
-.glass.warm::before{background:radial-gradient(130% 90% at 0% 0%,rgba(255,75,0,.18),transparent 50%)}
+.glass.warm.lux::before{background:radial-gradient(130% 90% at 0% 0%,rgba(255,75,0,.18),transparent 50%)}
 
-/* liquid orbs */
-.orb{position:absolute;border-radius:50%;backdrop-filter:blur(6px);background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.16),rgba(255,75,0,.10) 60%,transparent 72%);border:1px solid rgba(255,255,255,.10);filter:url(#liquid)}
 
 /* ---------- NAV ---------- */
 #nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:.3s;background:linear-gradient(to bottom,rgba(7,7,7,.9),rgba(7,7,7,0))}
@@ -69,10 +68,10 @@ a{color:inherit;text-decoration:none}
 .logo{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:28px;letter-spacing:.08em;text-transform:uppercase}
 .logo .em{color:var(--orange)}
 .nav-tabs{display:flex;gap:26px;margin-left:8px}
-.nav-tab{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:var(--white);opacity:.72;transition:.2s;cursor:pointer;background:none;border:none;padding:0}
+.nav-tab{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:var(--white);opacity:.72;transition:color 180ms var(--ease),opacity 180ms var(--ease);cursor:pointer;background:none;border:none;padding:0}
 .nav-tab:hover,.nav-tab.active{opacity:1;color:var(--orange)}
 .nav-sp{flex:1}
-.nav-cta{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:14px;background:var(--orange);color:#fff;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;transition:.2s}
+.nav-cta{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:14px;background:var(--orange);color:#fff;padding:11px 22px;border-radius:8px;border:none;cursor:pointer;transition:background 180ms var(--ease),color 180ms var(--ease),transform 180ms var(--ease)}
 .nav-cta:hover{background:#fff;color:var(--black)}
 .burger{display:none;background:none;border:none;color:#fff;cursor:pointer;flex-direction:column;gap:5px;padding:6px}
 .burger span{width:24px;height:2px;background:#fff;display:block}
@@ -88,10 +87,12 @@ a{color:inherit;text-decoration:none}
 .hero-h{font-size:clamp(54px,9vw,128px);max-width:14ch}
 .hero-sub{max-width:46ch;color:#cfcbc2;font-size:clamp(16px,1.6vw,20px);margin:26px 0 32px;font-weight:300}
 .hero-actions{display:flex;gap:14px;flex-wrap:wrap}
-.btn-p{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:16px;background:var(--orange);color:#fff;border:none;padding:15px 30px;border-radius:10px;cursor:pointer;transition:.2s}
+.btn-p{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:16px;background:var(--orange);color:#fff;border:none;padding:15px 30px;border-radius:10px;cursor:pointer;transition:transform 180ms var(--ease),background 180ms var(--ease),color 180ms var(--ease)}
 .btn-p:hover{background:#fff;color:#000;transform:translateY(-2px)}
-.btn-s{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:16px;background:transparent;color:#fff;border:1.5px solid #444;padding:15px 30px;border-radius:10px;cursor:pointer;transition:.2s}
+.btn-s{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:16px;background:transparent;color:#fff;border:1.5px solid #444;padding:15px 30px;border-radius:10px;cursor:pointer;transition:transform 180ms var(--ease),border-color 180ms var(--ease)}
 .btn-s:hover{border-color:#fff;transform:translateY(-2px)}
+.btn-p:active,.btn-s:active,.nav-cta:active,.pill:active,.card:active,.tm:active{transform:scale(.97)}
+.card:focus-visible,.tm:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
 .hero-stats{display:flex;gap:14px;margin-top:54px;flex-wrap:wrap}
 .hstat{padding:16px 22px;min-width:150px}
 .hstat .n{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:42px;line-height:1}
@@ -144,19 +145,15 @@ a{color:inherit;text-decoration:none}
 .fb-group{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .fb-group .ft{margin:0;white-space:nowrap}
 .filterbar .clear{margin:0 0 0 auto}
-.layout{display:grid;grid-template-columns:236px 1fr;gap:40px;align-items:start}
-.side{position:sticky;top:96px;padding:22px}
-.fgroup{margin-bottom:22px}
-.fgroup .ft{font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.16em;font-size:12px;color:var(--muted);margin-bottom:11px}
 .pills{display:flex;flex-wrap:wrap;gap:7px}
-.pill{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:13px;padding:6px 12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#cdcdc9;border-radius:8px;cursor:pointer;transition:.15s}
+.pill{font-family:"Barlow Condensed",sans-serif;font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:13px;padding:6px 12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#cdcdc9;border-radius:8px;cursor:pointer;transition:border-color 160ms var(--ease),color 160ms var(--ease),background 160ms var(--ease),transform 120ms var(--ease)}
 .pill:hover{border-color:#777;color:#fff}
 .pill.on{background:var(--orange);border-color:var(--orange);color:#fff}
 .clear{font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;padding:0;margin-top:4px}
 .clear:hover{color:var(--orange)}
 .rcount{font-family:"Barlow Condensed",sans-serif;font-weight:600;letter-spacing:.1em;color:var(--muted);font-size:13px;text-transform:uppercase;margin-bottom:16px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
-.card{position:relative;border-radius:14px;overflow:hidden;background:var(--black3);cursor:pointer;aspect-ratio:3/4;border:1px solid var(--line);transition:.28s}
+.card{position:relative;border-radius:14px;overflow:hidden;background:var(--black3);cursor:pointer;aspect-ratio:3/4;border:1px solid var(--line);transition:transform 280ms var(--ease),border-color 280ms var(--ease),box-shadow 280ms var(--ease)}
 .card:hover{transform:translateY(-6px);border-color:var(--orange);box-shadow:0 24px 50px -24px rgba(255,75,0,.5)}
 .card img{width:100%;height:100%;object-fit:cover;object-position:top;filter:grayscale(.18) contrast(1.02);transition:.4s}
 .card:hover img{filter:none;transform:scale(1.05)}
@@ -261,8 +258,6 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
 .aud-k{font-family:"Barlow Condensed",sans-serif;font-weight:700;letter-spacing:.12em;text-transform:uppercase;font-size:11px;color:var(--muted)}
 .aud-v{color:#f4f1ea;font-size:16px;font-weight:400;line-height:1.2}
 @media(max-width:880px){
-  .layout{grid-template-columns:1fr}
-  .side{position:static;display:grid;grid-template-columns:1fr 1fr;gap:14px}
   .nav-tabs,.nav-cta{display:none}.burger{display:flex}
   .nos-intro,.values,.tracks,.contact{grid-template-columns:1fr}
   .sheet .top{grid-template-columns:1fr}.sheet .top img{min-height:240px}
@@ -275,13 +270,20 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
   .tm .tinfo{padding:10px}
   .tm .tn{font-size:14px}.tm .tp{font-size:9px;margin:3px 0 5px}.tm .tf{font-size:10px}
 }
+@media (prefers-reduced-motion: reduce){
+  .hero-word{animation:none}
+  .glass.lux::after{animation:none}
+  .fi,.reveal,.panel.show{animation:none !important;transition:none !important;transform:none !important;opacity:1 !important}
+  .reveal{opacity:1 !important;transform:none !important}
+  html{scroll-behavior:auto}
+}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav id="nav"><div class="nav-in">
-  <div class="logo">MOV<span class="em">DI</span></div>
+  <div class="logo" onclick="showHome()" style="cursor:pointer">MOV<span class="em">DI</span></div>
   <div class="nav-tabs">
     <button class="nav-tab" data-s="roster" onclick="showSection('roster')">Roster</button>
     <button class="nav-tab" data-s="servicios" onclick="showSection('servicios')">Servicios</button>
@@ -314,10 +316,10 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
       <button class="btn-s" onclick="showSection('hablemos')">Hablemos</button>
     </div>
     <div class="hero-stats fi d5">
-      <div class="hstat glass warm"><div class="n" id="stReach">+119M</div><div class="t">Alcance combinado</div></div>
-      <div class="hstat glass warm"><div class="n">+5</div><div class="t">Años de experiencia</div></div>
-      <div class="hstat glass warm"><div class="n">+1500</div><div class="t">Proyectos ejecutados</div></div>
-      <div class="hstat glass warm"><div class="n">+5K</div><div class="t">Creadores en el crew</div></div>
+      <div class="hstat glass warm lux"><div class="n" id="stReach">+119M</div><div class="t">Alcance combinado</div></div>
+      <div class="hstat glass warm lux"><div class="n">+5</div><div class="t">Años de experiencia</div></div>
+      <div class="hstat glass warm lux"><div class="n">+1500</div><div class="t">Proyectos ejecutados</div></div>
+      <div class="hstat glass warm lux"><div class="n">+5K</div><div class="t">Creadores en el crew</div></div>
     </div>
     <div class="hero-social fi d5">
       <a href="https://www.instagram.com/movdimx/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a>
@@ -421,14 +423,14 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
     </div>
     <div class="cform glass reveal">
       <div class="frow">
-        <div class="field"><label>Nombre</label><input id="c_nombre"></div>
-        <div class="field"><label>Empresa / Marca</label><input id="c_empresa"></div>
+        <div class="field"><label for="c_nombre">Nombre</label><input id="c_nombre"></div>
+        <div class="field"><label for="c_empresa">Empresa / Marca</label><input id="c_empresa"></div>
       </div>
       <div class="frow">
-        <div class="field"><label>Correo</label><input id="c_correo" type="email"></div>
-        <div class="field"><label>Teléfono</label><input id="c_tel"></div>
+        <div class="field"><label for="c_correo">Correo</label><input id="c_correo" type="email"></div>
+        <div class="field"><label for="c_tel">Teléfono</label><input id="c_tel"></div>
       </div>
-      <div class="field"><label>¿En qué podemos ayudarte?</label>
+      <div class="field"><label for="c_serv">¿En qué podemos ayudarte?</label>
         <select id="c_serv">
           <option value="">Selecciona un servicio</option>
           <option>Influencer Marketing / UGC</option>
@@ -439,7 +441,7 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
           <option>Branding</option>
         </select>
       </div>
-      <div class="field"><label>Mensaje</label><textarea id="c_msg"></textarea></div>
+      <div class="field"><label for="c_msg">Mensaje</label><textarea id="c_msg"></textarea></div>
       <button class="btn-p" id="c_btn" style="width:100%" onclick="sendContact()">Enviar mensaje</button>
       <div id="c_status" class="form-status"></div>
     </div>
@@ -447,7 +449,7 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
 </div></section>
 
 <footer>
-  <div class="logo">MOV<span class="em">DI</span></div>
+  <div class="logo" onclick="showHome()" style="cursor:pointer">MOV<span class="em">DI</span></div>
   <div class="foot-social">
     <a href="https://www.instagram.com/movdimx/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>Instagram</a>
     <a href="https://mx.linkedin.com/company/movdi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5A2.5 2.5 0 1 1 5 8.5a2.5 2.5 0 0 1-.02-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.66 4.79 6.12V21H18v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H9z"/></svg>LinkedIn</a>
@@ -458,7 +460,7 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
 
 <!-- MODAL -->
 <div class="ov" id="ov" onclick="if(event.target===this)closeM()">
-  <div class="sheet glass" id="sheet"></div>
+  <div class="sheet glass lux" id="sheet"></div>
 </div>
 
 <!-- COTIZAR MODAL -->
@@ -472,14 +474,14 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
         <div><div id="cotName" class="cond" style="font-size:21px"></div><div id="cotCrew" class="lbl" style="font-size:11px"></div></div>
       </div>
       <div class="frow">
-        <div class="field"><label>Nombre</label><input id="q_nombre"></div>
-        <div class="field"><label>Empresa / Marca</label><input id="q_empresa"></div>
+        <div class="field"><label for="q_nombre">Nombre</label><input id="q_nombre"></div>
+        <div class="field"><label for="q_empresa">Empresa / Marca</label><input id="q_empresa"></div>
       </div>
       <div class="frow">
-        <div class="field"><label>Correo</label><input id="q_correo" type="email"></div>
-        <div class="field"><label>Teléfono</label><input id="q_tel"></div>
+        <div class="field"><label for="q_correo">Correo</label><input id="q_correo" type="email"></div>
+        <div class="field"><label for="q_tel">Teléfono</label><input id="q_tel"></div>
       </div>
-      <div class="field"><label>Brief / mensaje</label><textarea id="q_msg" placeholder="Cuéntanos de la campaña, fechas y presupuesto aproximado…"></textarea></div>
+      <div class="field"><label for="q_msg">Brief / mensaje</label><textarea id="q_msg" placeholder="Cuéntanos de la campaña, fechas y presupuesto aproximado…"></textarea></div>
       <button class="btn-p" id="q_btn" style="width:100%" onclick="submitCotizar()">Enviar solicitud</button>
       <div id="q_status" class="form-status"></div>
     </div>
@@ -575,7 +577,7 @@ async function loadTeam(){
   const {data,error}=await sb.from("equipo").select("*").eq("publicado",true).order("orden",{ascending:true});
   if(!error&&data&&data.length){TEAMR=data;buildTeam();const sec=document.getElementById("nosotros");if(sec&&sec.classList.contains("show"))sec.querySelectorAll(".reveal").forEach(r=>r.classList.add("in"));}
 }
-function buildTeam(){document.getElementById("team").innerHTML=TEAMR.map(m=>`<div class="tm" onclick="this.classList.toggle('open')"><img src="${esc(m.foto)}" alt="${esc(m.nombre)}" loading="lazy"><div class="tinfo"><div class="tn">${esc(m.nombre)}</div><div class="tp">${esc(m.puesto)}</div>${m.frase?`<div class="tf">"${esc(m.frase)}"</div>`:""}</div></div>`).join("");}
+function buildTeam(){document.getElementById("team").innerHTML=TEAMR.map(m=>`<div class="tm" role="button" tabindex="0" aria-label="${esc(m.nombre)}" onclick="this.classList.toggle('open')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.classList.toggle('open')}"><img src="${esc(m.foto)}" alt="${esc(m.nombre)}" loading="lazy"><div class="tinfo"><div class="tn">${esc(m.nombre)}</div><div class="tp">${esc(m.puesto)}</div>${m.frase?`<div class="tf">"${esc(m.frase)}"</div>`:""}</div></div>`).join("");}
 
 /* ----- roster (Supabase) ----- */
 async function loadRoster(){
@@ -624,7 +626,7 @@ function render(){
   document.getElementById("rCount").textContent=`${list.length} creador${list.length===1?"":"es"}`;
   document.getElementById("grid").innerHTML=list.map(t=>{
     const plats=(t.plataformas||[]).slice(0,3).map(p=>`<span class="p">${esc(p.plataforma)} ${esc(p.seguidores||"")}</span>`).join("");
-    return `<div class="card" onclick="openM('${t.slug}')">
+    return `<div class="card" role="button" tabindex="0" aria-label="${esc(t.nombre)}" onclick="openM('${t.slug}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openM('${t.slug}')}">
       <img src="${esc(t.photo)}" alt="${esc(t.nombre)}" loading="lazy" onerror="this.style.opacity=.2">
       <div class="grad"></div>${t.tier?`<div class="tier">${esc(t.tier)}</div>`:""}
       <div class="info"><div class="nm">${esc(t.nombre)}</div>
@@ -723,14 +725,15 @@ async function submitCotizar(){
 /* ----- nav / sections ----- */
 /* ----- router (URLs compartibles + SEO) ----- */
 const SITE="https://movdi.mx";
-const SEC_PATH={roster:"/",servicios:"/servicios",nosotros:"/nosotros",unete:"/unete",hablemos:"/contacto"};
-const PATH_SEC={"":"roster","/":"roster","/roster":"roster","/servicios":"servicios","/nosotros":"nosotros","/unete":"unete","/contacto":"hablemos","/hablemos":"hablemos"};
+const SEC_PATH={roster:"/roster",servicios:"/servicios",nosotros:"/nosotros",unete:"/unete",hablemos:"/contacto"};
+const PATH_SEC={"/roster":"roster","/servicios":"servicios","/nosotros":"nosotros","/unete":"unete","/contacto":"hablemos","/hablemos":"hablemos"};
 const META={
   roster:["MOVDI \u00b7 Roster de talento","Conoce a los m\u00e1s de 50 creadores del crew MOVDI: gaming, lifestyle, belleza, moda, comedia y m\u00e1s."],
   servicios:["MOVDI \u00b7 Servicios","Influencer marketing, manejo de talento, estrategia, PR y producci\u00f3n. As\u00ed trabajamos en MOVDI."],
   nosotros:["MOVDI \u00b7 Nosotros","Somos una agencia de talento y marketing de influencers en CDMX. Conoce al equipo MOVDI."],
   unete:["MOVDI \u00b7 \u00danete","\u00bfEres creador o quieres sumarte al equipo? \u00danete a MOVDI."],
-  hablemos:["MOVDI \u00b7 Contacto","Hablemos de tu pr\u00f3xima campa\u00f1a con creadores. Cont\u00e1ctanos."]
+  hablemos:["MOVDI \u00b7 Contacto","Hablemos de tu pr\u00f3xima campa\u00f1a con creadores. Cont\u00e1ctanos."],
+  home:["MOVDI \u00b7 Digital Movement Agency","Agencia de talento y marketing de influencers en CDMX. Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital."]
 };
 const OG_DEFAULT=SITE+"/og-image.png";
 let _routing=false, pendingSlug=null;
@@ -753,6 +756,8 @@ function applyRoute(){
     showSection("roster",true);
     const slug=decodeURIComponent(mt[1]);
     if(TAL&&TAL.length) openM(slug); else pendingSlug=slug;
+  }else if(raw===""){
+    closeM(); showHome(true);
   }else{
     closeM();
     showSection(PATH_SEC[raw]||"roster",true);
@@ -771,6 +776,16 @@ function showSection(id,noScroll){
   const path=SEC_PATH[id];
   if(path){ if(!_routing) pushURL(path); const m=META[id]; if(m) setMeta(m[0],m[1],SITE+path,OG_DEFAULT); }
 }
+function showHome(instant){
+  const _ov=document.getElementById("ov"); if(_ov)_ov.classList.remove("open"); document.body.style.overflow="";
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('show'));
+  document.querySelectorAll('.nav-tab[data-s]').forEach(t=>t.classList.remove('active'));
+  const nm=document.getElementById('navMob'); if(nm)nm.style.display='none';
+  if(!_routing) pushURL("/");
+  setMeta(META.home[0],META.home[1],SITE+"/",OG_DEFAULT);
+  if(!instant) window.scrollTo({top:0,behavior:'smooth'});
+}
+window.showHome=showHome;
 function toggleMob(){const m=document.getElementById("navMob");m.style.display=m.style.display==="flex"?"none":"flex";}
 window.addEventListener("scroll",()=>{document.getElementById("nav").classList.toggle("solid",scrollY>40);});
 
