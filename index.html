@@ -277,6 +277,35 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
   .reveal{opacity:1 !important;transform:none !important}
   html{scroll-behavior:auto}
 }
+.serv-cta{margin-top:18px;display:inline-flex;align-items:center;gap:10px;font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.08em;font-size:14px;background:var(--orange);color:#fff;border:none;padding:12px 22px;border-radius:9px;cursor:pointer;transition:background 180ms var(--ease),transform 180ms var(--ease)}
+.serv-cta:hover{background:#fff;color:#000}
+.serv-cta:active{transform:scale(.97)}
+.serv-cta span{transition:transform 180ms var(--ease)}
+.serv-cta:hover span{transform:translateX(3px)}
+.svc-sum{display:flex;gap:34px;flex-wrap:wrap;padding:18px 0 4px;border-bottom:1px solid var(--line);margin:14px 0 6px}
+.svc-sum .n{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:36px;line-height:1}
+.svc-sum .n em{color:var(--orange);font-style:normal}
+.svc-sum .t{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-top:6px;font-family:"Barlow Condensed",sans-serif;font-weight:700}
+.svc-projs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+.svc-pcard{text-align:left;background:#0d0d0d;border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;padding:0;color:inherit;font-family:inherit;transition:border-color 200ms var(--ease),transform 200ms var(--ease)}
+.svc-pcard:hover{border-color:var(--orange);transform:translateY(-3px)}
+.svc-pcard:active{transform:scale(.98)}
+.svc-pcard img{width:100%;height:120px;object-fit:cover;display:block}
+.svc-pc-body{padding:14px}
+.svc-pc-name{font-family:"Barlow Condensed",sans-serif;font-weight:800;text-transform:uppercase;font-size:18px;line-height:1}
+.svc-pc-mini{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--orange)}
+.pres-hero{height:200px;overflow:hidden;border-radius:22px 22px 0 0}
+.pres-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.pres-metrics{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:6px}
+.pres-metric{background:#0d0d0d;border:1px solid var(--line);border-radius:12px;padding:16px}
+.pres-metric .n{font-family:"Barlow Condensed",sans-serif;font-weight:900;font-size:38px;line-height:1;color:var(--orange)}
+.pres-metric .n small{font-size:13px;color:var(--muted);font-weight:700}
+.pres-metric .t{font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:7px;font-family:"Barlow Condensed",sans-serif;font-weight:700}
+.pres-links{display:flex;flex-wrap:wrap;gap:9px}
+.pres-links .lnk{display:inline-flex;align-items:center;gap:7px;font-family:"Barlow Condensed",sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.05em;font-size:12px;color:#fff;background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:8px 12px;text-decoration:none;transition:border-color 160ms var(--ease),background 160ms var(--ease)}
+.pres-links .lnk:hover{border-color:var(--orange);background:rgba(255,75,0,.1)}
+.pres-links .lnk svg{width:14px;height:14px}
+@media(max-width:760px){.svc-projs,.pres-metrics{grid-template-columns:1fr}.svc-sum{gap:24px}.svc-sum .n{font-size:30px}}
 </style>
 </head>
 <body>
@@ -463,6 +492,15 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px}
   <div class="sheet glass lux" id="sheet"></div>
 </div>
 
+<!-- SERVICE PROJECTS LIST MODAL -->
+<div class="ov" id="ovServ" onclick="if(event.target===this)closeServ()">
+  <div class="sheet glass lux" id="servSheet" style="max-width:720px"></div>
+</div>
+<!-- SINGLE PROJECT RESULTS MODAL -->
+<div class="ov" id="ovProj" style="z-index:210" onclick="if(event.target===this)closeProj()">
+  <div class="sheet glass lux" id="projSheet" style="max-width:600px"></div>
+</div>
+
 <!-- COTIZAR MODAL -->
 <div class="ov" id="ovCot" onclick="if(event.target===this)closeCotizar()">
   <div class="sheet glass" id="cotSheet" style="max-width:520px">
@@ -558,13 +596,84 @@ function fmt(n){if(n>=1e6)return (n/1e6).toFixed(n>=1e7?0:1).replace(/\.0$/,"")+
 
 /* ----- static content ----- */
 function buildBrands(){const h=BRANDS.map(b=>`<span>${esc(b)}</span>`).join("");document.getElementById("mqTrack").innerHTML=h+h;}
+/* ----- resultados por proyecto (We Speak Gaming + Influencer Mkt/UGC) ----- */
+const RESULTS={
+  imkt:[
+    {perfiles:20,alcance:"200K",top:["Vinyleo","Caroh","Randy Rocha"],contenidos:[{p:"ig",url:"https://www.instagram.com/reels/DNZLCKQhTbF/"},{p:"ig",url:"https://www.instagram.com/reel/DOthm0IjoUR/"},{p:"tt",url:"https://www.tiktok.com/@soyrandyrocha/video/7538992712033324305"}]},
+    {perfiles:60,alcance:"800K",top:["Kameoyo","Soyhaliii","Jess Barajas"],contenidos:[{p:"tt",url:"https://www.tiktok.com/@kameoyo/video/7518118790119410962"},{p:"tt",url:"https://www.tiktok.com/@soyhali/video/7485513509355261239"},{p:"ig",url:"https://www.instagram.com/reels/DHoOLKfRiN_/"}]},
+    {perfiles:22,alcance:"500K",top:["Hell","Marovame","Andy"],contenidos:[{p:"tt",url:"https://www.tiktok.com/@hellsangri/video/7496970742026882312"},{p:"tt",url:"https://www.tiktok.com/@marovame/video/7497427008683658503"},{p:"tt",url:"https://www.tiktok.com/@andrea_delafuente/video/7498776038953012488"}]},
+    {perfiles:45,perfilesNota:"al momento",alcance:"5M",top:["Tin el Regio","Sabina","Gatur\u00f3n"],contenidos:[{p:"tt",url:"https://www.tiktok.com/@ringmexico/video/7624997345972800775"},{p:"tt",url:"https://www.tiktok.com/@ringmexico/video/7633500146558422293"},{p:"tt",url:"https://www.tiktok.com/@ringmexico/video/7630648638192045332"}]}
+  ],
+  gaming:[
+    {perfiles:10,alcance:"909K",top:["Sin6n","Deus Amir","Patty Meza"],contenidos:[{p:"ig",url:"https://www.instagram.com/reel/DSWF50Dkary/"},{p:"tt",url:"https://www.tiktok.com/@deusamirr/video/7584913931295149333"},{p:"tt",url:"https://www.tiktok.com/@pattymezam/video/7584587751022955796"}]},
+    {perfiles:3,alcance:"260K",top:["Soy Pan","Natalan","Rodezel"],contenidos:[{p:"ig",url:"https://www.instagram.com/reel/DNjbNrTJb1C/"},{p:"ig",url:"https://www.instagram.com/reel/DNWtw8gRdEW/"},{p:"tt",url:"https://www.tiktok.com/@soypan_/video/7541245343619419410"},{p:"ig",url:"https://www.instagram.com/reel/DNW5z2MMQFv/"}]},
+    {perfiles:2,alcance:"860K",top:["Renrize","Rodezel"],contenidos:[{p:"ig",url:"https://www.instagram.com/p/DXlJuZyDGnz/"},{p:"ig",url:"https://www.instagram.com/p/DXiTWzbDDGb/"}]}
+  ]
+};
+const IG_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/></svg>';
+const TT_SVG='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.7 3.7 4v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.2-2.6 5.8-5.8 5.8S5 17.7 5 14.5 7.6 8.7 10.8 8.7c.3 0 .6 0 .9.1v2.5c-.3-.1-.6-.2-.9-.2-1.6 0-2.9 1.3-2.9 2.9s1.3 2.9 2.9 2.9 2.9-1.3 2.9-2.9V3z"/></svg>';
+function parseAlcance(s){s=String(s).trim().toUpperCase();const n=parseFloat(s);if(s.indexOf("M")>=0)return n*1e6;if(s.indexOf("K")>=0)return n*1e3;return n||0;}
+function fmtAlcance(n){if(n>=1e6)return (n/1e6).toFixed(1).replace(/\.0$/,"")+"M";if(n>=1e3)return Math.round(n/1e3)+"K";return ""+n;}
+
+function openServ(id){
+  const s=SERVICES.find(x=>x.id===id),res=RESULTS[id]; if(!s||!res)return;
+  const proyectos=res.length;
+  const perfiles=res.reduce((a,r)=>a+(r.perfiles||0),0);
+  const alcance=fmtAlcance(res.reduce((a,r)=>a+parseAlcance(r.alcance),0));
+  const cards=s.projects.map((p,i)=>{const r=res[i];return `
+    <button class="svc-pcard" onclick="openProj('${id}',${i})">
+      ${p.img?`<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`:""}
+      <div class="svc-pc-body"><div class="svc-pc-name">${esc(p.name)}</div>
+        <div class="svc-pc-mini"><span>+${r.perfiles} perfiles</span><span>+${esc(r.alcance)} alcance</span></div></div>
+    </button>`;}).join("");
+  document.getElementById("servSheet").innerHTML=`
+    <button class="close" onclick="closeServ()">\u2715</button>
+    <div style="padding:34px">
+      <div class="lbl">${esc(s.title)}</div>
+      <h2 class="cond" style="font-size:clamp(30px,5vw,44px);margin:8px 0 4px">Resultados</h2>
+      <div class="svc-sum">
+        <div><div class="n">${proyectos}</div><div class="t">Proyectos</div></div>
+        <div><div class="n"><em>+</em>${perfiles}</div><div class="t">Perfiles activados</div></div>
+        <div><div class="n"><em>+</em>${alcance}</div><div class="t">Alcance combinado</div></div>
+      </div>
+      <div class="sub-t">Casos</div>
+      <div class="svc-projs">${cards}</div>
+    </div>`;
+  document.getElementById("ovServ").classList.add("open");document.body.style.overflow="hidden";
+}
+function openProj(id,i){
+  const s=SERVICES.find(x=>x.id===id); if(!s)return; const p=s.projects[i],r=RESULTS[id][i]; if(!p||!r)return;
+  const links=r.contenidos.map(c=>`<a class="lnk" href="${esc(c.url)}" target="_blank" rel="noopener">${c.p==="ig"?IG_SVG:TT_SVG}${c.p==="ig"?"Instagram":"TikTok"}</a>`).join("");
+  document.getElementById("projSheet").innerHTML=`
+    <button class="close" onclick="closeProj()">\u2715</button>
+    ${p.img?`<div class="pres-hero"><img src="${esc(p.img)}" alt="${esc(p.name)}"></div>`:""}
+    <div style="padding:28px">
+      <div class="lbl">${esc(s.title)}</div>
+      <h2 class="cond" style="font-size:clamp(28px,5vw,40px);margin:6px 0 14px">${esc(p.name)}</h2>
+      ${p.desc?`<p style="color:#cfcbc2;font-weight:300;margin:0 0 20px">${esc(p.desc)}</p>`:""}
+      <div class="pres-metrics">
+        <div class="pres-metric"><div class="n">+${r.perfiles}${r.perfilesNota?` <small>${esc(r.perfilesNota)}</small>`:""}</div><div class="t">Perfiles activados</div></div>
+        <div class="pres-metric"><div class="n">+${esc(r.alcance)}</div><div class="t">Alcance</div></div>
+      </div>
+      <div class="sub-t">Top perfiles</div>
+      <div class="chips">${r.top.map(t=>`<span class="c">${esc(t)}</span>`).join("")}</div>
+      <div class="sub-t">Contenido destacado</div>
+      <div class="pres-links">${links}</div>
+    </div>`;
+  document.getElementById("ovProj").classList.add("open");document.body.style.overflow="hidden";
+}
+function closeProj(){const o=document.getElementById("ovProj");if(o)o.classList.remove("open");}
+function closeServ(){const a=document.getElementById("ovProj"),b=document.getElementById("ovServ");if(a)a.classList.remove("open");if(b)b.classList.remove("open");document.body.style.overflow="";}
+window.openServ=openServ;window.openProj=openProj;window.closeServ=closeServ;window.closeProj=closeProj;
+
 function buildServices(){
   document.getElementById("servList").innerHTML=SERVICES.map(s=>`
     <div class="serv glass reveal">
       <div class="serv-top"><span class="ico">${esc(s.ico)}</span><h3>${esc(s.title)}</h3></div>
       <p class="desc">${esc(s.desc)}</p>
       ${s.body?`<p class="body">${esc(s.body)}</p>`:""}
-      ${(s.projects&&s.projects.length)?`<div class="projs">${s.projects.map(p=>`
+      ${RESULTS[s.id]?`<button class="serv-cta" onclick="openServ('${s.id}')">Ver resultados <span>\u2192</span></button>`
+      :(s.projects&&s.projects.length)?`<div class="projs">${s.projects.map(p=>`
         <a class="proj" href="${esc(p.link)}" target="_blank" rel="noopener">
           ${p.img?`<img src="${esc(p.img)}" alt="${esc(p.name)}" loading="lazy">`:""}
           <div class="pn">${esc(p.name)}</div><div class="pd">${esc(p.desc)}</div>
@@ -669,7 +778,7 @@ function openM(slug){
 function closeM(){document.getElementById("ov").classList.remove("open");document.body.style.overflow="";
   if(!_routing&&location.pathname.indexOf("/talento/")===0){ pushURL("/"); setMeta(META.roster[0],META.roster[1],SITE+"/",OG_DEFAULT); }
 }
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeM();closeCotizar();}});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){if(document.getElementById("ovProj").classList.contains("open")){closeProj();}else if(document.getElementById("ovServ").classList.contains("open")){closeServ();}else{closeM();closeCotizar();}}});
 
 /* ----- forms (Formspree) ----- */
 async function submitFS(fd){try{const r=await fetch(FORMSPREE,{method:"POST",headers:{Accept:"application/json"},body:fd});return r.ok;}catch(e){return false;}}
