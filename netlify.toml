@@ -1,0 +1,15 @@
+# Configuración de build para Netlify (Next.js)
+# Reemplaza al antiguo hosting estático: ahora Netlify construye la app
+# con el runtime oficial de Next.js.
+
+[build]
+  command = "next build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Runtime oficial de Next.js en Netlify (SSR, API Routes, middleware, ISR).
+# Netlify lo instala automáticamente al detectar este plugin.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
