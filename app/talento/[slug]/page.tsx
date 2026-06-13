@@ -31,25 +31,15 @@ export async function generateMetadata({
   const title = `${t.nombre} · MOVDI`;
   const description = (t.bio || `${t.nombre}, creador del crew MOVDI.`).slice(0, 180);
   const url = `/talento/${t.slug}`;
-  const image = t.photo;
 
+  // La imagen del preview la genera opengraph-image.tsx / twitter-image.tsx
+  // (foto del talento + nombre + logo). Next la enlaza automáticamente.
   return {
     title,
     description,
     alternates: { canonical: url },
-    openGraph: {
-      type: "profile",
-      url,
-      title,
-      description,
-      images: image ? [{ url: image, width: 1200, height: 1500, alt: t.nombre }] : undefined,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-      images: image ? [image] : undefined,
-    },
+    openGraph: { type: "profile", url, title, description },
+    twitter: { card: "summary_large_image", title, description },
   };
 }
 
@@ -87,7 +77,7 @@ export default async function TalentoPage({ params }: { params: { slug: string }
                 <CotizarForm talento={{ slug: t.slug, nombre: t.nombre, crew: t.crew, photo: t.photo }} />
                 <a
                   className="btn-wa"
-                  href={waLink(`Hola MOVDI 👋 me interesa trabajar con ${t.nombre}`)}
+                  href={waLink(`Hola MOVDI, me interesa trabajar con ${t.nombre}`)}
                   target="_blank"
                   rel="noopener"
                 >

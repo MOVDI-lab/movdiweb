@@ -30,7 +30,7 @@ export default function TalentModal({ t, onClose }: { t: Talento; onClose: () =>
               <CotizarForm talento={{ slug: t.slug, nombre: t.nombre, crew: t.crew, photo: t.photo }} />
               <a
                 className="btn-wa"
-                href={waLink(`Hola MOVDI 👋 me interesa trabajar con ${t.nombre}`)}
+                href={waLink(`Hola MOVDI, me interesa trabajar con ${t.nombre}`)}
                 target="_blank"
                 rel="noopener"
               >
