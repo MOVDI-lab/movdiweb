@@ -14,6 +14,9 @@ a{color:inherit;text-decoration:none}
 .em{color:var(--orange)}
 .sec-pad{padding:100px 0}
 .sec-h{font-size:clamp(40px,6.5vw,88px);max-width:16ch}
+.panel{display:none}
+.panel.show{display:block;animation:fadePanel .55s cubic-bezier(.2,.7,.2,1)}
+@keyframes fadePanel{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
 /* ---------- LIQUID GLASS ---------- */
 .glass{position:relative;border-radius:20px;overflow:hidden;background:var(--black3);border:1px solid var(--line);box-shadow:0 8px 26px rgba(0,0,0,.4)}
@@ -244,7 +247,7 @@ footer .logo{justify-content:center;margin-bottom:10px;font-size:30px;display:fl
 @media (prefers-reduced-motion: reduce){
   .hero-word{animation:none}
   .glass.lux::after{animation:none}
-  .fi,.reveal{animation:none !important;transition:none !important;transform:none !important;opacity:1 !important}
+  .fi,.reveal,.panel.show{animation:none !important;transition:none !important;transform:none !important;opacity:1 !important}
   .reveal{opacity:1 !important;transform:none !important}
   html{scroll-behavior:auto}
 }

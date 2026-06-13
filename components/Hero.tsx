@@ -1,9 +1,10 @@
 import { fmt } from "@/lib/data";
 import { IgIcon, LinkedInIcon } from "./icons";
 import HeroActions from "./HeroActions";
+import type { Section } from "./HomeClient";
 
-// Servidor: recibe el alcance combinado ya calculado desde el roster.
-export default function Hero({ reach }: { reach: number }) {
+// Recibe el alcance combinado ya calculado desde el roster.
+export default function Hero({ reach, onNavigate }: { reach: number; onNavigate: (s: Section) => void }) {
   return (
     <section id="hero">
       <div className="hero-word">MOVDI</div>
@@ -17,7 +18,7 @@ export default function Hero({ reach }: { reach: number }) {
         <p className="hero-sub fi d3">
           Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.
         </p>
-        <HeroActions />
+        <HeroActions onNavigate={onNavigate} />
         <div className="hero-stats fi d5">
           <div className="hstat glass warm lux">
             <div className="n">+<span className="em">{fmt(reach)}</span></div>

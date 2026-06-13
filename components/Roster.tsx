@@ -7,7 +7,7 @@ import { SearchIcon } from "./icons";
 
 type FState = { crew: string; plat: string | null; cat: string | null; tier: string | null };
 
-export default function Roster({ talentos }: { talentos: Talento[] }) {
+export default function Roster({ talentos, onOpen }: { talentos: Talento[]; onOpen: (slug: string) => void }) {
   const [f, setF] = useState<FState>({ crew: "todos", plat: null, cat: null, tier: null });
   const [q, setQ] = useState("");
 
@@ -81,7 +81,7 @@ export default function Roster({ talentos }: { talentos: Talento[] }) {
           {list.length === 0 ? (
             <p style={{ color: "var(--muted)" }}>Sin resultados con esos filtros.</p>
           ) : (
-            list.map((t) => <TalentCard key={t.id} t={t} />)
+            list.map((t) => <TalentCard key={t.id} t={t} onOpen={onOpen} />)
           )}
         </div>
       </div>
@@ -104,10 +104,20 @@ function PillGroup({ label, values, active, onPick }: {
   );
 }
 
-function TalentCard({ t }: { t: Talento }) {
+function TalentCard({ t, onOpen }: { t: Talento; onOpen: (slug: string) => void }) {
   const plats = (t.plataformas || []).slice(0, 3);
   return (
-    <Link className="card" href={`/talento/${t.slug}`} aria-label={t.nombre}>
+    <Link
+      className="card"
+      href={`/talento/${t.slug}`}
+      aria-label={t.nombre}
+      onClick={(e) => {
+        // Clic normal → modal sobre el roster. Ctrl/Cmd/clic medio → deja abrir en pestaña.
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        onOpen(t.slug);
+      }}
+    >
       <img src={t.photo} alt={t.nombre} loading="lazy" />
       <div className="grad" />
       {t.tier && <div className="tier">{t.tier}</div>}

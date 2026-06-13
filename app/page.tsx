@@ -1,12 +1,4 @@
-import Nav from "@/components/Nav";
-import Hero from "@/components/Hero";
-import Marquee from "@/components/Marquee";
-import Servicios from "@/components/Servicios";
-import Roster from "@/components/Roster";
-import Nosotros from "@/components/Nosotros";
-import Unete from "@/components/Unete";
-import Contacto from "@/components/Contacto";
-import Footer from "@/components/Footer";
+import HomeClient from "@/components/HomeClient";
 import { getTalentos, getEquipo } from "@/lib/queries";
 import { parseNum } from "@/lib/data";
 
@@ -21,17 +13,5 @@ export default async function HomePage() {
     0
   );
 
-  return (
-    <>
-      <Nav />
-      <Hero reach={reach} />
-      <Marquee />
-      <Servicios />
-      <Roster talentos={talentos} />
-      <Nosotros equipo={equipo} />
-      <Unete />
-      <Contacto />
-      <Footer />
-    </>
-  );
+  return <HomeClient talentos={talentos} equipo={equipo} reach={reach} />;
 }

@@ -1,8 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import type { Section } from "./HomeClient";
 
-export default function Nav() {
+export default function Nav({
+  active,
+  onNavigate,
+}: {
+  active: Section;
+  onNavigate: (s: Section) => void;
+}) {
   const [solid, setSolid] = useState(false);
   const [mobOpen, setMobOpen] = useState(false);
 
@@ -13,24 +20,24 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const go = (id: string) => (e: React.MouseEvent) => {
-    e.preventDefault();
+  const go = (s: Section) => () => {
     setMobOpen(false);
-    const el = document.getElementById(id);
-    if (el) window.scrollTo({ top: Math.max(0, el.offsetTop - 64), behavior: "smooth" });
+    onNavigate(s);
   };
+
+  const tab = (s: Section, label: string) => (
+    <button className={`nav-tab${active === s ? " active" : ""}`} onClick={go(s)}>{label}</button>
+  );
 
   return (
     <nav id="nav" className={solid ? "solid" : ""}>
       <div className="nav-in">
-        <a className="logo" href="#hero" onClick={go("hero")}>
-          MOV<span className="em">DI</span>
-        </a>
+        <div className="logo" onClick={go("home")}>MOV<span className="em">DI</span></div>
         <div className="nav-tabs">
-          <button className="nav-tab" onClick={go("roster")}>Roster</button>
-          <button className="nav-tab" onClick={go("servicios")}>Servicios</button>
-          <button className="nav-tab" onClick={go("nosotros")}>Nosotros</button>
-          <button className="nav-tab" onClick={go("unete")}>Únete</button>
+          {tab("roster", "Roster")}
+          {tab("servicios", "Servicios")}
+          {tab("nosotros", "Nosotros")}
+          {tab("unete", "Únete")}
         </div>
         <div className="nav-sp" />
         <button className="nav-cta" onClick={go("hablemos")}>Hablemos</button>
@@ -39,10 +46,10 @@ export default function Nav() {
         </button>
       </div>
       <div className={`nav-mob${mobOpen ? " open" : ""}`}>
-        <button className="nav-tab" onClick={go("roster")}>Roster</button>
-        <button className="nav-tab" onClick={go("servicios")}>Servicios</button>
-        <button className="nav-tab" onClick={go("nosotros")}>Nosotros</button>
-        <button className="nav-tab" onClick={go("unete")}>Únete</button>
+        {tab("roster", "Roster")}
+        {tab("servicios", "Servicios")}
+        {tab("nosotros", "Nosotros")}
+        {tab("unete", "Únete")}
         <button className="nav-tab" style={{ color: "var(--orange)" }} onClick={go("hablemos")}>Hablemos</button>
       </div>
     </nav>

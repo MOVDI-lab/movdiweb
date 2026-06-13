@@ -22,17 +22,20 @@ const nextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
-  // Conserva las rutas profundas que ya existían en el sitio anterior.
-  async redirects() {
+  // Las URLs de sección sirven la home; el cliente abre el panel correcto
+  // leyendo el pathname (así /roster, /servicios… siguen funcionando).
+  async rewrites() {
     return [
-      { source: "/roster", destination: "/#roster", permanent: true },
-      { source: "/servicios", destination: "/#servicios", permanent: true },
-      { source: "/nosotros", destination: "/#nosotros", permanent: true },
-      { source: "/unete", destination: "/#unete", permanent: true },
-      { source: "/contacto", destination: "/#hablemos", permanent: true },
-      { source: "/hablemos", destination: "/#hablemos", permanent: true },
-      { source: "/admin-roster.html", destination: "/admin", permanent: true },
+      { source: "/roster", destination: "/" },
+      { source: "/servicios", destination: "/" },
+      { source: "/nosotros", destination: "/" },
+      { source: "/unete", destination: "/" },
+      { source: "/contacto", destination: "/" },
+      { source: "/hablemos", destination: "/" },
     ];
+  },
+  async redirects() {
+    return [{ source: "/admin-roster.html", destination: "/admin", permanent: true }];
   },
 };
 
