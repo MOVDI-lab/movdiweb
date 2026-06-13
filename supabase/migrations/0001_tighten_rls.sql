@@ -27,15 +27,20 @@ create policy "admins read self" on public.admins
   for select to authenticated
   using (email = auth.email());
 
--- Da de alta al primer administrador. Añade aquí más correos si hace falta.
-insert into public.admins (email) values ('daniela@movdi.mx')
+-- Da de alta a los administradores actuales. Añade aquí más correos si hace falta.
+insert into public.admins (email) values
+  ('daniela@movdi.mx'),
+  ('diana@movdi.mx')
   on conflict (email) do nothing;
 
 -- 2) Función helper: ¿el usuario actual es admin?
+-- SECURITY INVOKER: la tabla admins ya deja que cada usuario lea su propia
+-- fila, así que no hace falta DEFINER (evita exponer una función definer por RPC).
 create or replace function public.is_admin()
 returns boolean
 language sql
-security definer
+security invoker
+stable
 set search_path = public
 as $$
   select exists (select 1 from public.admins where email = auth.email());
