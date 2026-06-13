@@ -36,9 +36,10 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
   const isAdminArea = pathname.startsWith("/admin");
-  const isLogin = pathname === "/admin/login";
+  // Rutas del admin accesibles sin sesión (login y recuperación de contraseña).
+  const isPublicAdmin = pathname === "/admin/login" || pathname === "/admin/reset";
 
-  if (isAdminArea && !isLogin && !user) {
+  if (isAdminArea && !isPublicAdmin && !user) {
     const url = request.nextUrl.clone();
     url.pathname = "/admin/login";
     return NextResponse.redirect(url);

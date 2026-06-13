@@ -38,21 +38,17 @@ export default function HomeClient({
     [slug, talentos]
   );
 
-  const scrollToSection = (s: Section) => {
-    setTimeout(() => {
-      if (s === "home") { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-      const el = document.getElementById(s);
-      if (el) window.scrollTo({ top: Math.max(0, el.offsetTop - 64), behavior: "smooth" });
-    }, 40);
+  const scrollTop = () => {
+    setTimeout(() => window.scrollTo({ top: 0, behavior: "smooth" }), 10);
   };
 
-  // Cambio de sección (muestra un panel a la vez), actualiza URL y hace scroll.
+  // Cambio de sección (muestra un panel a la vez), actualiza URL y sube al inicio.
   const navigate = useCallback((s: Section) => {
     setSlug(null);
     setSection(s);
     const p = pathFor(s);
     if (window.location.pathname !== p) window.history.pushState({}, "", p);
-    scrollToSection(s);
+    scrollTop();
   }, []);
 
   const openTalent = useCallback((s: string) => {
@@ -87,8 +83,12 @@ export default function HomeClient({
   return (
     <>
       <Nav active={section} onNavigate={navigate} />
-      <Hero reach={reach} onNavigate={navigate} />
-      <Marquee />
+      {section === "home" && (
+        <>
+          <Hero reach={reach} onNavigate={navigate} />
+          <Marquee />
+        </>
+      )}
       <div className={`panel${section === "servicios" ? " show" : ""}`}><Servicios /></div>
       <div className={`panel${section === "roster" ? " show" : ""}`}><Roster talentos={talentos} onOpen={openTalent} /></div>
       <div className={`panel${section === "nosotros" ? " show" : ""}`}><Nosotros equipo={equipo} /></div>

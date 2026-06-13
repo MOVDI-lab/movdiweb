@@ -53,12 +53,30 @@ export async function generateMetadata({
   };
 }
 
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://movdi.mx";
+
 export default async function TalentoPage({ params }: { params: { slug: string } }) {
   const t = await getTalentoBySlug(params.slug);
   if (!t) notFound();
 
+  const personJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: t.nombre,
+    url: `${SITE}/talento/${t.slug}`,
+    image: t.photo || undefined,
+    description: t.bio || undefined,
+    jobTitle: "Creador de contenido",
+    homeLocation: t.ciudad || "México",
+    worksFor: { "@type": "Organization", name: "MOVDI", url: SITE },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+      />
       <div className="talent-page">
         <Link href="/roster" className="back-link">← Volver al roster</Link>
         <div className="sheet glass lux">

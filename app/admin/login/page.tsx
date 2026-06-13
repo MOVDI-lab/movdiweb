@@ -11,6 +11,7 @@ export default function AdminLogin() {
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState<{ cls: string; text: string }>({ cls: "", text: "" });
   const [loading, setLoading] = useState(false);
+  const [resetting, setResetting] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,6 +35,25 @@ export default function AdminLogin() {
     router.refresh();
   }
 
+  async function onForgot() {
+    if (!email) {
+      setMsg({ cls: "err", text: "Escribe tu correo arriba y vuelve a dar clic en «¿Olvidaste tu contraseña?»." });
+      return;
+    }
+    setResetting(true);
+    setMsg({ cls: "", text: "" });
+    const supabase = createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/admin/reset`,
+    });
+    setResetting(false);
+    if (error) {
+      setMsg({ cls: "err", text: error.message });
+      return;
+    }
+    setMsg({ cls: "ok", text: "Te enviamos un correo para restablecer tu contraseña. Revisa tu bandeja (y spam)." });
+  }
+
   return (
     <div className="admin-root">
       <div className="a-login">
@@ -50,6 +70,14 @@ export default function AdminLogin() {
             <input className="a-ctrl" type="password" value={password} onChange={(e) => setPassword(e.target.value)} autoComplete="current-password" />
           </label>
           <button className="a-btn full" disabled={loading}>{loading ? "Entrando…" : "Entrar"}</button>
+          <button
+            type="button"
+            onClick={onForgot}
+            disabled={resetting}
+            style={{ background: "none", border: "none", color: "var(--muted)", fontSize: 13, marginTop: 12, cursor: "pointer", textDecoration: "underline", padding: 0 }}
+          >
+            {resetting ? "Enviando…" : "¿Olvidaste tu contraseña?"}
+          </button>
           <div className={`a-msg ${msg.cls}`}>{msg.text}</div>
         </form>
       </div>
