@@ -36,6 +36,20 @@ export interface Talento {
   orden: number;
 }
 
+// Acceso al panel (tabla team_members). No confundir con MiembroEquipo,
+// que es la sección pública "Nosotros" del sitio.
+export type TeamRole = "admin" | "editor" | "viewer";
+
+export interface TeamAccess {
+  id: string;
+  email: string;
+  name: string;
+  role: TeamRole;
+  active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}
+
 export interface MiembroEquipo {
   id: string;
   nombre: string;

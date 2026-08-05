@@ -26,6 +26,23 @@ npm run dev                  # http://localhost:3000
 | `public/` | Imágenes, favicons, sitemap, robots |
 | `legacy/` | HTML original (referencia histórica) |
 
+## Roles y accesos del panel
+
+El acceso a `/admin` se controla con la tabla `public.team_members`
+(roles `admin` / `editor` / `viewer` + bandera `active`) y las funciones
+`is_team_admin()` / `can_edit_content()` (ver
+`supabase/migrations/0002_team_members_roles.sql`):
+
+- **admin** — CRUD de contenido y pestaña **Accesos**: roles, activar/desactivar,
+  resetear contraseñas y dar de baja (offboarding).
+- **editor** — CRUD de talentos/equipo, sin gestión de accesos.
+- **viewer** — panel en solo lectura.
+
+Los usuarios de Auth se crean a mano en el dashboard de Supabase; la pestaña
+Accesos solo otorga o quita permisos. El reset admin de contraseñas usa la
+Edge Function `supabase/functions/admin-reset-password/` (service role solo en
+el servidor; deja traza en `public.admin_audit`).
+
 ## Variables de entorno
 
 Ver `.env.example`. Las claves reales van en `.env.local` (ignorado por git).
