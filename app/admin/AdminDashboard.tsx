@@ -16,6 +16,8 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
   const [equipo, setEquipo] = useState<MiembroEquipo[]>([]);
   const [access, setAccess] = useState<TeamAccess[]>([]);
   const [myRole, setMyRole] = useState<TeamRole | null>(null);
+  const [accessModal, setAccessModal] = useState<{ kind: "reset" | "offboard"; member: TeamAccess } | { kind: "add" } | null>(null);
+  const [accessMsg, setAccessMsg] = useState("");
   const [search, setSearch] = useState("");
   const [crew, setCrew] = useState("todos");
   const [editTal, setEditTal] = useState<Talento | "new" | null>(null);
@@ -47,55 +49,19 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
   const isAdmin = myRole === "admin";
   const isMe = (m: TeamAccess) => m.email.toLowerCase() === userEmail.toLowerCase();
 
+  // Nada de prompt/confirm/alert aquí: el navegador puede suprimir los
+  // diálogos nativos sin avisar (y el botón parece muerto). Todo el flujo
+  // de Accesos usa modales propios con estados visibles.
   async function changeRole(m: TeamAccess, role: TeamRole) {
     const { error } = await supabase.from("team_members").update({ role }).eq("id", m.id);
-    if (error) alert("No se pudo cambiar el rol: " + error.message);
+    setAccessMsg(error ? "No se pudo cambiar el rol: " + error.message : "");
     loadAccess();
   }
 
   async function toggleAccessActive(m: TeamAccess, val: boolean) {
     const { error } = await supabase.from("team_members").update({ active: val }).eq("id", m.id);
-    if (error) alert("No se pudo actualizar: " + error.message);
+    setAccessMsg(error ? "No se pudo actualizar: " + error.message : "");
     loadAccess();
-  }
-
-  async function addAccess() {
-    const email = prompt("Correo del nuevo acceso.\n(Recuerda: su usuario de Auth se crea aparte, en el dashboard de Supabase.)");
-    if (!email || !email.trim()) return;
-    const name = prompt("Nombre:") ?? "";
-    const { error } = await supabase.from("team_members").insert({ email: email.trim().toLowerCase(), name: name.trim(), role: "viewer" });
-    if (error) { alert("No se pudo agregar: " + error.message); return; }
-    loadAccess();
-  }
-
-  async function invokeAdminReset(body: { action: "reset" | "offboard"; target_email: string; temp_password?: string }) {
-    const { data, error } = await supabase.functions.invoke("admin-reset-password", { body });
-    if (error) {
-      let msg = error.message;
-      try { msg = (await (error as unknown as { context: Response }).context.json()).error ?? msg; } catch { /* mensaje genérico */ }
-      throw new Error(msg);
-    }
-    return data as { ok: boolean; temp_password?: string; sessions_revoked?: boolean };
-  }
-
-  async function resetPassword(m: TeamAccess) {
-    const temp = prompt(`Nueva contraseña temporal para ${m.email} (mínimo 12 caracteres).\nDéjalo VACÍO para generar una aleatoria segura:`);
-    if (temp === null) return;
-    if (temp && temp.length < 12) { alert("La contraseña temporal debe tener al menos 12 caracteres."); return; }
-    try {
-      const res = await invokeAdminReset({ action: "reset", target_email: m.email, ...(temp ? { temp_password: temp } : {}) });
-      alert(`Contraseña de ${m.email} cambiada y sesiones cerradas.`
-        + (res.temp_password ? `\n\nContraseña temporal (se muestra solo una vez):\n${res.temp_password}` : ""));
-    } catch (e) { alert("Error: " + (e as Error).message); }
-  }
-
-  async function offboard(m: TeamAccess) {
-    if (!confirm(`Dar de baja a ${m.email}:\n• su contraseña cambia a una aleatoria que nadie conoce\n• se cierran sus sesiones\n• su acceso al panel queda desactivado\n\nSu usuario de Auth NO se borra. ¿Continuar?`)) return;
-    try {
-      await invokeAdminReset({ action: "offboard", target_email: m.email });
-      alert(`${m.email} quedó fuera del panel.`);
-      loadAccess();
-    } catch (e) { alert("Error: " + (e as Error).message); }
   }
 
   async function logout() {
@@ -221,8 +187,9 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
           <>
             <div className="a-bar">
               <span className="count">{access.length} accesos · los usuarios de Auth se crean a mano en el dashboard de Supabase</span>
+              {accessMsg && <span className="a-msg err" style={{ marginTop: 0 }}>{accessMsg}</span>}
               <div className="sp" />
-              <button className="a-btn sm" onClick={addAccess}>+ Agregar acceso</button>
+              <button className="a-btn sm" onClick={() => setAccessModal({ kind: "add" })}>+ Agregar acceso</button>
             </div>
             <div className="a-card">
               {access.length === 0 ? (
@@ -243,8 +210,8 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
                     <span className="a-slider" />
                   </label>
                   <div className="a-acts">
-                    <button className="a-btn ghost sm" onClick={() => resetPassword(m)} disabled={isMe(m)} title={isMe(m) ? "Para tu propia cuenta usa «¿Olvidaste tu contraseña?»" : ""}>Resetear contraseña</button>
-                    <button className="a-btn ghost sm" onClick={() => offboard(m)} disabled={isMe(m)} style={{ color: "var(--red)" }}>Dar de baja</button>
+                    <button className="a-btn ghost sm" onClick={() => setAccessModal({ kind: "reset", member: m })} disabled={isMe(m)} title={isMe(m) ? "Para tu propia cuenta usa «¿Olvidaste tu contraseña?»" : ""}>Resetear contraseña</button>
+                    <button className="a-btn ghost sm" onClick={() => setAccessModal({ kind: "offboard", member: m })} disabled={isMe(m)} style={{ color: "var(--red)" }}>Dar de baja</button>
                   </div>
                 </div>
               ))}
@@ -271,12 +238,179 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
           onSaved={() => { setEditMem(null); loadEquipo(); }}
         />
       )}
+      {accessModal && accessModal.kind !== "add" && (
+        <AccessActionModal
+          supabase={supabase}
+          kind={accessModal.kind}
+          member={accessModal.member}
+          onClose={() => setAccessModal(null)}
+          onChanged={loadAccess}
+        />
+      )}
+      {accessModal?.kind === "add" && (
+        <AccessAddModal
+          supabase={supabase}
+          onClose={() => setAccessModal(null)}
+          onSaved={() => { setAccessModal(null); loadAccess(); }}
+        />
+      )}
     </div>
   );
 }
 
 /* ============================ EDITOR DE TALENTO ============================ */
 type SB = ReturnType<typeof createClient>;
+
+/* ===================== MODALES DE ACCESOS (solo admin) ===================== */
+
+function AccessActionModal({ supabase, kind, member, onClose, onChanged }: {
+  supabase: SB; kind: "reset" | "offboard"; member: TeamAccess; onClose: () => void; onChanged: () => void;
+}) {
+  const [temp, setTemp] = useState("");
+  const [working, setWorking] = useState(false);
+  const [error, setError] = useState("");
+  const [done, setDone] = useState<{ temp_password?: string; sessions_revoked?: boolean } | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  const title = kind === "reset" ? "Resetear contraseña" : "Dar de baja";
+
+  async function run() {
+    if (kind === "reset" && temp && temp.length < 12) {
+      setError("La contraseña temporal debe tener al menos 12 caracteres.");
+      return;
+    }
+    setError("");
+    setWorking(true);
+    const { data, error: fnError } = await supabase.functions.invoke("admin-reset-password", {
+      body: { action: kind, target_email: member.email, ...(kind === "reset" && temp ? { temp_password: temp } : {}) },
+    });
+    setWorking(false);
+    if (fnError) {
+      let msg = fnError.message;
+      try { msg = (await (fnError as unknown as { context: Response }).context.json()).error ?? msg; } catch { /* se queda el genérico */ }
+      setError(msg);
+      return;
+    }
+    setDone((data ?? {}) as { temp_password?: string; sessions_revoked?: boolean });
+    onChanged();
+  }
+
+  async function copy(text: string) {
+    try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }
+    catch { /* el <code> permite seleccionar a mano */ }
+  }
+
+  return (
+    <div className="a-overlay" onClick={(e) => { if (e.target === e.currentTarget && !working) onClose(); }}>
+      <div className="a-modal" style={{ maxWidth: 460 }}>
+        <header><h3>{title}</h3></header>
+        <div className="body">
+          {done ? (
+            <>
+              <div className="a-msg ok" style={{ marginTop: 0 }}>
+                {kind === "reset"
+                  ? `Contraseña de ${member.email} cambiada${done.sessions_revoked ? " y sesiones cerradas" : ""}.`
+                  : `${member.email} quedó fuera del panel: contraseña aleatoria, sesiones cerradas y acceso desactivado.`}
+              </div>
+              {done.temp_password && (
+                <>
+                  <p className="a-sub" style={{ margin: 0 }}>Contraseña temporal — se muestra solo una vez, cópiala ahora:</p>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <code style={{ flex: 1, padding: "10px 12px", background: "#f0ebe1", borderRadius: 10, fontSize: 14, wordBreak: "break-all", userSelect: "all" }}>{done.temp_password}</code>
+                    <button className="a-btn ghost sm" onClick={() => copy(done.temp_password!)}>{copied ? "¡Copiada!" : "Copiar"}</button>
+                  </div>
+                </>
+              )}
+            </>
+          ) : kind === "reset" ? (
+            <>
+              <p className="a-sub" style={{ margin: 0 }}>
+                Se cambiará la contraseña de <b>{member.email}</b> y se cerrarán sus sesiones.
+                Escribe una temporal, o deja el campo vacío para generar una aleatoria segura (se mostrará aquí una sola vez).
+              </p>
+              <label className="a-fld" style={{ marginBottom: 0 }}>
+                <span>Contraseña temporal (opcional · mínimo 12 caracteres)</span>
+                <input className="a-ctrl" type="text" value={temp} onChange={(e) => setTemp(e.target.value)} placeholder="Vacío = aleatoria segura" autoComplete="off" />
+              </label>
+            </>
+          ) : (
+            <p className="a-sub" style={{ margin: 0 }}>
+              <b>{member.email}</b> quedará fuera del panel: su contraseña cambia a una aleatoria que nadie
+              conoce, se cierran sus sesiones y su acceso se desactiva. Su usuario de Auth no se borra.
+            </p>
+          )}
+          {error && <div className="a-msg err" style={{ marginTop: 0 }}>{error}</div>}
+        </div>
+        <footer>
+          {done ? (
+            <button className="a-btn" onClick={onClose}>Cerrar</button>
+          ) : (
+            <>
+              <button className="a-btn ghost" onClick={onClose} disabled={working}>Cancelar</button>
+              <button className="a-btn" style={kind === "offboard" ? { background: "var(--red)" } : undefined} onClick={run} disabled={working}>
+                {working ? "Aplicando…" : title}
+              </button>
+            </>
+          )}
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function AccessAddModal({ supabase, onClose, onSaved }: { supabase: SB; onClose: () => void; onSaved: () => void }) {
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
+  const [role, setRole] = useState<TeamRole>("viewer");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
+
+  async function save() {
+    const mail = email.trim().toLowerCase();
+    if (!mail || !mail.includes("@")) { setError("Escribe un correo válido."); return; }
+    setError("");
+    setSaving(true);
+    const { error: dbError } = await supabase.from("team_members").insert({ email: mail, name: name.trim(), role });
+    setSaving(false);
+    if (dbError) { setError("No se pudo agregar: " + dbError.message); return; }
+    onSaved();
+  }
+
+  return (
+    <div className="a-overlay" onClick={(e) => { if (e.target === e.currentTarget && !saving) onClose(); }}>
+      <div className="a-modal" style={{ maxWidth: 460 }}>
+        <header><h3>Agregar acceso</h3></header>
+        <div className="body">
+          <p className="a-sub" style={{ margin: 0 }}>
+            Aquí solo se otorga el rol en el panel. Su usuario de Auth (correo y contraseña)
+            se crea aparte, en el dashboard de Supabase.
+          </p>
+          <label className="a-fld" style={{ marginBottom: 0 }}>
+            <span>Correo</span>
+            <input className="a-ctrl" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />
+          </label>
+          <label className="a-fld" style={{ marginBottom: 0 }}>
+            <span>Nombre</span>
+            <input className="a-ctrl" value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
+          </label>
+          <label className="a-fld" style={{ marginBottom: 0 }}>
+            <span>Rol</span>
+            <select className="a-ctrl" value={role} onChange={(e) => setRole(e.target.value as TeamRole)}>
+              <option value="viewer">viewer</option>
+              <option value="editor">editor</option>
+              <option value="admin">admin</option>
+            </select>
+          </label>
+          {error && <div className="a-msg err" style={{ marginTop: 0 }}>{error}</div>}
+        </div>
+        <footer>
+          <button className="a-btn ghost" onClick={onClose} disabled={saving}>Cancelar</button>
+          <button className="a-btn" onClick={save} disabled={saving}>{saving ? "Guardando…" : "Agregar"}</button>
+        </footer>
+      </div>
+    </div>
+  );
+}
 
 function TalentEditor({ supabase, talento, orderHint, onClose, onSaved }: {
   supabase: SB; talento: Talento | null; orderHint: number; onClose: () => void; onSaved: () => void;
