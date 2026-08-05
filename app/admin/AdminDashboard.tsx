@@ -4,16 +4,18 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { CATEGORIAS, PLATAFORMAS } from "@/lib/data";
-import type { Talento, MiembroEquipo, Plataforma, Video } from "@/lib/types";
+import type { Talento, MiembroEquipo, Plataforma, TeamAccess, TeamRole, Video } from "@/lib/types";
 import "./admin.css";
 
 export default function AdminDashboard({ userEmail }: { userEmail: string }) {
   const router = useRouter();
   const supabase = useMemo(() => createClient(), []);
 
-  const [view, setView] = useState<"roster" | "equipo">("roster");
+  const [view, setView] = useState<"roster" | "equipo" | "accesos">("roster");
   const [talentos, setTalentos] = useState<Talento[]>([]);
   const [equipo, setEquipo] = useState<MiembroEquipo[]>([]);
+  const [access, setAccess] = useState<TeamAccess[]>([]);
+  const [myRole, setMyRole] = useState<TeamRole | null>(null);
   const [search, setSearch] = useState("");
   const [crew, setCrew] = useState("todos");
   const [editTal, setEditTal] = useState<Talento | "new" | null>(null);
@@ -31,7 +33,70 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
     setEquipo((data ?? []) as MiembroEquipo[]);
   }, [supabase]);
 
-  useEffect(() => { loadTalentos(); loadEquipo(); }, [loadTalentos, loadEquipo]);
+  // RLS: un admin ve todas las filas; editor/viewer solo la suya (para conocer su rol).
+  const loadAccess = useCallback(async () => {
+    const { data, error } = await supabase.from("team_members").select("*").order("created_at", { ascending: true });
+    if (error) { console.error(error); return; }
+    const list = (data ?? []) as TeamAccess[];
+    setAccess(list);
+    setMyRole(list.find((m) => m.email.toLowerCase() === userEmail.toLowerCase())?.role ?? null);
+  }, [supabase, userEmail]);
+
+  useEffect(() => { loadTalentos(); loadEquipo(); loadAccess(); }, [loadTalentos, loadEquipo, loadAccess]);
+
+  const isAdmin = myRole === "admin";
+  const isMe = (m: TeamAccess) => m.email.toLowerCase() === userEmail.toLowerCase();
+
+  async function changeRole(m: TeamAccess, role: TeamRole) {
+    const { error } = await supabase.from("team_members").update({ role }).eq("id", m.id);
+    if (error) alert("No se pudo cambiar el rol: " + error.message);
+    loadAccess();
+  }
+
+  async function toggleAccessActive(m: TeamAccess, val: boolean) {
+    const { error } = await supabase.from("team_members").update({ active: val }).eq("id", m.id);
+    if (error) alert("No se pudo actualizar: " + error.message);
+    loadAccess();
+  }
+
+  async function addAccess() {
+    const email = prompt("Correo del nuevo acceso.\n(Recuerda: su usuario de Auth se crea aparte, en el dashboard de Supabase.)");
+    if (!email || !email.trim()) return;
+    const name = prompt("Nombre:") ?? "";
+    const { error } = await supabase.from("team_members").insert({ email: email.trim().toLowerCase(), name: name.trim(), role: "viewer" });
+    if (error) { alert("No se pudo agregar: " + error.message); return; }
+    loadAccess();
+  }
+
+  async function invokeAdminReset(body: { action: "reset" | "offboard"; target_email: string; temp_password?: string }) {
+    const { data, error } = await supabase.functions.invoke("admin-reset-password", { body });
+    if (error) {
+      let msg = error.message;
+      try { msg = (await (error as unknown as { context: Response }).context.json()).error ?? msg; } catch { /* mensaje genérico */ }
+      throw new Error(msg);
+    }
+    return data as { ok: boolean; temp_password?: string; sessions_revoked?: boolean };
+  }
+
+  async function resetPassword(m: TeamAccess) {
+    const temp = prompt(`Nueva contraseña temporal para ${m.email} (mínimo 12 caracteres).\nDéjalo VACÍO para generar una aleatoria segura:`);
+    if (temp === null) return;
+    if (temp && temp.length < 12) { alert("La contraseña temporal debe tener al menos 12 caracteres."); return; }
+    try {
+      const res = await invokeAdminReset({ action: "reset", target_email: m.email, ...(temp ? { temp_password: temp } : {}) });
+      alert(`Contraseña de ${m.email} cambiada y sesiones cerradas.`
+        + (res.temp_password ? `\n\nContraseña temporal (se muestra solo una vez):\n${res.temp_password}` : ""));
+    } catch (e) { alert("Error: " + (e as Error).message); }
+  }
+
+  async function offboard(m: TeamAccess) {
+    if (!confirm(`Dar de baja a ${m.email}:\n• su contraseña cambia a una aleatoria que nadie conoce\n• se cierran sus sesiones\n• su acceso al panel queda desactivado\n\nSu usuario de Auth NO se borra. ¿Continuar?`)) return;
+    try {
+      await invokeAdminReset({ action: "offboard", target_email: m.email });
+      alert(`${m.email} quedó fuera del panel.`);
+      loadAccess();
+    } catch (e) { alert("Error: " + (e as Error).message); }
+  }
 
   async function logout() {
     await supabase.auth.signOut();
@@ -88,6 +153,9 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
         <div className="a-tabs">
           <button className={`a-tab${view === "roster" ? " active" : ""}`} onClick={() => setView("roster")}>Roster</button>
           <button className={`a-tab${view === "equipo" ? " active" : ""}`} onClick={() => setView("equipo")}>Equipo</button>
+          {isAdmin && (
+            <button className={`a-tab${view === "accesos" ? " active" : ""}`} onClick={() => setView("accesos")}>Accesos</button>
+          )}
         </div>
 
         {view === "roster" ? (
@@ -122,7 +190,7 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
               ))}
             </div>
           </>
-        ) : (
+        ) : view === "equipo" ? (
           <>
             <div className="a-bar">
               <span className="count">{equipo.length} en el equipo</span>
@@ -144,6 +212,39 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
                   <div className="a-acts">
                     <button className="a-btn ghost sm" onClick={() => setEditMem(m)}>Editar</button>
                     <button className="a-btn ghost sm" onClick={() => delMem(m.id, m.nombre)} style={{ color: "var(--red)" }}>✕</button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="a-bar">
+              <span className="count">{access.length} accesos · los usuarios de Auth se crean a mano en el dashboard de Supabase</span>
+              <div className="sp" />
+              <button className="a-btn sm" onClick={addAccess}>+ Agregar acceso</button>
+            </div>
+            <div className="a-card">
+              {access.length === 0 ? (
+                <div className="a-empty">Sin accesos.</div>
+              ) : access.map((m) => (
+                <div className="a-row access" key={m.id}>
+                  <div>
+                    <div className="a-nm">{m.name || m.email}{isMe(m) ? " (tú)" : ""}</div>
+                    <div className="a-slug">{m.email}</div>
+                  </div>
+                  <select className="a-ctrl" value={m.role} onChange={(e) => changeRole(m, e.target.value as TeamRole)}>
+                    <option value="admin">admin</option>
+                    <option value="editor">editor</option>
+                    <option value="viewer">viewer</option>
+                  </select>
+                  <label className="a-switch" title={m.active ? "Acceso activo" : "Acceso desactivado"}>
+                    <input type="checkbox" checked={m.active} onChange={(e) => toggleAccessActive(m, e.target.checked)} />
+                    <span className="a-slider" />
+                  </label>
+                  <div className="a-acts">
+                    <button className="a-btn ghost sm" onClick={() => resetPassword(m)} disabled={isMe(m)} title={isMe(m) ? "Para tu propia cuenta usa «¿Olvidaste tu contraseña?»" : ""}>Resetear contraseña</button>
+                    <button className="a-btn ghost sm" onClick={() => offboard(m)} disabled={isMe(m)} style={{ color: "var(--red)" }}>Dar de baja</button>
                   </div>
                 </div>
               ))}

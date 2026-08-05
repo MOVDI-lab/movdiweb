@@ -38,6 +38,7 @@
 .a-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
 .a-row{display:grid;grid-template-columns:54px 1fr 90px 80px 56px 130px;gap:12px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)}
 .a-row.team{grid-template-columns:54px 1fr 1fr 56px 130px}
+.a-row.access{grid-template-columns:1fr 120px 56px 300px}
 .a-row:last-child{border-bottom:none}
 .a-ph{width:46px;height:46px;border-radius:10px;object-fit:cover;object-position:top;background:#eee}
 .a-nm{font-weight:600}
@@ -69,5 +70,7 @@
 @media(max-width:720px){
   .a-row{grid-template-columns:46px 1fr 56px 110px}
   .a-row .c-tier,.a-row .c-cats,.a-row .c-puesto{display:none}
+  .a-row.access{grid-template-columns:1fr 100px 56px}
+  .a-row.access .a-acts{grid-column:1 / -1;display:flex;gap:8px;flex-wrap:wrap}
   .a-grid2,.a-grid3{grid-template-columns:1fr}
 }
