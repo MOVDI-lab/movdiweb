@@ -24,9 +24,13 @@ const ALLOWED_ORIGINS = new Set([
   "http://localhost:3000",
 ]);
 
+// Deploy previews de Netlify del propio sitio (https://deploy-preview-N--movdiweb.netlify.app)
+const PREVIEW_ORIGIN = /^https:\/\/deploy-preview-\d+--movdiweb\.netlify\.app$/;
+
 function corsHeaders(origin: string | null) {
+  const allowed = origin !== null && (ALLOWED_ORIGINS.has(origin) || PREVIEW_ORIGIN.test(origin));
   return {
-    "Access-Control-Allow-Origin": origin && ALLOWED_ORIGINS.has(origin) ? origin : "https://movdi.mx",
+    "Access-Control-Allow-Origin": allowed ? origin! : "https://movdi.mx",
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Content-Type": "application/json",
