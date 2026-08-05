@@ -46,6 +46,19 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
 
   useEffect(() => { loadTalentos(); loadEquipo(); loadAccess(); }, [loadTalentos, loadEquipo, loadAccess]);
 
+  // Si la sesión muere con el panel abierto (expiró, o se revocó al cambiar
+  // la contraseña en otra pestaña), el cliente seguiría llamando como anon y
+  // RLS rechazaría todo con errores crípticos: mejor mandar al login.
+  useEffect(() => {
+    const { data: authSub } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (!session) {
+        router.replace("/admin/login?expired=1");
+        router.refresh();
+      }
+    });
+    return () => authSub.subscription.unsubscribe();
+  }, [supabase, router]);
+
   const isAdmin = myRole === "admin";
   const isMe = (m: TeamAccess) => m.email.toLowerCase() === userEmail.toLowerCase();
 
@@ -476,7 +489,12 @@ function TalentEditor({ supabase, talento, orderHint, onClose, onSaved }: {
       : await supabase.from("talentos").insert(payload);
     setSaving(false);
     if (error) {
-      setMsg({ cls: "err", text: error.code === "23505" ? "Ese slug ya existe, usa otro." : error.message });
+      setMsg({
+        cls: "err",
+        text: error.code === "23505" ? "Ese slug ya existe, usa otro."
+          : error.code === "42501" ? "No se pudo guardar: tu sesión expiró o no tienes permisos de edición. Recarga la página e inicia sesión de nuevo."
+          : error.message,
+      });
       return;
     }
     onSaved();
@@ -612,7 +630,15 @@ function TeamEditor({ supabase, miembro, orderHint, onClose, onSaved }: {
       ? await supabase.from("equipo").update(payload).eq("id", miembro.id)
       : await supabase.from("equipo").insert(payload);
     setSaving(false);
-    if (error) { setMsg({ cls: "err", text: error.message }); return; }
+    if (error) {
+      setMsg({
+        cls: "err",
+        text: error.code === "42501"
+          ? "No se pudo guardar: tu sesión expiró o no tienes permisos de edición. Recarga la página e inicia sesión de nuevo."
+          : error.message,
+      });
+      return;
+    }
     onSaved();
   }
 
