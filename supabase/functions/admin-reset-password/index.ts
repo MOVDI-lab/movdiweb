@@ -100,16 +100,12 @@ Deno.serve(async (req: Request) => {
   const { error: updateError } = await admin.auth.admin.updateUserById(targetUser.id, { password: newPassword });
   if (updateError) return reply(500, { error: "No se pudo cambiar la contraseña: " + updateError.message });
 
-  // 6) Revoca sus sesiones (refresh tokens). Si el endpoint no responde,
-  //    la contraseña ya cambió: solo tardarían en caducar los tokens vivos.
-  let sessionsRevoked = false;
-  try {
-    const res = await fetch(`${SUPABASE_URL}/auth/v1/admin/users/${targetUser.id}/logout?scope=global`, {
-      method: "POST",
-      headers: { apikey: SERVICE_ROLE_KEY, Authorization: `Bearer ${SERVICE_ROLE_KEY}` },
-    });
-    sessionsRevoked = res.ok;
-  } catch { /* no fatal */ }
+  // 6) Revoca sus sesiones via RPC (migración 0003). El endpoint admin de
+  //    logout de GoTrue resultó no fiable; el RPC borra refresh tokens y
+  //    sesiones directamente. Si fallara, la contraseña ya cambió: solo
+  //    tardarían en caducar los access tokens vivos (~1 h).
+  const { error: revokeError } = await admin.rpc("revoke_user_sessions", { target_user: targetUser.id });
+  const sessionsRevoked = !revokeError;
 
   // 7) Offboarding: desactiva su acceso al panel (la fila se conserva como traza)
   if (action === "offboard") {

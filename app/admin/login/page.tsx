@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import "../admin.css";
@@ -12,6 +12,12 @@ export default function AdminLogin() {
   const [msg, setMsg] = useState<{ cls: string; text: string }>({ cls: "", text: "" });
   const [loading, setLoading] = useState(false);
   const [resetting, setResetting] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("expired")) {
+      setMsg({ cls: "err", text: "Tu sesión expiró o se cerró (por ejemplo, al cambiar tu contraseña en otra pestaña). Inicia sesión de nuevo." });
+    }
+  }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
