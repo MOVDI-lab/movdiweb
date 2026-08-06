@@ -199,7 +199,7 @@ export default function AdminDashboard({ userEmail }: { userEmail: string }) {
         ) : (
           <>
             <div className="a-bar">
-              <span className="count">{access.length} accesos · los usuarios de Auth se crean a mano en el dashboard de Supabase</span>
+              <span className="count">{access.length} accesos · «+ Agregar acceso» crea también su usuario con contraseña temporal</span>
               {accessMsg && <span className="a-msg err" style={{ marginTop: 0 }}>{accessMsg}</span>}
               <div className="sp" />
               <button className="a-btn sm" onClick={() => setAccessModal({ kind: "add" })}>+ Agregar acceso</button>
@@ -375,50 +375,97 @@ function AccessAddModal({ supabase, onClose, onSaved }: { supabase: SB; onClose:
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [role, setRole] = useState<TeamRole>("viewer");
+  const [temp, setTemp] = useState("");
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [done, setDone] = useState<{ auth_created: boolean; temp_password?: string } | null>(null);
+  const [copied, setCopied] = useState(false);
 
   async function save() {
     const mail = email.trim().toLowerCase();
     if (!mail || !mail.includes("@")) { setError("Escribe un correo válido."); return; }
+    if (temp && temp.length < 12) { setError("La contraseña temporal debe tener al menos 12 caracteres."); return; }
     setError("");
     setSaving(true);
-    const { error: dbError } = await supabase.from("team_members").insert({ email: mail, name: name.trim(), role });
+    const { data, error: fnError } = await supabase.functions.invoke("admin-reset-password", {
+      body: { action: "create", target_email: mail, name: name.trim(), role, ...(temp ? { temp_password: temp } : {}) },
+    });
     setSaving(false);
-    if (dbError) { setError("No se pudo agregar: " + dbError.message); return; }
-    onSaved();
+    if (fnError) {
+      let msg = fnError.message;
+      try { msg = (await (fnError as unknown as { context: Response }).context.json()).error ?? msg; } catch { /* genérico */ }
+      setError(msg);
+      return;
+    }
+    setDone((data ?? { auth_created: false }) as { auth_created: boolean; temp_password?: string });
+  }
+
+  async function copy(text: string) {
+    try { await navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }
+    catch { /* el <code> permite seleccionar a mano */ }
   }
 
   return (
-    <div className="a-overlay" onClick={(e) => { if (e.target === e.currentTarget && !saving) onClose(); }}>
+    <div className="a-overlay" onClick={(e) => { if (e.target === e.currentTarget && !saving) (done ? onSaved() : onClose()); }}>
       <div className="a-modal" style={{ maxWidth: 460 }}>
         <header><h3>Agregar acceso</h3></header>
         <div className="body">
-          <p className="a-sub" style={{ margin: 0 }}>
-            Aquí solo se otorga el rol en el panel. Su usuario de Auth (correo y contraseña)
-            se crea aparte, en el dashboard de Supabase.
-          </p>
-          <label className="a-fld" style={{ marginBottom: 0 }}>
-            <span>Correo</span>
-            <input className="a-ctrl" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />
-          </label>
-          <label className="a-fld" style={{ marginBottom: 0 }}>
-            <span>Nombre</span>
-            <input className="a-ctrl" value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
-          </label>
-          <label className="a-fld" style={{ marginBottom: 0 }}>
-            <span>Rol</span>
-            <select className="a-ctrl" value={role} onChange={(e) => setRole(e.target.value as TeamRole)}>
-              <option value="viewer">viewer</option>
-              <option value="editor">editor</option>
-              <option value="admin">admin</option>
-            </select>
-          </label>
+          {done ? (
+            <>
+              <div className="a-msg ok" style={{ marginTop: 0 }}>
+                {done.auth_created
+                  ? `Usuario creado y acceso «${role}» activado para ${email.trim().toLowerCase()}.`
+                  : "Ese correo ya tenía usuario de Auth: se actualizó su acceso (rol y activo) sin tocar su contraseña."}
+              </div>
+              {done.temp_password && (
+                <>
+                  <p className="a-sub" style={{ margin: 0 }}>Contraseña temporal — se muestra solo una vez, cópiala y compártela de forma segura:</p>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <code style={{ flex: 1, padding: "10px 12px", background: "#f0ebe1", borderRadius: 10, fontSize: 14, wordBreak: "break-all", userSelect: "all" }}>{done.temp_password}</code>
+                    <button className="a-btn ghost sm" onClick={() => copy(done.temp_password!)}>{copied ? "¡Copiada!" : "Copiar"}</button>
+                  </div>
+                </>
+              )}
+            </>
+          ) : (
+            <>
+              <p className="a-sub" style={{ margin: 0 }}>
+                Crea el usuario (correo y contraseña temporal) y activa su acceso al panel
+                con el rol elegido. Si el correo ya tiene usuario, solo se actualiza su acceso.
+              </p>
+              <label className="a-fld" style={{ marginBottom: 0 }}>
+                <span>Correo</span>
+                <input className="a-ctrl" type="email" value={email} onChange={(e) => setEmail(e.target.value)} autoComplete="off" />
+              </label>
+              <label className="a-fld" style={{ marginBottom: 0 }}>
+                <span>Nombre</span>
+                <input className="a-ctrl" value={name} onChange={(e) => setName(e.target.value)} autoComplete="off" />
+              </label>
+              <label className="a-fld" style={{ marginBottom: 0 }}>
+                <span>Rol</span>
+                <select className="a-ctrl" value={role} onChange={(e) => setRole(e.target.value as TeamRole)}>
+                  <option value="viewer">viewer</option>
+                  <option value="editor">editor</option>
+                  <option value="admin">admin</option>
+                </select>
+              </label>
+              <label className="a-fld" style={{ marginBottom: 0 }}>
+                <span>Contraseña temporal (opcional · mínimo 12 caracteres)</span>
+                <input className="a-ctrl" type="text" value={temp} onChange={(e) => setTemp(e.target.value)} placeholder="Vacío = aleatoria segura (se muestra al crear)" autoComplete="off" />
+              </label>
+            </>
+          )}
           {error && <div className="a-msg err" style={{ marginTop: 0 }}>{error}</div>}
         </div>
         <footer>
-          <button className="a-btn ghost" onClick={onClose} disabled={saving}>Cancelar</button>
-          <button className="a-btn" onClick={save} disabled={saving}>{saving ? "Guardando…" : "Agregar"}</button>
+          {done ? (
+            <button className="a-btn" onClick={onSaved}>Cerrar</button>
+          ) : (
+            <>
+              <button className="a-btn ghost" onClick={onClose} disabled={saving}>Cancelar</button>
+              <button className="a-btn" onClick={save} disabled={saving}>{saving ? "Creando…" : "Agregar"}</button>
+            </>
+          )}
         </footer>
       </div>
     </div>
