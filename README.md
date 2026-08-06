@@ -38,10 +38,11 @@ El acceso a `/admin` se controla con la tabla `public.team_members`
 - **editor** — CRUD de talentos/equipo, sin gestión de accesos.
 - **viewer** — panel en solo lectura.
 
-Los usuarios de Auth se crean a mano en el dashboard de Supabase; la pestaña
-Accesos solo otorga o quita permisos. El reset admin de contraseñas usa la
-Edge Function `supabase/functions/admin-reset-password/` (service role solo en
-el servidor; deja traza en `public.admin_audit`).
+La pestaña Accesos gestiona todo el ciclo: **+ Agregar acceso** crea también el
+usuario de Auth con contraseña temporal (visible una sola vez), y los botones de
+reset/baja cierran sesiones y bloquean el acceso. Todo pasa por la Edge Function
+`supabase/functions/admin-reset-password/` (service role solo en el servidor,
+invocable únicamente por un admin activo; deja traza en `public.admin_audit`).
 
 ## Variables de entorno
 

@@ -7,6 +7,11 @@
 //   { action: "offboard", target_email }
 //     Contraseña aleatoria NO revelada + cierra sesiones + desactiva su fila
 //     en team_members. La persona queda fuera; su usuario de Auth NO se borra.
+//   { action: "create", target_email, name?, role?, temp_password? }
+//     Alta completa: crea el usuario de Auth (si no existe) con contraseña
+//     temporal (la dada o una aleatoria que se devuelve una sola vez) y
+//     upserta su fila en team_members con el rol elegido, active=true.
+//     Si el usuario de Auth ya existía, NO se toca su contraseña.
 //
 // Seguridad: el JWT del caller se valida y debe corresponder a un
 // team_member con role='admin' y active=true. La service role key vive solo
@@ -73,15 +78,19 @@ Deno.serve(async (req: Request) => {
   }
 
   // 3) Payload
-  let body: { action?: string; target_email?: string; temp_password?: string };
+  let body: { action?: string; target_email?: string; temp_password?: string; name?: string; role?: string };
   try { body = await req.json(); } catch { return reply(400, { error: "JSON inválido." }); }
   const action = body.action;
   const target = (body.target_email ?? "").trim().toLowerCase();
   const tempPassword = body.temp_password;
+  const memberName = typeof body.name === "string" ? body.name.trim() : "";
+  const memberRole = typeof body.role === "string" ? body.role : "viewer";
 
-  if (action !== "reset" && action !== "offboard") return reply(400, { error: "action debe ser 'reset' u 'offboard'." });
+  if (action !== "reset" && action !== "offboard" && action !== "create") {
+    return reply(400, { error: "action debe ser 'reset', 'offboard' o 'create'." });
+  }
   if (!target) return reply(400, { error: "Falta target_email." });
-  if (target === caller.email.toLowerCase()) {
+  if (action !== "create" && target === caller.email.toLowerCase()) {
     return reply(400, { error: "No puedes resetearte o darte de baja a ti misma desde aquí. Usa «¿Olvidaste tu contraseña?»." });
   }
   if (tempPassword !== undefined && (typeof tempPassword !== "string" || tempPassword.length < 12)) {
@@ -92,6 +101,48 @@ Deno.serve(async (req: Request) => {
   const { data: usersPage, error: listError } = await admin.auth.admin.listUsers({ page: 1, perPage: 1000 });
   if (listError) return reply(500, { error: "No se pudo consultar usuarios: " + listError.message });
   const targetUser = usersPage.users.find((u) => u.email?.toLowerCase() === target);
+
+  // 4b) Alta completa (action=create)
+  if (action === "create") {
+    if (!["admin", "editor", "viewer"].includes(memberRole)) return reply(400, { error: "Rol inválido." });
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(target)) return reply(400, { error: "Correo inválido." });
+
+    const generatedForCreate = randomPassword();
+    let authCreated = false;
+    if (!targetUser) {
+      const { error: createError } = await admin.auth.admin.createUser({
+        email: target,
+        password: tempPassword || generatedForCreate,
+        email_confirm: true,
+      });
+      if (createError) return reply(500, { error: "No se pudo crear el usuario de Auth: " + createError.message });
+      authCreated = true;
+    }
+
+    const row: Record<string, unknown> = { email: target, role: memberRole, active: true };
+    if (memberName) row.name = memberName;
+    const { error: upsertError } = await admin.from("team_members").upsert(row, { onConflict: "email" });
+    if (upsertError) {
+      return reply(500, { error: (authCreated ? "Usuario de Auth creado, pero " : "") + "no se pudo guardar el acceso: " + upsertError.message });
+    }
+
+    await admin.from("admin_audit").insert({
+      actor_email: caller.email,
+      action: "user_create",
+      target_email: target,
+      detail: { role: memberRole, auth_created: authCreated, temp_password_provided: !!tempPassword },
+    });
+
+    return reply(200, {
+      ok: true,
+      action,
+      target_email: target,
+      auth_created: authCreated,
+      // Solo si se creó el usuario con contraseña generada: se muestra una vez.
+      ...(authCreated && !tempPassword ? { temp_password: generatedForCreate } : {}),
+    });
+  }
+
   if (!targetUser) return reply(404, { error: "No existe un usuario de Auth con ese correo." });
 
   // 5) Nueva contraseña: la temporal del admin (solo en reset) o una aleatoria
