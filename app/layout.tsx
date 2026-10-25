@@ -25,14 +25,14 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "MOVDI · Digital Movement Agency",
     description:
-      "Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle, desde CDMX.",
+      "Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle.",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "MOVDI · Digital Movement Agency",
     description:
-      "Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle, desde CDMX.",
+      "Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle.",
     images: ["/og-image.png"],
   },
 };

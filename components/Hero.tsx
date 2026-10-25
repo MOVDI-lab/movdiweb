@@ -16,7 +16,7 @@ export default function Hero({ reach, onNavigate }: { reach: number; onNavigate:
           dentro de la<br />cultura digital.
         </h1>
         <p className="hero-sub fi d3">
-          Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle, desde CDMX.
+          Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle.
         </p>
         <div className="hero-pillars fi d3">
           <span>Talento</span><span>Campañas</span><span>Estrategia &amp; Tech</span>
