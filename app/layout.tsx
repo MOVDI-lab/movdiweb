@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "MOVDI · Digital Movement Agency",
   description:
-    "MOVDI es una agencia de talento y marketing de influencers en CDMX. Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.",
+    "MOVDI es una agencia de talento, marketing y estrategia digital en CDMX. Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle.",
   alternates: { canonical: "/" },
   icons: {
     icon: [
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: "MOVDI · Digital Movement Agency",
     description:
-      "Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.",
+      "Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle, desde CDMX.",
     images: [{ url: "/og-image.png", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "MOVDI · Digital Movement Agency",
     description:
-      "Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.",
+      "Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle, desde CDMX.",
     images: ["/og-image.png"],
   },
 };

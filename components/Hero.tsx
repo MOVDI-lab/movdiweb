@@ -10,14 +10,17 @@ export default function Hero({ reach, onNavigate }: { reach: number; onNavigate:
       <div className="hero-word">MOVDI</div>
       <div className="hero-side">Ciudad de México · Digital Agency</div>
       <div className="wrap hero-grid">
-        <div className="lbl fi d1">Agencia de Marketing Digital</div>
+        <div className="lbl fi d1">Agencia de talento, marketing y estrategia digital</div>
         <h1 className="hero-h fi d2">
-          No seguimos<br />tendencias.<br />
-          <span className="em">Las convertimos</span><br />en valor.
+          Hacemos crecer<br />a <span className="em">creadores y marcas</span><br />
+          dentro de la<br />cultura digital.
         </h1>
         <p className="hero-sub fi d3">
-          Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.
+          Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle, desde CDMX.
         </p>
+        <div className="hero-pillars fi d3">
+          <span>Talento</span><span>Campañas</span><span>Estrategia &amp; Tech</span>
+        </div>
         <HeroActions onNavigate={onNavigate} />
         <div className="hero-stats fi d5">
           <div className="hstat glass warm lux">

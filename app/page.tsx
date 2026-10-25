@@ -15,7 +15,7 @@ const orgJsonLd = {
   url: SITE,
   logo: `${SITE}/favicon-512.png`,
   description:
-    "Agencia de talento y marketing de influencers en CDMX. Construimos creadores, posicionamos marcas y creamos oportunidades reales en el entorno digital.",
+    "Agencia de talento, marketing y estrategia digital en CDMX. Representamos creadores, diseñamos campañas de influencer marketing y construimos estrategia y tecnología para marcas. De gaming a lifestyle.",
   address: { "@type": "PostalAddress", addressLocality: "Ciudad de México", addressCountry: "MX" },
   sameAs: ["https://www.instagram.com/movdimx/", "https://mx.linkedin.com/company/movdi"],
 };
